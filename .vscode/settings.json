@@ -1,0 +1,21 @@
+{
+  "python.testing.unittestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+  "autoDocstring.docstringFormat": "google",
+  "autoDocstring.generateDocstringOnEnter": true,
+  "autoDocstring.guessTypes": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.pycodestyleEnabled": true,
+  "python.linting.enabled": true,
+  "python.formatting.provider": "yapf",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "eeyore.yapf"
+  }
+
+  // "python.testing.pytestArgs": ["tests"],
+  // "python.testing.unittestEnabled": false,
+  // "python.testing.pytestEnabled": true
+}
