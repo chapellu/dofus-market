@@ -2,6 +2,8 @@ from src.runes_data import runes, proba, specific_runes
 
 
 def mean(liste: list) -> float:
+    if len(liste) == 0:
+        return 0.0
     return sum(liste) / len(liste)
 
 
@@ -14,7 +16,7 @@ def decoupage_ra(_rune_power: float, rune_name: str) -> tuple[float, float]:
         "poids_pa"] + 4 * runes[rune_name]["poids_ba"]
     _decoupage_ra = _rune_power // power_ra
     rest_ra = _rune_power - _decoupage_ra * runes[rune_name]["poids_ra"]
-    print(f"power_ra: {power_ra}")
+    # print(f"power_ra: {power_ra}")
     return _decoupage_ra, rest_ra
 
 
@@ -47,7 +49,7 @@ def decoupage(jet: int, rune_name: str):
         runes_ra.append(ra)
         runes_pa.append(pa)
         runes_ba.append(ba)
-        print(f"{jet}-{percentile}: ra {ra}, pa {pa}, ba {ba}")
+        # print(f"{jet}-{percentile}: ra {ra}, pa {pa}, ba {ba}")
     return mean(runes_ra), mean(runes_pa), mean(runes_ba)
 
 
@@ -63,16 +65,24 @@ def decoupage_special(lvl, rune, jet_max):
 
 def brisage_rune(lvl: int, jet_min: int, jet_max: int,
                  rune: str) -> tuple[float, float, float]:
-    if rune in specific_runes:
-        return decoupage_special(lvl, rune, jet_max)
+    jet_min = max(jet_min, 0)
+    jet_max = max(jet_max, 0)
     runes_ba = []
     runes_pa = []
     runes_ra = []
-    for jet in range(jet_min, jet_max + 1, step(jet_min, jet_max)):
-        ra, pa, ba = decoupage(jet, rune)
-        runes_ra.append(ra)
-        runes_pa.append(pa)
+
+    if rune in specific_runes:
+        _, _, ba = decoupage_special(lvl, rune, jet_max)
         runes_ba.append(ba)
-        print(f"{jet}: ra {ra}, pa {pa}, ba {ba}")
+    else:
+        for jet in range(jet_min, jet_max + 1, step(jet_min, jet_max)):
+            ra, pa, ba = decoupage(jet, rune)
+            runes_ra.append(ra)
+            runes_pa.append(pa)
+            runes_ba.append(ba)
+            # print(f"{jet}: ra {ra}, pa {pa}, ba {ba}")
+    print(
+        f"Rune: {rune} - Ra: {round(mean(runes_ra), 2)} - Pa: {round(mean(runes_pa), 2)} - Ba: {round(mean(runes_ba), 2)}"
+    )
     return round(mean(runes_ra), 2), round(mean(runes_pa),
                                            2), round(mean(runes_ba), 2)
