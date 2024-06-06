@@ -200,6 +200,7 @@ class Ingredient(models.Model):
 class DofusObject(models.Model):
     name = models.CharField(max_length=100)
     level = models.IntegerField()
+    metier = models.CharField(max_length=100)
     _effects = models.ManyToManyField(Caracteristique)
     _ingredients = models.ManyToManyField(Ingredient,
                                           through="IngredientForCraft")
@@ -246,7 +247,7 @@ class DofusObject(models.Model):
 
     @property
     def nombre_ingredients(self):
-        return len(self._ingredients)
+        return len(self.ingredients)
 
     @property
     def effects(self) -> Iterable[Caracteristique]:

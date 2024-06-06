@@ -13,6 +13,8 @@ class DofusObjectSerializer(serializers.Serializer):
     gain_estime = serializers.SerializerMethodField('serialize_gain_estime')
     rentabilite = serializers.SerializerMethodField('serialize_rentabilite')
     brisage = serializers.SerializerMethodField('serialize_brisage')
+    nb_objet = serializers.SerializerMethodField('serialize_nb_objet')
+    metier = serializers.CharField()
 
     def serialize_effects(self, dofus_object):
         return CaracteristiqueSerializer(dofus_object.effects, many=True).data
@@ -28,10 +30,13 @@ class DofusObjectSerializer(serializers.Serializer):
         return dofus_object.gain_estime()
 
     def serialize_rentabilite(self, dofus_object):
-        return dofus_object.rentabilite()
+        return int(dofus_object.rentabilite())
 
     def serialize_brisage(self, dofus_object):
         return dofus_object.brisage()
+
+    def serialize_nb_objet(self, dofus_object):
+        return dofus_object.nombre_ingredients
 
 
 class IngredientForCraftSerializer(serializers.Serializer):
