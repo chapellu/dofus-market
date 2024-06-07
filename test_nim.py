@@ -1,6 +1,8 @@
-from src.dofus_object import DofusObject
+# from src.dofus_object import DofusObject
 
-pelle_houze = DofusObject({
+from dofus_market.market.models import DofusObject
+
+pelle_houze = DofusObject.create_from_dofusbook_object({
     "id":
     2475,
     "official":
@@ -181,15 +183,15 @@ pelle_houze = DofusObject({
     0
 })
 
-print(pelle_houze.effects)
-print(pelle_houze.ingredients)
-print(pelle_houze.nombre_ingredients)
-pelle_houze.ingredients[0].prix = 12
-pelle_houze.ingredients[1].prix = 10
-pelle_houze.ingredients[2].prix = 4
+print(pelle_houze)
+# print(pelle_houze.ingredients)
+# print(pelle_houze.nombre_ingredients)
+# pelle_houze.ingredients[0].prix = 12
+# pelle_houze.ingredients[1].prix = 10
+# pelle_houze.ingredients[2].prix = 4
 
-print(pelle_houze.cout_fabrication())
+# print(pelle_houze.cout_fabrication())
 
-print(pelle_houze.gain_estime())
+# print(pelle_houze.gain_estime())
 
-print(pelle_houze.rentabilite())
+# print(pelle_houze.rentabilite())

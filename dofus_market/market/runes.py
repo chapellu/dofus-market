@@ -81,8 +81,8 @@ def brisage_rune(lvl: int, jet_min: int, jet_max: int,
             runes_pa.append(pa)
             runes_ba.append(ba)
             # print(f"{jet}: ra {ra}, pa {pa}, ba {ba}")
-    print(
-        f"Rune: {rune} - Ra: {round(mean(runes_ra), 2)} - Pa: {round(mean(runes_pa), 2)} - Ba: {round(mean(runes_ba), 2)}"
-    )
+    # print(
+    #     f"Rune: {rune} - Ra: {round(mean(runes_ra), 2)} - Pa: {round(mean(runes_pa), 2)} - Ba: {round(mean(runes_ba), 2)}"
+    # )
     return round(mean(runes_ra), 2), round(mean(runes_pa),
                                            2), round(mean(runes_ba), 2)

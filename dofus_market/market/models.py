@@ -107,10 +107,13 @@ runes_price = {
 
 
 class Rune(models.Model):
-    name = models.CharField(max_length=100)
-    prix_ra = models.IntegerField()
-    prix_pa = models.IntegerField()
-    prix_ba = models.IntegerField()
+    name = models.CharField(primary_key=True, max_length=100)
+    prix_ra = models.IntegerField(default=0)
+    prix_pa = models.IntegerField(default=0)
+    prix_ba = models.IntegerField(default=0)
+
+    def __str__(self) -> str:
+        return self.name
 
     # def __init__(self, rune_name) -> None:
     #     self.name = rune_name
@@ -141,15 +144,68 @@ class Rune(models.Model):
 
 
 runes_name = {
-    "vi": "Vi",
-    "ag": "Age",
-    "pm": "Ga Pme",
-    "rtp": "Ré Per Terre",
-    "dt": "Do Terre",
     "fo": "Fo",
     "in": "Ine",
+    "ch": "Cha",
+    "ag": "Age",
+    "vi": "Vi",
+    "sa": "Sa",
+    "ii": "Ini",
+    "rt": "Ré Terre",
+    "rf": "Ré Feu",
+    "ra": "Ré Air",
+    "re": "Ré Eau",
+    "rn": "Ré Neutre",
+    "rtp": "Ré Per Terre",
+    "rfp": "Ré Per Feu",
+    "rnp": "Ré Per Neutre",
+    "rep": "Ré Per Eau",
+    "rap": "Ré Per Air",
+    "rp": "Ré Pou",
+    "rc": "Ré Cri",
+    "epa": "Ré Pa",
+    "epm": "Ré Pme",
+    "pp": "Prospe",
+    "fu": "Fui",
     "po": "Po",
-    "so": "So"
+    "so": "So",
+    "df": "Do",
+    "dtf": "Do Terre",
+    "dnf": "Do Neutre",
+    "dff": "Do Feu",
+    "daf": "Do Air",
+    "def": "Do Eau",
+    "dp": "Do Pou",
+    "pa": "Ga Pa",
+    "cc": "Cri",
+    "pu": "Pui",
+    "ic": "Invo",
+    "pm": "Ga Pme",
+    "ta": "Tac",
+    "rpa": "Ret Pa",
+    "rpm": "Ret Pme",
+    "dc": "Do Cri",
+    "dmg": "Do",
+    "pd": "Pod",
+}
+
+metier_name = {
+    "bo": "Cordonnier",
+    "ce": "Cordonnier",
+    "sa": "Cordonnier",
+    "pe": "Forgeur de Pelles",
+    "an": "Bijoutier",
+    "am": "Bijoutier",
+    "ep": "Forgeur d'Epées",
+    "da": "Forgeur de Dagues",
+    "ha": "Forgeur de Haches",
+    "ar": "Sculteur d'Arcs",
+    "ba": "Sculteur de Baguettes",
+    "bm": "Sculteur de Baton",
+    "ch": "Coiffeur",
+    "ca": "Cape",
+    "br": "Façonneur",
+    "tr": "Façonneur"
 }
 
 
@@ -175,11 +231,29 @@ class Caracteristique(models.Model):
     def brisage(self, level):
         return brisage_rune(level, self.min, self.max, self.rune.name)
 
+    @classmethod
+    def create_from_dofusbook(cls, dofusbook_caracteristique):
+        if dofusbook_caracteristique["type"] == "O":
+            return
+        if dofusbook_caracteristique["name"] in [
+                'pap', 'ptp', 'paf', 'pnf', 'pep', 'ptf', 'pfp', 'pnp', 'pef',
+                'pff'
+        ]:
+            return
+        rune, _ = Rune.objects.get_or_create(
+            name=runes_name[dofusbook_caracteristique["name"]])
+        carac, _ = cls.objects.get_or_create(
+            name=dofusbook_caracteristique["name"],
+            min=dofusbook_caracteristique["min"],
+            max=dofusbook_caracteristique["max"],
+            rune=rune)
+        return carac.pk
+
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(primary_key=True, max_length=100)
     # count = models.IntegerField()
-    _prix = models.IntegerField()  #1000000000
+    _prix = models.IntegerField(default=1000000000)
 
     # def __init__(self, dofusbook_ingredient) -> None:
     #     self.name = dofusbook_ingredient["name"]
@@ -197,13 +271,36 @@ class Ingredient(models.Model):
         self._prix = value
 
 
+class IngredientForCraft(models.Model):
+    # dofus_object = models.ForeignKey(DofusObject, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{{name: \"{self.ingredient}\", quantity: {self.quantity}}}"
+
+    @classmethod
+    def create_from_dofusbook(cls, dofusbook_ingredient):
+        ig, _ = Ingredient.objects.get_or_create(
+            name=dofusbook_ingredient["name"])
+        ingredient, _ = cls.objects.get_or_create(
+            ingredient=ig, quantity=dofusbook_ingredient["count"])
+        return ingredient.pk
+
+
+class Metier(models.Model):
+    name = models.CharField(primary_key=True, max_length=100)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class DofusObject(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(primary_key=True, max_length=100)
     level = models.IntegerField()
-    metier = models.CharField(max_length=100)
+    metier = models.ForeignKey(Metier, on_delete=models.CASCADE)
     _effects = models.ManyToManyField(Caracteristique)
-    _ingredients = models.ManyToManyField(Ingredient,
-                                          through="IngredientForCraft")
+    _ingredients = models.ManyToManyField(IngredientForCraft)
 
     # def __init__(self, dofusbook_objet):
     #     self.name = dofusbook_objet["name"]
@@ -218,7 +315,7 @@ class DofusObject(models.Model):
     #     ]
 
     def __str__(self) -> str:
-        return f"name: {self.name}, level: {self.level}, effects: {self.effects}, ingredients: [{self.ingredients}]"
+        return self.name
 
     def cout_fabrication(self) -> int:
         return int(
@@ -235,8 +332,11 @@ class DofusObject(models.Model):
             ]))
 
     def rentabilite(self) -> float:
-        return ((self.gain_estime() - self.cout_fabrication()) /
-                self.cout_fabrication()) * 100
+        try:
+            return ((self.gain_estime() - self.cout_fabrication()) /
+                    self.cout_fabrication()) * 100
+        except ZeroDivisionError:
+            return -1000.0
 
     def brisage(self):
         res = []
@@ -244,6 +344,42 @@ class DofusObject(models.Model):
             res.append(
                 (caracteristique.name, *caracteristique.brisage(self.level)))
         return res
+
+    @classmethod
+    def create_from_dofusbook_object(cls, dofusbook_object):
+        print(dofusbook_object["id"])
+        if dofusbook_object["category_name"] in [
+                "tr", "do", "mt", "fa", "mo"
+        ]:  #Ignore trophée, dofus, montilier, familier, monture
+            return
+        try:
+            dofus_object = DofusObject.objects.get(
+                name=dofusbook_object["name"])
+        except DofusObject.DoesNotExist:
+            metier, _ = Metier.objects.get_or_create(
+                name=metier_name[dofusbook_object["category_name"]])
+            dofus_object = cls(name=dofusbook_object["name"],
+                               level=dofusbook_object["level"],
+                               metier=metier)
+            dofus_object.save()
+
+            caracteristiques = [
+                Caracteristique.create_from_dofusbook(caracteristique)
+                for caracteristique in dofusbook_object["effects"]
+            ]
+
+            dofus_object._effects.add(*caracteristiques)
+
+            ingredients = [
+                IngredientForCraft.create_from_dofusbook(ingredient)
+                for ingredient in dofusbook_object["ingredients"]
+            ]
+
+            dofus_object._ingredients.add(*ingredients)
+
+            dofus_object.save()
+
+        return dofus_object
 
     @property
     def nombre_ingredients(self):
@@ -255,13 +391,4 @@ class DofusObject(models.Model):
 
     @property
     def ingredients(self) -> Iterable[Ingredient]:
-        return IngredientForCraft.objects.all().filter(dofus_object=self.pk)
-
-
-class IngredientForCraft(models.Model):
-    dofus_object = models.ForeignKey(DofusObject, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-
-    def __str__(self) -> str:
-        return f"{{name: \"{self.ingredient}\", quantity: {self.quantity}}}"
+        return IngredientForCraft.objects.all().filter(dofusobject=self.pk)

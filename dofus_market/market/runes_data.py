@@ -387,7 +387,7 @@ runes = {
         "poids_ba": 5,
         "poids_pa": 15,
         "poids_ra": 1000
-    },
+    }
 }
 
 proba = {
