@@ -54,6 +54,13 @@ class RuneSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class IngredientSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ingredient
+        fields = '__all__'
+
+
 class CaracteristiqueSerializer(serializers.Serializer):
 
     name = serializers.CharField()
