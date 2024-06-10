@@ -88,23 +88,6 @@ runes_price = {
     "Pa So": 400
 }
 
-# class Caracteristique(models.Model):
-#     name = models.CharField(max_length=200)
-#     jet_min = models.IntegerField()
-#     jet_max = models.IntegerField()
-
-#     def __str__(self):
-#         return self.name
-
-# class Objet(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     level = models.IntegerField()
-#     caracteristiques = models.ForeignKey(Caracteristique,
-#                                          on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return str(self.id)
-
 
 class Rune(models.Model):
     name = models.CharField(primary_key=True, max_length=100)
@@ -114,33 +97,6 @@ class Rune(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-    # def __init__(self, rune_name) -> None:
-    #     self.name = rune_name
-
-    # @property
-    # def prix_ra(self):
-    #     return runes_price.get(f"Ra {self.name}", 0)
-
-    # @prix_ra.setter
-    # def prix_ra(self, value):
-    #     self._prix_ra = value
-
-    # @property
-    # def prix_pa(self):
-    #     return runes_price.get(f"Pa {self.name}", 0)
-
-    # @prix_pa.setter
-    # def prix_pa(self, value):
-    #     self._prix_pa = value
-
-    # @property
-    # def prix_ba(self):
-    #     return runes_price[self.name]
-
-    # @prix_ba.setter
-    # def prix_ba(self, value):
-    #     self._prix_ba = value
 
 
 runes_name = {
@@ -215,12 +171,6 @@ class Caracteristique(models.Model):
     max = models.IntegerField()
     rune = models.ForeignKey(Rune, on_delete=models.CASCADE)
 
-    # def __init__(self, dofusbook_caracteristique) -> None:
-    #     self.name = dofusbook_caracteristique["name"]
-    #     self.min = dofusbook_caracteristique["min"]
-    #     self.max = dofusbook_caracteristique["max"]
-    #     self.rune = Rune(runes_name[self.name])
-
     def __str__(self) -> str:
         return f"{{'name': \'{self.name}\', 'min': {self.min}, 'max': {self.max}}}"
 
@@ -252,23 +202,10 @@ class Caracteristique(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(primary_key=True, max_length=100)
-    # count = models.IntegerField()
-    _prix = models.IntegerField(default=1000000000)
-
-    # def __init__(self, dofusbook_ingredient) -> None:
-    #     self.name = dofusbook_ingredient["name"]
-    #     self.count = dofusbook_ingredient["count"]
+    prix = models.IntegerField(default=1000000000)
 
     def __str__(self) -> str:
         return self.name
-
-    @property
-    def prix(self):
-        return self._prix
-
-    @prix.setter
-    def prix(self, value):
-        self._prix = value
 
 
 class IngredientForCraft(models.Model):
@@ -301,18 +238,6 @@ class DofusObject(models.Model):
     metier = models.ForeignKey(Metier, on_delete=models.CASCADE)
     _effects = models.ManyToManyField(Caracteristique)
     _ingredients = models.ManyToManyField(IngredientForCraft)
-
-    # def __init__(self, dofusbook_objet):
-    #     self.name = dofusbook_objet["name"]
-    #     self.level = dofusbook_objet["level"]
-    #     self.effects = [
-    #         Caracteristique(caracteristique)
-    #         for caracteristique in dofusbook_objet["effects"]
-    #     ]
-    #     self.ingredients = [
-    #         Ingredient(ingredient)
-    #         for ingredient in dofusbook_objet["ingredients"]
-    #     ]
 
     def __str__(self) -> str:
         return self.name
