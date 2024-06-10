@@ -133,7 +133,6 @@ export default {
             </v-chip>
         </template>
     </v-data-table-virtual>
-    <!-- <HelloWorld msg="Vite + Vue" /> -->
 </template>
 
 <style scoped>

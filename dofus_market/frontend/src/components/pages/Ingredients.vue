@@ -1,11 +1,13 @@
 <template>
-    <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-        single-line></v-text-field>
-    <v-data-table-virtual mobile :items="items" :search="search" density="compact">
-        <template v-slot:item="{ item }">
-            <ingredient :item="item"></ingredient>
-        </template>
-    </v-data-table-virtual>
+    <div style="padding: 20px;">
+        <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+            single-line></v-text-field>
+        <v-data-table-virtual mobile :items="items" :search="search" density="compact">
+            <template v-slot:item="{ item }">
+                <ingredient :item="item"></ingredient>
+            </template>
+        </v-data-table-virtual>
+    </div>
 </template>
 
 <script lang="ts">

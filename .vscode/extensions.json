@@ -1,3 +1,8 @@
 {
-  "recommendations": ["eeyore.yapf", "vue.volar", "alexcvzz.vscode-sqlite"]
+  "recommendations": [
+    "eeyore.yapf",
+    "vue.volar",
+    "alexcvzz.vscode-sqlite",
+    "vuetifyjs.vuetify-vscode"
+  ]
 }

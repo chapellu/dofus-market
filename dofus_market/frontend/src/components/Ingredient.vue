@@ -1,7 +1,17 @@
 <template>
     <div>
-        <span>{{ item.name }}</span>
-        <v-text-field v-model="item._prix" @change="updatePrice"></v-text-field>
+        <v-row class="align-center">
+            <v-col cols="8">
+                <v-list-subheader>{{ item.name }}</v-list-subheader>
+            </v-col>
+
+            <v-col cols="4">
+                <v-text-field v-model="item._prix" @change="updatePrice" density="compact" hide-details="auto"
+                    suffix="K"></v-text-field>
+            </v-col>
+        </v-row>
+        <!-- <span>{{ item.name }}</span> -->
+        <!-- <v-text-field :label=item.name v-model="item._prix" @change="updatePrice"></v-text-field> -->
     </div>
 </template>
 
