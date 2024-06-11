@@ -1,4 +1,4 @@
-from .runes_data import runes, proba, specific_runes
+from .database.runes_data import runes, proba, specific_runes
 
 
 def mean(liste: list) -> float:
@@ -16,7 +16,6 @@ def decoupage_ra(_rune_power: float, rune_name: str) -> tuple[float, float]:
         "poids_pa"] + 4 * runes[rune_name]["poids_ba"]
     _decoupage_ra = _rune_power // power_ra
     rest_ra = _rune_power - _decoupage_ra * runes[rune_name]["poids_ra"]
-    # print(f"power_ra: {power_ra}")
     return _decoupage_ra, rest_ra
 
 
@@ -49,7 +48,6 @@ def decoupage(jet: int, rune_name: str):
         runes_ra.append(ra)
         runes_pa.append(pa)
         runes_ba.append(ba)
-        # print(f"{jet}-{percentile}: ra {ra}, pa {pa}, ba {ba}")
     return mean(runes_ra), mean(runes_pa), mean(runes_ba)
 
 
@@ -80,9 +78,5 @@ def brisage_rune(lvl: int, jet_min: int, jet_max: int,
             runes_ra.append(ra)
             runes_pa.append(pa)
             runes_ba.append(ba)
-            # print(f"{jet}: ra {ra}, pa {pa}, ba {ba}")
-    # print(
-    #     f"Rune: {rune} - Ra: {round(mean(runes_ra), 2)} - Pa: {round(mean(runes_pa), 2)} - Ba: {round(mean(runes_ba), 2)}"
-    # )
     return round(mean(runes_ra), 2), round(mean(runes_pa),
                                            2), round(mean(runes_ba), 2)

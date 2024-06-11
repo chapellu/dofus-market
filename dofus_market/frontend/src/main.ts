@@ -13,12 +13,14 @@ import VueAxios from "vue-axios";
 
 // Components
 import App from "./App.vue";
-import Dofusobject from "./components/pages/Dofusobject.vue";
+import Equipements from "./components/pages/Equipements.vue";
 import Ingredients from "./components/pages/Ingredients.vue";
+import Runes from "./components/pages/Runes.vue";
 
 const routes: Array<RouteRecordRaw> = [
-  { path: "/", component: Dofusobject },
+  { path: "/", component: Equipements },
   { path: "/ingredients", component: Ingredients },
+  { path: "/runes", component: Runes },
 ];
 
 const vuetify = createVuetify({
