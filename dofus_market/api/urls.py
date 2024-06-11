@@ -7,5 +7,6 @@ urlpatterns = [
     path('rune', views.getRune),
     path('createDofusbookObject', views.createDofusbookObject),
     path('ingredients', views.getIngredients),
-    path('ingredients/<str:name>', views.updateIngredient)
+    path('ingredients/<str:name>', views.updateIngredient),
+    path('runes', views.getRunes),
 ]

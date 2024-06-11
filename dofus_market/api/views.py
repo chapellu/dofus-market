@@ -1,3 +1,4 @@
+import time
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
@@ -14,9 +15,20 @@ import itertools
 
 @api_view(['GET'])
 def getDofusObject(request):
-    dofus_objects = DofusObject.objects.all()
+    t1 = time.process_time()
+    print("Enter GET")
+    dofus_objects = DofusObject.objects.all().prefetch_related(
+        "_effects", "_ingredients", "metier")
+    t2 = time.process_time()
+    print("GET Done", t2 - t1)
+    t3 = time.process_time()
+    print("Enter Serializer")
     serializer = DofusObjectSerializer(dofus_objects, many=True)
-    return Response(serializer.data)
+    data = serializer.data
+    t4 = time.process_time()
+    print("Serializer Done", t4 - t3)
+    print("Total request time", t4 - t1)
+    return Response(data)
 
 
 @api_view(['GET'])
@@ -49,7 +61,7 @@ def updateIngredient(request, name):
                             status=status.HTTP_404_NOT_FOUND)
 
     data = JSONParser().parse(request)
-    ingredient.prix = data["prix"]
+    ingredient.price = data["price"]
     ingredient.save()
     serializer = IngredientSerializer(ingredient)
     return Response(serializer.data)
@@ -75,3 +87,10 @@ def createDofusbookObject(request):
             DofusObject.create_from_dofusbook_object(item)
 
     return Response("ok")
+
+
+@api_view(["GET"])
+def getRunes(request):
+    runes = Rune.objects.all()
+    serializer = RuneSerializer(runes, many=True)
+    return Response(serializer.data)
