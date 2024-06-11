@@ -13,7 +13,7 @@ export default {
             { title: "Metier", key: "metier" },
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
-        items: []
+        items: [],
     }),
 
     methods: {
@@ -41,12 +41,15 @@ export default {
     </div>
     <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
         single-line></v-text-field>
-    <v-data-table-virtual mobile :items="items" :headers="headers" :sort-by="sortBy" multi-sort :search="search"
-        density="compact" :loading="loading">
+    <v-data-table-virtual :items="items" :headers="headers" :sort-by="sortBy" multi-sort :search="search" density="compact"
+        :loading="loading" item-value="name" expand-on-click>
         <template v-slot:item.rentabilite="{ value }">
             <v-chip :color="getColor(value)">
                 {{ value }}
             </v-chip>
+        </template>
+        <template v-slot:expanded-row="{ item }">
+            <v-data-table :items="item.ingredients"></v-data-table>
         </template>
     </v-data-table-virtual>
 </template>

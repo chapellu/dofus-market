@@ -1,3 +1,4 @@
+import time
 from rest_framework import serializers
 
 from market.database.equipement import DofusObject
@@ -20,7 +21,11 @@ class DofusObjectSerializer(serializers.Serializer):
     metier = serializers.CharField()
 
     def serialize_effects(self, dofus_object: DofusObject):
-        return CaracteristiqueSerializer(dofus_object.effects, many=True).data
+        t1 = time.process_time()
+        data = CaracteristiqueSerializer(dofus_object.effects, many=True).data
+        t2 = time.process_time()
+        print("GET Done", t2 - t1)
+        return data
 
     def serialize_ingredients(self, dofus_object: DofusObject):
         return IngredientForCraftSerializer(dofus_object.ingredients,
