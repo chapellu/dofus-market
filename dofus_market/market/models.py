@@ -170,19 +170,23 @@ class Caracteristique(models.Model):
     min = models.IntegerField()
     max = models.IntegerField()
     rune = models.ForeignKey(Rune, on_delete=models.CASCADE)
+    level = models.IntegerField()
+    number_of_ra = models.FloatField(default=0.0)
+    number_of_pa = models.FloatField(default=0.0)
+    number_of_ba = models.FloatField(default=0.0)
 
     def __str__(self) -> str:
         return f"{{'name': \'{self.name}\', 'min': {self.min}, 'max': {self.max}}}"
 
     def gain_estime(self, level):
-        ra, pa, ba = self.brisage(level)
-        return ra * self.rune.prix_ra + pa * self.rune.prix_pa + ba * self.rune.prix_ba
+        # ra, pa, ba = self.brisage(level)
+        return self.number_of_ra * self.rune.prix_ra + self.number_of_pa * self.rune.prix_pa + self.number_of_ba * self.rune.prix_ba
 
     def brisage(self, level):
-        return brisage_rune(level, self.min, self.max, self.rune.name)
+        return self.number_of_ba, self.number_of_pa, self.number_of_ba
 
     @classmethod
-    def create_from_dofusbook(cls, dofusbook_caracteristique):
+    def create_from_dofusbook(cls, dofusbook_caracteristique, level):
         if dofusbook_caracteristique["type"] == "O":
             return
         if dofusbook_caracteristique["name"] in [
@@ -190,19 +194,27 @@ class Caracteristique(models.Model):
                 'pff'
         ]:
             return
+        ra, pa, ba = brisage_rune(
+            level, dofusbook_caracteristique["min"],
+            dofusbook_caracteristique["max"],
+            runes_name[dofusbook_caracteristique["name"]])
         rune, _ = Rune.objects.get_or_create(
             name=runes_name[dofusbook_caracteristique["name"]])
         carac, _ = cls.objects.get_or_create(
             name=dofusbook_caracteristique["name"],
             min=dofusbook_caracteristique["min"],
             max=dofusbook_caracteristique["max"],
-            rune=rune)
+            rune=rune,
+            level=level,
+            number_of_ra=ra,
+            number_of_pa=pa,
+            number_of_ba=ba)
         return carac.pk
 
 
 class Ingredient(models.Model):
     name = models.CharField(primary_key=True, max_length=100)
-    prix = models.IntegerField(default=1000000000)
+    price = models.IntegerField(default=1000000000)
 
     def __str__(self) -> str:
         return self.name
@@ -245,7 +257,7 @@ class DofusObject(models.Model):
     def cout_fabrication(self) -> int:
         return int(
             sum([
-                ingredient.ingredient.prix * ingredient.quantity
+                ingredient.ingredient.price * ingredient.quantity
                 for ingredient in self.ingredients
             ]))
 
@@ -289,7 +301,8 @@ class DofusObject(models.Model):
             dofus_object.save()
 
             caracteristiques = [
-                Caracteristique.create_from_dofusbook(caracteristique)
+                Caracteristique.create_from_dofusbook(
+                    caracteristique, dofusbook_object["level"])
                 for caracteristique in dofusbook_object["effects"]
             ]
 

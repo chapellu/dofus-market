@@ -6,12 +6,10 @@
             </v-col>
 
             <v-col cols="4">
-                <v-text-field v-model="item.prix" @change="updatePrice" density="compact" hide-details="auto"
+                <v-text-field v-model="item.price" @change="updatePrice" density="compact" hide-details="auto"
                     suffix="K"></v-text-field>
             </v-col>
         </v-row>
-        <!-- <span>{{ item.name }}</span> -->
-        <!-- <v-text-field :label=item.name v-model="item._prix" @change="updatePrice"></v-text-field> -->
     </div>
 </template>
 
@@ -24,12 +22,12 @@ export default {
     props: {
         item: {
             name: String,
-            prix: Number
+            price: Number
         }
     },
     methods: {
         async updatePrice() {
-            await this.axios.put(`${this.backendUrl}/api/ingredients/${this.item.name}`, { "prix": this.item.prix })
+            await this.axios.put(`${this.backendUrl}/api/ingredients/${this.item.name}`, { "price": this.item.price })
         }
     }
 }

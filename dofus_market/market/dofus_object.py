@@ -157,7 +157,7 @@ class Caracteristique:
 class Ingredient:
     name: str
     count: int
-    _prix: int
+    prix: int
 
     def __init__(self, dofusbook_ingredient) -> None:
         self.name = dofusbook_ingredient["name"]
@@ -166,14 +166,6 @@ class Ingredient:
 
     def __repr__(self) -> str:
         return f"{{'name': '{self.name}', 'count': {self.count}, 'prix': {self.prix}}}"
-
-    @property
-    def prix(self):
-        return self._prix
-
-    @prix.setter
-    def prix(self, value):
-        self._prix = value
 
 
 class DofusObject:
