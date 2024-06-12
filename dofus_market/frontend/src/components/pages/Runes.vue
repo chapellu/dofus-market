@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import Rune from "../Rune.vue";
+import { RuneType } from '../types/RuneType'
+
 
 export default {
     components: {
@@ -32,7 +34,7 @@ export default {
             this.items = response.data
         },
 
-        async updatePrice(item) {
+        async updatePrice(item: RuneType) {
             console.log(item)
         }
     },

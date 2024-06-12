@@ -1,56 +1,74 @@
 # dofus-market
 
-```mermaid
----
-title: Dofus market
----
-classDiagram
-    class DofusObject {
-        string name
-        int level
-        string metier
-    }
+## Dev
 
-    class Ingredient {
-        string name
-        int prix
-    }
+### Backend REST API + Database (Django)
 
-    class IngredientForCraft {
-        int quantity
-    }
+Install dependencies
 
-    class Statistique {
-        int min
-        int max
-    }
-
-    class Caracteristique {
-        string name
-    }
-
-    class Rune {
-        string name
-        int prix_ra
-        int prix_pa
-        int prix_ba
-    }
-
-    DofusObject "1" -- "*" IngredientForCraft
-
-    DofusObject "*" -- "*" Statistique
-
-    IngredientForCraft "*" -- "1" Ingredient
-
-    Caracteristique "1" -- "1" Rune
-
-    Statistique "*" -- "1" Caracteristique
-
-
-
+```shell
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
----
+Migrate database and run dev server
+
+```shell
+cd dofus_market
+python manage.py makemigrations market
+python manage.py migrate
+python manage.py runserver
+```
+
+Docker build
+
+```shell
+docker build -t chapellu/dofus-market-backend:alpha -f deploy/Dockerfile-backend .
+```
+
+Docker run
+
+```shell
+docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:alpha
+```
+
+### Frontend (vuejs)
+
+Install dependencies
+
+```shell
+cd dofus_market/frondend
+npm install
+```
+
+Run dev server
+
+```shell
+npm run dev
+```
+
+Compiles and minifies for production
+
+```shell
+npm run build
+```
+
+#### Docker
+
+Docker build
+
+```shell
+npm run build:docker
+```
+
+Docker run
+
+```shell
+npm run serve:docker
+```
+
+## Production
 
 ```mermaid
 ---
@@ -97,9 +115,6 @@ classDiagram
     class Recette {
         int level
     }
-
-
-
 
     Equipement "*" -- "*" IngredientForCraft
 

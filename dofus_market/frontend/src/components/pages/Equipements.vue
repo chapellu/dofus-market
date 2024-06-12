@@ -1,10 +1,14 @@
 <script lang="ts">
+
+import { EquipementType } from '../types/EquipementType'
+type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
+
 export default {
     data: () => ({
         backendUrl: "http://127.0.0.1:8000",
         loading: true,
         search: '',
-        sortBy: [{ key: 'rentabilite', order: 'desc' }, { key: 'cout_fabrication', order: 'asc' }],
+        sortBy: [{ key: 'rentabilite', order: 'desc' }, { key: 'cout_fabrication', order: 'asc' }] as Array<SortItem>,
         headers: [
             { title: 'Nom', key: 'name', sortable: false },
             { title: 'Rentabilité (%)', key: 'rentabilite' },
@@ -13,7 +17,7 @@ export default {
             { title: "Metier", key: "metier" },
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
-        items: [],
+        items: [] as Array<EquipementType>,
     }),
 
     methods: {

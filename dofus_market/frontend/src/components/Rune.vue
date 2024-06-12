@@ -24,16 +24,16 @@
 
 <script lang="ts">
 
+import { RuneType } from './types/RuneType'
+
 export default {
     data: () => ({
         backendUrl: "http://127.0.0.1:8000",
     }),
     props: {
         item: {
-            name: String,
-            prix_ra: Number,
-            prix_pa: Number,
-            prix_ba: Number
+            type: RuneType,
+            required: true
         }
     },
     methods: {

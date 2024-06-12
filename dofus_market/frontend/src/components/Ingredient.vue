@@ -14,15 +14,17 @@
 </template>
 
 <script lang="ts">
+import { IngredientType } from './types/IngredientType.ts'
+
 
 export default {
     data: () => ({
         backendUrl: "http://127.0.0.1:8000",
     }),
     props: {
-        item: {
-            name: String,
-            price: Number
+        "item": {
+            type: IngredientType,
+            required: true
         }
     },
     methods: {
