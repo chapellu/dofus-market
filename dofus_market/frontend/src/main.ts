@@ -17,6 +17,20 @@ import Equipements from "./components/pages/Equipements.vue";
 import Ingredients from "./components/pages/Ingredients.vue";
 import Runes from "./components/pages/Runes.vue";
 
+/* import the fontawesome core */
+import { library } from "@fortawesome/fontawesome-svg-core";
+/* import font awesome icon component */
+import {
+  faLandmark,
+  faPercent,
+  faCoins,
+  faFlask,
+  faHammer,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(faLandmark, faPercent, faCoins, faFlask, faHammer);
+
 const routes: Array<RouteRecordRaw> = [
   { path: "/", component: Equipements },
   { path: "/ingredients", component: Ingredients },
@@ -33,4 +47,9 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(vuetify).use(VueAxios, axios).use(router).mount("#app");
+createApp(App)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .use(vuetify)
+  .use(VueAxios, axios)
+  .use(router)
+  .mount("#app");

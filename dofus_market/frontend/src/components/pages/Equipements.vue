@@ -1,10 +1,14 @@
 <script lang="ts">
-
+import Equipement from "../Equipement.vue";
 import { EquipementType } from '../types/EquipementType'
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
 export default {
+    components: {
+        Equipement
+    },
     data: () => ({
+        expanded: [],
         backendUrl: "http://127.0.0.1:8000",
         loading: true,
         search: '',
@@ -32,6 +36,15 @@ export default {
             this.items = response.data
             this.loading = false
         },
+        expandRow(item) {
+            console.log(item)
+            if (this.expanded.includes(item.name)) {
+                this.expanded.splice(this.expanded.indexOf(item.name), 1)
+            }
+            else {
+                this.expanded.push(item.name)
+            }
+        }
     },
     async mounted() {
         await this.getDataFromAPI()
@@ -45,13 +58,16 @@ export default {
     </div>
     <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
         single-line></v-text-field>
-    <v-data-table-virtual :items="items" :headers="headers" :sort-by="sortBy" multi-sort :search="search" density="compact"
-        :loading="loading" item-value="name" expand-on-click>
-        <template v-slot:item.rentabilite="{ value }">
+    <v-data-table-virtual mobile :items="items" disable-sort :sort-by="sortBy" multi-sort :search="search" density="compact"
+        :loading="loading" item-value="name" :expanded="expanded">
+        <template v-slot:item="{ item }">
+            <equipement :item="item" @click="expandRow(item)"></equipement>
+        </template>
+        <!-- <template v-slot:item.rentabilite="{ value }">
             <v-chip :color="getColor(value)">
                 {{ value }}
             </v-chip>
-        </template>
+        </template> -->
         <template v-slot:expanded-row="{ item }">
             <v-data-table :items="item.ingredients"></v-data-table>
         </template>
