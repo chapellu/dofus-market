@@ -1,0 +1,7 @@
+global:
+  ingress:
+    host: dofus-market.msv-project.com
+  logLevel: INFO
+
+serviceName: dofus-market
+

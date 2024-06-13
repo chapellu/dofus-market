@@ -33,6 +33,12 @@ Docker run
 docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:alpha
 ```
 
+Docker push to dockerhub
+
+```shell
+docker push chapellu/dofus-market-backend:alpha
+```
+
 ### Frontend (vuejs)
 
 Install dependencies

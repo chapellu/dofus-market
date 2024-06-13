@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.serviceName}}-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.serviceName}}-backend
+  template:
+    metadata:
+      name: {{.Values.serviceName}}-backend
+      labels:
+        app: {{.Values.serviceName}}-backend
+    spec:
+      containers:
+        - image: chapellu/dofus-market-backend:alpha
+          name: {{.Values.serviceName}}-backend
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "300m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.serviceName}}-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.serviceName}}-frontend
+  template:
+    metadata:
+      name: {{.Values.serviceName}}-frontend
+      labels:
+        app: {{.Values.serviceName}}-frontend
+    spec:
+      containers:
+        - image: chapellu/dofus-market-frontend:alpha
+          name: {{.Values.serviceName}}-front
+          ports:
+            - containerPort: 5173
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "300m"
