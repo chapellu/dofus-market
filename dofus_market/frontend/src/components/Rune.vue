@@ -1,9 +1,7 @@
 <template>
     <div>
-        <v-row class="align-center">
-            <v-col cols="12">
-                <v-list-subheader>{{ item.name }}</v-list-subheader>
-            </v-col>
+        <v-row>
+            <v-list-subheader>Rune {{ item.name }}</v-list-subheader>
         </v-row>
         <v-row class="align-center">
             <v-col cols="4">
@@ -43,3 +41,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.v-row {
+    margin: 0px
+}
+</style>
