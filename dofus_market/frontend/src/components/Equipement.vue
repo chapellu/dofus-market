@@ -12,7 +12,7 @@
                     </v-chip>
                 </v-col>
                 <v-col cols="3" class="d-flex flex-column align-center">
-                    <font-awesome-icon icon="landmark" />
+                    <font-awesome-icon icon="coins" />
                     <v-text-field width="100%" readonly density="compact" hide-details="true" v-model="item.gain_estime"
                         placeholder="-"></v-text-field>
                 </v-col>

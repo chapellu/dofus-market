@@ -4,7 +4,18 @@
             single-line></v-text-field>
         <v-data-table-virtual mobile :items="items" :search="search" density="compact" disable-sort>
             <template v-slot:item="{ item }">
-                <ingredient :item="item"></ingredient>
+                <div>
+                    <v-row class="align-center">
+                        <v-col cols="8">
+                            <v-list-subheader>{{ item.name }}</v-list-subheader>
+                        </v-col>
+
+                        <v-col cols="4">
+                            <v-text-field v-model="item.price" @change="updatePrice(item)" density="compact"
+                                hide-details="auto" suffix="K"></v-text-field>
+                        </v-col>
+                    </v-row>
+                </div>
             </template>
         </v-data-table-virtual>
     </div>
@@ -12,7 +23,6 @@
 
 <script lang="ts">
 import Ingredient from "../Ingredient.vue";
-import { IngredientType } from '../types/IngredientType'
 
 export default {
     components: {
@@ -33,8 +43,9 @@ export default {
             this.items = response.data
         },
 
-        async updatePrice(item: IngredientType) {
+        async updatePrice(item) {
             console.log(item)
+            await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
         }
     },
 

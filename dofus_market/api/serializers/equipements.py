@@ -17,7 +17,7 @@ class DofusObjectSerializer(serializers.Serializer):
         'serialize_cout_fabrication')
     gain_estime = serializers.SerializerMethodField('serialize_gain_estime')
     rentabilite = serializers.SerializerMethodField('serialize_rentabilite')
-    brisage = serializers.SerializerMethodField('serialize_brisage')
+    # brisage = serializers.SerializerMethodField('serialize_brisage')
     nb_objet = serializers.SerializerMethodField('serialize_nb_objet')
     metier = serializers.CharField()
 
