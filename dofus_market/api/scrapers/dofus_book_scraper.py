@@ -4,7 +4,7 @@ import requests
 
 
 class DofusBookScraper:
-    def generateDB():
+    def populateDB():
         url = "https://touch.dofusbook.net/items/touch/search/equipment"
         req = requests.get(url + '?page=1')
         first_page = json.loads(req.text)

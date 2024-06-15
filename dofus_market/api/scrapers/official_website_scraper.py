@@ -7,7 +7,8 @@ import json
 import requests
 import asyncio
 import aiohttp
-import itertools
+from datetime import datetime
+import os
 
 default_headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0' }
 touch_domain = "https://www.dofus-touch.com"
@@ -19,15 +20,17 @@ async def query_page(session, page, headers=default_headers):
 async def query_all_pages(pages, headers=default_headers):
     queries = []
     async with aiohttp.ClientSession() as session:
-        queries = await asyncio.gather(*[TouchWebsiteScraper.query_page(session, page, headers) for page in pages], return_exceptions=True)
+        queries = await asyncio.gather(*[query_page(session, page, headers) for page in pages], return_exceptions=True)
     return [q for q in queries]
 
-class TouchWebsiteScraper:
+class OfficialWebsiteData:
     professions = {}
-    recipes = []
+    recipes = {}
     missing_pages = []
+    scraping_date = datetime(2000, 1, 1)
 
     async def generate_professions(self):
+        print("Generating profession list...")
         self.professions = {}
         profession_pages = await query_all_pages(f'https://www.dofus-touch.com/fr/mmorpg/encyclopedie/metiers?display=table&page={i+1}' for i in [0, 1])
         for profession_page in profession_pages[0:1]:
@@ -45,11 +48,9 @@ class TouchWebsiteScraper:
                 self.professions[profession_item.string.strip()] = {"link":profession_item.find("a", href=re.compile("encyclopedie/metiers/")).get("href")}
 
     async def generate_recipes(self):
-        if (not self.professions):
-            self.generate_professions()
-
+        print("Gathering recipes...")
         profession_pages = await query_all_pages([l for l in [touch_domain + l["link"] + "/recipes" for l in self.professions.values()]])
-        self.recipes = []
+        self.recipes = {}
         for [[profession_name, profession], profession_first_page] in zip(self.professions.items(), profession_pages): 
             page_id = 1
             page = profession_first_page
@@ -92,8 +93,8 @@ class TouchWebsiteScraper:
                     recipe["level"]         = int(level_html.string)
                     recipe["profession"]    = profession_name
 
-                    self.recipes.append(recipe)
-                    profession["recipes"].append(recipe)
+                    self.recipes[recipe["object_id"]] = recipe
+                    profession["recipes"].append(recipe["object_id"])
 
                 page_id += 1
                 page = None
@@ -102,15 +103,13 @@ class TouchWebsiteScraper:
                     page = requests.get(touch_domain + next_page_link.get("href"), headers=default_headers).text
 
     async def generate_recipe_ingredients(self):
-        if (not recipes):
-            self.generate_recipes()
-
+        print("Gathering recipe ingerdients...")
         request_count = 0
         self.missing_pages = []
         for [name, profession] in self.professions.items():
             
             print(name)
-            recipes = profession["recipes"]
+            prof_recipes = profession["recipes"]
             recipe_fetch_headers = {
                 "Accept"        :"*/*",
                 "X-Requested-With": "XMLHttpRequest",
@@ -121,17 +120,18 @@ class TouchWebsiteScraper:
                 "User-Agent"    :"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0"
             }
 
-            request_count += len(recipes) 
-            all_recipe_json = await query_all_pages([f"https://www.dofus-touch.com/fr/mmorpg/encyclopedie/objets/recette/" + str(r["object_id"]) for r in recipes], headers=recipe_fetch_headers)
+            request_count += len(prof_recipes) 
+            all_recipe_json = await query_all_pages([f"https://www.dofus-touch.com/fr/mmorpg/encyclopedie/objets/recette/" + str(r) for r in prof_recipes], headers=recipe_fetch_headers)
             all_recipe_html = [json.loads(j) for j in all_recipe_json]
 
-            recipe["ingredients"] = []
-
-            for [recipe, html] in zip(recipes, all_recipe_html):
+            for [recipe_id, html] in zip(prof_recipes, all_recipe_html):
+                recipe = self.recipes[recipe_id]
+                recipe["ingredients"] = []
+            
                 # For some reason some recepy html are empty. Should probably tell ankama...
                 if html == "":
                     continue
-
+                
                 soup = BeautifulSoup(html, "html.parser")
 
                 # We also have 404 errors on some object links. Ankama fix link plz
@@ -171,8 +171,49 @@ class TouchWebsiteScraper:
                 request_count = 0
                 await asyncio.sleep(5 * 60 + 1)
 
-    def populate_professions_db(self):
-        Metier.objects.bulk_create([Metier(name=name) for name in self.professions.keys()])
+    async def generate(self):
+        try:
+            await self.generate_professions()
+            await self.generate_recipes()
+            await self.generate_recipe_ingredients()
+            self.scraping_date = datetime.now()
+            print("Generation complete!")
+        except Exception as e:
+            print(self.toJSON())
+            raise e
 
-    def populate_recipes_db(self):
+    
+    def toJSON(self):
+        return {
+                "professions":      json.dumps(self.professions),
+                "recipes":          json.dumps(self.recipes),
+                "scraping_date":    str(self.scraping_date)
+            }
+    
+    def fromJSON(self, json_obj):
+        self.professions    = json.loads(json_obj["professions"])
+        self.recipes        = json.loads(json_obj["recipes"])
+        self.scraping_date  = datetime.fromisoformat(json_obj["scraping_date"])
+
+class OfficialWebsiteScraper:
+    
+    data = OfficialWebsiteData()
+    cache_path = "official_website_data.json"
+    print(str(datetime.now()))
+    async def load(self, last_update_date:datetime.date):
+        if os.path.isfile(self.cache_path):
+            with open(self.cache_path, 'r') as f:
+                self.data.fromJSON(json.load(f))
+
+        if last_update_date < self.data.scraping_date:
+            self.data = OfficialWebsiteData()
+            await self.data.generate()
+
+            with open(self.cache_path, 'w') as f:
+                json.dump(self.data.toJSON(), f)
+    
+    def populate_professions_db(self):
+        Metier.objects.bulk_create([Metier(name=name) for name in self.data.professions.keys()])
+
+    #def populate_recipes_db(self):
         #todo
