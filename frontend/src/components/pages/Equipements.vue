@@ -17,7 +17,6 @@ import Equipement from "../Equipement.vue";
 import Ingredient from "../Ingredient.vue";
 import Ingredients from "../Ingredients.vue"
 import { backendUrl } from '../../config'
-import { EquipementType } from '../types/EquipementType'
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
 export default {
@@ -43,27 +42,27 @@ export default {
             { title: "Metier", key: "metier" },
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
-        items: [] as Array<EquipementType>,
+        items: [] as Array<any>,
     }),
 
     methods: {
-        getColor(rentabilite: number) {
-            if (rentabilite <= 0) return 'red'
-            else if (rentabilite < 20) return 'orange'
-            else return 'green'
-        },
         async getDataFromAPI() {
             const response = await this.axios.get(`${this.backendUrl}/api/equipements`)
             console.log(response.data)
             this.items = response.data
             this.loading = false
         },
-        expandRow(item: any) {
-            console.log(item)
+        async getEquipmentDetailsFromAPI(item: any) {
+            const response = await this.axios.get(`${this.backendUrl}/api/equipements/${item.name}`)
+            return response.data
+        },
+        async expandRow(item: any) {
             if (this.expanded.includes(item.name)) {
                 this.expanded.splice(this.expanded.indexOf(item.name), 1)
             }
             else {
+                this.items[this.items.indexOf(item)] = await this.getEquipmentDetailsFromAPI(item)
+                console.log(item)
                 this.expanded.push(item.name)
             }
         },
@@ -73,22 +72,3 @@ export default {
     },
 }
 </script>
-
-
-
-<style scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-}
-
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

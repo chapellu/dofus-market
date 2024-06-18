@@ -1,40 +1,41 @@
 <template>
     <div>
-        <v-card class="d-flex flex-row" variant="elevated" color="surface-variant">
-            <v-col cols="6" class="d-flex align-center justify-left ">
-                <div style="font-size: 12px;">{{ item.quantity }} X {{ item.name }}</div>
-            </v-col>
-            <v-col cols="6" class="d-flex flex-row">
-                <v-col cols="3" class="d-flex flex-column align-center">
-                    <div v-if="item.rentabilite > 0" class="d-flex flex-column align-center">
-                        <font-awesome-icon icon="percent" />
-                        <v-chip :color="getColor(item.rentabilite)">
-                            {{ Math.round(item.rentabilite) }}
-                        </v-chip>
-                    </div>
+        <v-lazy :options="{ 'threshold': 0.5 }" transition="fade-transition">
+            <v-card class="d-flex flex-row" variant="elevated" color="surface-variant">
+                <v-col cols="6" class="d-flex align-center justify-left ">
+                    <div style="font-size: 12px;">{{ item.quantity }} X {{ item.name }}</div>
                 </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center">
-                    <font-awesome-icon icon="landmark" />
-                    <v-text-field width="100%" density="compact" hide-details v-model.lazy="computedPrice" @click.stop
-                        placeholder="-" @change="updatePrice(item)"></v-text-field>
+                <v-col cols="6" class="d-flex flex-row">
+                    <v-col cols="3" class="d-flex flex-column align-center">
+                        <div v-if="item.rentabilite > 0" class="d-flex flex-column align-center">
+                            <font-awesome-icon icon="percent" />
+                            <v-chip :color="getColor(item.rentabilite)">
+                                {{ Math.round(item.rentabilite) }}
+                            </v-chip>
+                        </div>
+                    </v-col>
+                    <v-col cols="3" class="d-flex flex-column align-center">
+                        <font-awesome-icon icon="landmark" />
+                        <v-text-field width="100%" density="compact" hide-details v-model.lazy="computedPrice" @click.stop
+                            placeholder="-" @change="updatePrice(item)"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0">
+                        <font-awesome-icon icon="hammer" />
+                        <v-text-field width="100%" readonly density="compact" hide-details @click.stop
+                            v-model="computedCraftCost"></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0">
+                        <font-awesome-icon icon="flask" />
+                        <v-text-field width="100%" readonly density="compact" hide-details @click.stop
+                            v-model="item.nb_objet"></v-text-field>
+                    </v-col>
                 </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0">
-                    <font-awesome-icon icon="hammer" />
-                    <v-text-field width="100%" readonly density="compact" hide-details @click.stop
-                        v-model="computedCraftCost"></v-text-field>
-                </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0">
-                    <font-awesome-icon icon="flask" />
-                    <v-text-field width="100%" readonly density="compact" hide-details @click.stop
-                        v-model="item.nb_objet"></v-text-field>
-                </v-col>
-            </v-col>
-        </v-card>
+            </v-card>
+        </v-lazy>
     </div>
 </template>
 
 <script lang="ts">
-import { IngredientType } from './types/IngredientType.ts'
 import { backendUrl } from '../config'
 
 export default {
@@ -44,7 +45,6 @@ export default {
     }),
     props: {
         "item": {
-            type: IngredientType,
             required: true
         }
     },

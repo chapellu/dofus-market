@@ -7,12 +7,10 @@ from .caracteristique import CaracteristiqueSerializer
 from .ingredients_for_craft import IngredientForCraftSerializer
 
 
-class DofusObjectSerializer(serializers.Serializer):
+class EquipementSerializer(serializers.Serializer):
     name = serializers.CharField()
     level = serializers.IntegerField()
 
-    effects = serializers.SerializerMethodField('serialize_effects')
-    ingredients = serializers.SerializerMethodField('serialize_ingredients')
     cout_fabrication = serializers.SerializerMethodField(
         'serialize_cout_fabrication')
     gain_estime = serializers.SerializerMethodField('serialize_gain_estime')
@@ -20,13 +18,6 @@ class DofusObjectSerializer(serializers.Serializer):
     # brisage = serializers.SerializerMethodField('serialize_brisage')
     nb_objet = serializers.SerializerMethodField('serialize_nb_objet')
     metier = serializers.CharField()
-
-    def serialize_effects(self, dofus_object: DofusObject):
-        return CaracteristiqueSerializer(dofus_object.effects, many=True).data
-
-    def serialize_ingredients(self, dofus_object: DofusObject):
-        return IngredientForCraftSerializer(dofus_object.ingredients,
-                                            many=True).data
 
     def serialize_cout_fabrication(self, dofus_object: DofusObject):
         return dofus_object.cout_fabrication()
@@ -42,3 +33,15 @@ class DofusObjectSerializer(serializers.Serializer):
 
     def serialize_nb_objet(self, dofus_object: DofusObject):
         return dofus_object.nombre_ingredients
+
+
+class EquipementDetailsSerializer(EquipementSerializer):
+    effects = serializers.SerializerMethodField('serialize_effects')
+    ingredients = serializers.SerializerMethodField('serialize_ingredients')
+
+    def serialize_effects(self, dofus_object: DofusObject):
+        return CaracteristiqueSerializer(dofus_object.effects, many=True).data
+
+    def serialize_ingredients(self, dofus_object: DofusObject):
+        return IngredientForCraftSerializer(dofus_object.ingredients,
+                                            many=True).data

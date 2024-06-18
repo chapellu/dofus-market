@@ -33,7 +33,6 @@
 
 <script lang="ts">
 import { backendUrl } from '../config'
-import { EquipementType } from './types/EquipementType'
 
 export default {
     data: () => ({
@@ -42,7 +41,7 @@ export default {
     }),
     props: {
         "item": {
-            type: EquipementType,
+            type: Object,
             required: true
         }
     },

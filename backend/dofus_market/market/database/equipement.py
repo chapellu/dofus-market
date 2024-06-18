@@ -1,5 +1,5 @@
 from typing import Iterable
-from django.db import models
+from django.db import models, connection
 
 from .caracteristique import Caracteristique
 from .ingredient_for_craft import IngredientForCraft
@@ -25,6 +25,8 @@ metier_name = {
     "tr": "Façonneur"
 }
 
+ABSOLUTLY_NOT_RENTABLE = 10**12
+
 
 class DofusObject(models.Model):
     name = models.CharField(primary_key=True, max_length=100)
@@ -37,18 +39,42 @@ class DofusObject(models.Model):
         return self.name
 
     def cout_fabrication(self) -> int:
-        return int(
-            sum([
-                ingredient.ingredient.price * ingredient.quantity
-                for ingredient in self.ingredients
-            ]))
+        query = """
+        SELECT SUM(i.price * if.quantity) AS crafting_cost
+        FROM market_dofusobject e
+        JOIN market_dofusobject__ingredients ei ON e.name = ei.dofusobject_id
+        JOIN market_ingredientforcraft if ON ei.ingredientforcraft_id = if.id
+        JOIN market_ingredient i on if.ingredient_id = i.name
+        WHERE e.name = %s
+        GROUP BY e.name;
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query, [self.name])
+            result = cursor.fetchone()
+
+        if result:
+            return result[0]
+        else:
+            return ABSOLUTLY_NOT_RENTABLE
 
     def gain_estime(self) -> int:
-        return int(
-            sum([
-                caracteristique.gain_estime(self.level)
-                for caracteristique in self.effects
-            ]))
+        query = """
+        SELECT SUM(c.number_of_ra * r.prix_ra + c.number_of_pa * r.prix_pa + c.number_of_ba * r.prix_ba) AS crafting_cost
+        FROM market_dofusobject e
+        JOIN market_dofusobject__effects ef ON e.name = ef.dofusobject_id
+        JOIN market_caracteristique c ON c.id = ef.caracteristique_id
+        JOIN market_rune r on r.name = c.rune_id
+        WHERE e.name = %s
+        GROUP BY e.name;
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query, [self.name])
+            result = cursor.fetchone()
+
+        if result:
+            return int(result[0])
+        else:
+            return 0
 
     def rentabilite(self) -> float:
         try:
