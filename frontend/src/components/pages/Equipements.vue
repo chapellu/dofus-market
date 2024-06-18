@@ -2,7 +2,7 @@
 import Equipement from "../Equipement.vue";
 import Ingredient from "../Ingredient.vue";
 import Ingredients from "../Ingredients.vue"
-
+import { backendUrl } from '../../config'
 import { EquipementType } from '../types/EquipementType'
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
@@ -13,9 +13,9 @@ export default {
         Ingredients
     },
     data: () => ({
-        expanded: [],
+        expanded: [] as Array<any>,
         subExpanded: [],
-        backendUrl: "http://127.0.0.1:8000",
+        backendUrl: backendUrl,
         loading: true,
         search: '',
         sortBy: [{ key: 'rentabilite', order: 'desc' }, { key: 'cout_fabrication', order: 'asc' }] as Array<SortItem>,
@@ -44,7 +44,7 @@ export default {
             this.items = response.data
             this.loading = false
         },
-        expandRow(item) {
+        expandRow(item: any) {
             console.log(item)
             if (this.expanded.includes(item.name)) {
                 this.expanded.splice(this.expanded.indexOf(item.name), 1)
@@ -53,15 +53,6 @@ export default {
                 this.expanded.push(item.name)
             }
         },
-        expandSubRow(item) {
-            console.log(item)
-            if (this.subExpanded.includes(item.name)) {
-                this.subExpanded.splice(this.subExpanded.indexOf(item.name), 1)
-            }
-            else {
-                this.subExpanded.push(item.name)
-            }
-        }
     },
     async mounted() {
         await this.getDataFromAPI()

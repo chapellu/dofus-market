@@ -13,14 +13,14 @@
 <script lang="ts">
 import Rune from "../Rune.vue";
 import { RuneType } from '../types/RuneType'
-
+import { backendUrl } from '../../config'
 
 export default {
     components: {
         Rune
     },
     data: () => ({
-        backendUrl: "http://127.0.0.1:8000",
+        backendUrl: backendUrl,
         search: '',
         items: []
     }),

@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "build:docker": "docker build -t chapellu/dofus-market-frontend:alpha -f deploy/Dockerfile .",
+    "build:docker": "npm run build && docker build -t chapellu/dofus-market-frontend:${version} -f deploy/Dockerfile .",
     "preview": "vite preview",
-    "serve:docker": "docker run -p 5173:80 chapellu/dofus-market-frontend:alpha",
-    "push:docker": "docker push chapellu/dofus-market-frontend:alpha"
+    "serve:docker": "docker run -p 5173:80 chapellu/dofus-market-frontend:${version}",
+    "push:docker": "docker push chapellu/dofus-market-frontend:${version}"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",

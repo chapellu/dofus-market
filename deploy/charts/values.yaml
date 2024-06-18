@@ -5,3 +5,9 @@ global:
 
 serviceName: dofus-market
 
+frontend:
+  version: 1.0.0-alpha.5
+
+backend:
+  version: 1.0.0-alpha.9
+

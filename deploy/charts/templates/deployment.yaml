@@ -14,7 +14,7 @@ spec:
         app: {{.Values.serviceName}}-backend
     spec:
       containers:
-        - image: chapellu/dofus-market-backend:alpha
+        - image: chapellu/dofus-market-backend:{{.Values.backend.version}}
           name: {{.Values.serviceName}}-backend
           ports:
             - containerPort: 8000
@@ -43,7 +43,7 @@ spec:
         app: {{.Values.serviceName}}-frontend
     spec:
       containers:
-        - image: chapellu/dofus-market-frontend:alpha
+        - image: chapellu/dofus-market-frontend:{{.Values.frontend.version}}
           name: {{.Values.serviceName}}-front
           ports:
             - containerPort: 5173

@@ -24,19 +24,20 @@ python manage.py runserver
 Docker build
 
 ```shell
-docker build -t chapellu/dofus-market-backend:alpha -f deploy/Dockerfile-backend .
+export version=1.0.0-alpha.1
+docker build -t chapellu/dofus-market-backend:${version} -f deploy/Dockerfile .
 ```
 
 Docker run
 
 ```shell
-docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:alpha
+docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:${version}
 ```
 
 Docker push to dockerhub
 
 ```shell
-docker push chapellu/dofus-market-backend:alpha
+docker push chapellu/dofus-market-backend:${version}
 ```
 
 ### Frontend (vuejs)
@@ -65,6 +66,7 @@ npm run build
 Docker build
 
 ```shell
+export version=1.0.0-alpha.1
 npm run build:docker
 ```
 
@@ -72,6 +74,12 @@ Docker run
 
 ```shell
 npm run serve:docker
+```
+
+Docker push to dockerhub
+
+```shell
+npm run push:docker
 ```
 
 ## Production

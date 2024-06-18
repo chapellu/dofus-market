@@ -23,10 +23,11 @@
 <script lang="ts">
 
 import { RuneType } from './types/RuneType'
+import { backendUrl } from '../config'
 
 export default {
     data: () => ({
-        backendUrl: "http://127.0.0.1:8000",
+        backendUrl: backendUrl,
     }),
     props: {
         item: {

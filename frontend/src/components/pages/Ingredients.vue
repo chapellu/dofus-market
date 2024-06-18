@@ -23,15 +23,16 @@
 
 <script lang="ts">
 import Ingredient from "../Ingredient.vue";
+import { backendUrl } from '../../config';
 
 export default {
     components: {
         Ingredient
     },
     data: () => ({
-        backendUrl: "http://127.0.0.1:8000",
+        backendUrl: backendUrl,
         search: '',
-        items: []
+        items: [] as Array<any>
     }),
     async mounted() {
         await this.getDataFromAPI()
@@ -43,7 +44,7 @@ export default {
             this.items = response.data
         },
 
-        async updatePrice(item) {
+        async updatePrice(item: any) {
             console.log(item)
             await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
         }

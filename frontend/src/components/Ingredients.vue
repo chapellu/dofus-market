@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import Ingredient from "./Ingredient.vue";
+import { backendUrl } from '../config'
 
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
@@ -22,7 +23,7 @@ export default {
     name: "Ingredients",
     props: {
         ingredients: {
-            type: Object,
+            type: Array<any>,
             required: true,
         }
     },
@@ -30,8 +31,8 @@ export default {
         Ingredient,
     },
     data: () => ({
-        expanded: [],
-        backendUrl: "http://127.0.0.1:8000",
+        expanded: [] as Array<any>,
+        backendUrl: backendUrl,
         sortBy: [{ key: 'quantity', order: 'desc' }] as Array<SortItem>,
     }),
 
@@ -41,7 +42,7 @@ export default {
             else if (rentabilite < 20) return 'orange'
             else return 'green'
         },
-        expandRow(item) {
+        expandRow(item: any) {
             console.log(item)
             if (this.expanded.includes(item.name)) {
                 this.expanded.splice(this.expanded.indexOf(item.name), 1)

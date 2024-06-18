@@ -15,17 +15,17 @@
                 </v-col>
                 <v-col cols="3" class="d-flex flex-column align-center">
                     <font-awesome-icon icon="landmark" />
-                    <v-text-field width="100%" density="compact" hide-details="true" v-model.lazy="computedPrice"
-                        @click.stop placeholder="-" @change="updatePrice(item)"></v-text-field>
+                    <v-text-field width="100%" density="compact" hide-details v-model.lazy="computedPrice" @click.stop
+                        placeholder="-" @change="updatePrice(item)"></v-text-field>
                 </v-col>
                 <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0">
                     <font-awesome-icon icon="hammer" />
-                    <v-text-field width="100%" readonly density="compact" hide-details="true" @click.stop
+                    <v-text-field width="100%" readonly density="compact" hide-details @click.stop
                         v-model="computedCraftCost"></v-text-field>
                 </v-col>
                 <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0">
                     <font-awesome-icon icon="flask" />
-                    <v-text-field width="100%" readonly density="compact" hide-details="true" @click.stop
+                    <v-text-field width="100%" readonly density="compact" hide-details @click.stop
                         v-model="item.nb_objet"></v-text-field>
                 </v-col>
             </v-col>
@@ -35,11 +35,11 @@
 
 <script lang="ts">
 import { IngredientType } from './types/IngredientType.ts'
-
+import { backendUrl } from '../config'
 
 export default {
     data: () => ({
-        backendUrl: "http://127.0.0.1:8000",
+        backendUrl: backendUrl,
         formatter: Intl.NumberFormat('FR', { notation: 'compact' }),
     }),
     props: {
@@ -49,9 +49,6 @@ export default {
         }
     },
     methods: {
-        async updatePrice() {
-            await this.axios.put(`${this.backendUrl}/api/ingredients/${this.item.name}`, { "price": this.item.price })
-        },
         getColor(rentabilite: number) {
             if (rentabilite <= 0) return 'red'
             else if (rentabilite < 20) return 'orange'
@@ -83,7 +80,7 @@ export default {
 
             return number
         },
-        async updatePrice(item) {
+        async updatePrice(item: any) {
             console.log(item)
             await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
         }
@@ -93,7 +90,7 @@ export default {
             get() {
                 return this.formatter.format(this.item.cout_fabrication);
             },
-            set(newValue) {
+            set(newValue: any) {
                 this.item.cout_fabrication = this.reverseFormatting(newValue)
             }
         },
@@ -101,7 +98,7 @@ export default {
             get() {
                 return this.formatter.format(this.item.gain_estime);
             },
-            set(newValue) {
+            set(newValue: any) {
                 this.item.gain_estime = this.reverseFormatting(newValue)
             }
         },
@@ -109,7 +106,7 @@ export default {
             get() {
                 return this.formatter.format(this.item.price);
             },
-            set(newValue) {
+            set(newValue: any) {
                 this.item.price = this.reverseFormatting(newValue)
             }
         }

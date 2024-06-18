@@ -11,7 +11,7 @@ def get_dofus_object(request):
     t1 = time.process_time()
     print("Enter GET")
     dofus_objects = DofusObject.objects.all().prefetch_related(
-        "_effects", "_ingredients", "metier")
+        "_effects", "_ingredients", "metier")[:10]
     t2 = time.process_time()
     print("GET Done", t2 - t1)
     t3 = time.process_time()

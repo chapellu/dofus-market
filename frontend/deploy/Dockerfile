@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 nginx:stable-alpine as build
+FROM nginx:stable-alpine as build
 
 RUN apk update
 
