@@ -1,3 +1,17 @@
+<template>
+    <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+        single-line></v-text-field>
+    <v-data-table-virtual mobile :items="items" :sort-by="sortBy" multi-sort :search="search" density="compact"
+        :loading="loading" item-value="name" :expanded="expanded">
+        <template v-slot:item="{ item }">
+            <equipement :item="item" @click="expandRow(item)"></equipement>
+        </template>
+        <template v-slot:expanded-row="{ item }">
+            <Ingredients :ingredients="item.ingredients"></Ingredients>
+        </template>
+    </v-data-table-virtual>
+</template>
+
 <script lang="ts">
 import Equipement from "../Equipement.vue";
 import Ingredient from "../Ingredient.vue";
@@ -60,36 +74,7 @@ export default {
 }
 </script>
 
-<template>
-    <div>
-        <h1>Dofus Market</h1>
-    </div>
-    <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-        single-line></v-text-field>
-    <v-data-table-virtual mobile :items="items" :sort-by="sortBy" multi-sort :search="search" density="compact"
-        :loading="loading" item-value="name" :expanded="expanded">
-        <template v-slot:item="{ item }">
-            <equipement :item="item" @click="expandRow(item)"></equipement>
-        </template>
-        <template v-slot:expanded-row="{ item }">
-            <Ingredients :ingredients="item.ingredients"></Ingredients>
-            <!-- <v-data-table-virtual mobile :items="item.ingredients" :sort-by="subSortBy" style="padding-left: 20px;"
-                :expanded="subExpanded" item-value="name">
-                <template v-slot:item="{ item }">
-                    <ingredient :item="item" @click="expandSubRow(item)"></ingredient>
-                </template>
-<template v-slot:expanded-row="{ item }">
-                    <v-data-table-virtual mobile :items="item.ingredients" :sort-by="subSortBy"
-                        style="padding-left: 20px;">
-                        <template v-slot:item="{ item }">
-                            <ingredient :item="item"></ingredient>
-                        </template>
-</v-data-table-virtual>
-</template>
-</v-data-table-virtual> -->
-        </template>
-    </v-data-table-virtual>
-</template>
+
 
 <style scoped>
 .logo {

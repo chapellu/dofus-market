@@ -1,9 +1,6 @@
 <template>
     <v-data-table-virtual mobile :items="ingredients" :sort-by="sortBy" style="padding-left: 20px;" :expanded="expanded"
         hideDefaultHeader item-value="name">
-        <template v-slot:headers>
-            <div>Hello</div>
-        </template>
         <template v-slot:item="{ item }">
             <ingredient :item="item" @click="expandRow(item)"></ingredient>
         </template>
