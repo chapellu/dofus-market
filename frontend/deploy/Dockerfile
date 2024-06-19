@@ -1,9 +1,16 @@
-FROM nginx:stable-alpine as build
+FROM node:22-alpine
 
-RUN apk update
+# Set the working directory inside the container
+WORKDIR /app
 
 # Bundle app source
-COPY dist /usr/share/nginx/html
+COPY package.json ./
+RUN npm install
+
+COPY vite.config.ts ./
+
+COPY dist .
+
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "serve"]

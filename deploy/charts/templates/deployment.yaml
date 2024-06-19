@@ -13,11 +13,79 @@ spec:
       labels:
         app: {{.Values.serviceName}}-backend
     spec:
+      initContainers:
+        - name: create-database
+          image: postgres:latest
+          env:
+            - name: POSTGRESQL_HOST
+              value: {{.Values.postgresql.host}}
+            - name: POSTGRESQL_PORT
+              value: {{.Values.postgresql.port | quote }}
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dofus-market-postgresql
+                  key: postgres-password
+            - name: POSTGRES_DB
+              value: postgres
+            - name: DB_NAME
+              value: {{.Values.postgresql.db_name}}
+          command: ["bash", "-c", "PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRESQL_HOST -p $POSTGRESQL_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c \"create database $DB_NAME;\" || :"]
+        - name: create-user
+          image: postgres:latest
+          env:
+            - name: POSTGRESQL_HOST
+              value: {{.Values.postgresql.host}}
+            - name: POSTGRESQL_PORT
+              value: {{.Values.postgresql.port | quote }}
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dofus-market-postgresql
+                  key: postgres-password
+            - name: POSTGRES_DB
+              value: postgres
+            - name: DB_NAME
+              value: {{.Values.postgresql.db_name}}
+            - name: DB_USER
+              value: {{.Values.postgresql.user}}
+            - name: DB_PASSWORD
+              value: {{.Values.postgresql.password}}
+          command: ["bash", "-c", "PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRESQL_HOST -p $POSTGRESQL_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c \"CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;\" || :"]
+        - name: django-migrate
+          image: chapellu/dofus-market-backend:{{.Values.backend.version}}
+          env:
+            - name: POSTGRESQL_HOST
+              value: {{.Values.postgresql.host}}
+            - name: POSTGRESQL_PORT
+              value: {{.Values.postgresql.port | quote }}
+            - name: POSTGRESQL_DB_NAME
+              value: {{.Values.postgresql.db_name}}
+            - name: POSTGRESQL_USER
+              value: {{.Values.postgresql.user}}
+            - name: POSTGRESQL_PASSWORD
+              value: {{.Values.postgresql.password}}
+          command: ["bash", "-c", "pip install -r /opt/dofus_market/requirements.txt && python /opt/dofus_market/dofus_market/manage.py makemigrations market && python /opt/dofus_market/dofus_market/manage.py migrate"]
       containers:
         - image: chapellu/dofus-market-backend:{{.Values.backend.version}}
           name: {{.Values.serviceName}}-backend
           ports:
             - containerPort: 8000
+          env:
+            - name: POSTGRESQL_HOST
+              value: {{.Values.postgresql.host}}
+            - name: POSTGRESQL_PORT
+              value: {{.Values.postgresql.port | quote }}
+            - name: POSTGRESQL_DB_NAME
+              value: {{.Values.postgresql.db_name}}
+            - name: POSTGRESQL_USER
+              value: {{.Values.postgresql.user}}
+            - name: POSTGRESQL_PASSWORD
+              value: {{.Values.postgresql.password}}
           imagePullPolicy: Always
           resources:
             requests:

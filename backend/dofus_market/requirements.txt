@@ -6,3 +6,4 @@ yapf~=0.40.2
 requests~=2.32.3
 beautifulsoup4~=4.12.3
 aiohttp~=3.9.5
+psycopg2~=2.9.9

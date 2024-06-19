@@ -6,8 +6,14 @@ global:
 serviceName: dofus-market
 
 frontend:
-  version: 1.0.0-alpha.5
+  version: 1.0.0-alpha.6
 
 backend:
-  version: 1.0.0-alpha.9
+  version: 1.0.0-alpha.10
 
+postgresql:
+  host: dofus-market-postgresql
+  port: 5432
+  db_name: dofus-market
+  user: dofus-market
+  password: an-awesome-password

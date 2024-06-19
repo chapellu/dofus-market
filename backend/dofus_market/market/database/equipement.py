@@ -112,6 +112,8 @@ class DofusObject(models.Model):
                 Caracteristique.create_from_dofusbook(
                     caracteristique, dofusbook_object["level"])
                 for caracteristique in dofusbook_object["effects"]
+                if Caracteristique.create_from_dofusbook(
+                    caracteristique, dofusbook_object["level"]) is not None
             ]
 
             dofus_object._effects.add(*caracteristiques)

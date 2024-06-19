@@ -3,3 +3,8 @@ name: dofus-market
 description: My awesome dofus-market
 appVersion: 1.0.0
 version: 1.0.0
+dependencies:
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 15.5.6
+
