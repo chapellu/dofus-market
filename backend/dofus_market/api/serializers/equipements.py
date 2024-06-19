@@ -45,3 +45,11 @@ class EquipementDetailsSerializer(EquipementSerializer):
     def serialize_ingredients(self, dofus_object: DofusObject):
         return IngredientForCraftSerializer(dofus_object.ingredients,
                                             many=True).data
+
+
+class EquipementsSerializer(serializers.Serializer):
+    count = serializers.IntegerField()
+    results = serializers.SerializerMethodField('serialize_equipements')
+
+    def serialize_equipements(self, test):
+        return EquipementSerializer(test.results, many=True).data

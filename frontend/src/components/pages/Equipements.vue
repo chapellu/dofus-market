@@ -1,22 +1,24 @@
 <template>
     <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
         single-line></v-text-field>
-    <v-data-table-virtual mobile :items="items" :sort-by="sortBy" multi-sort :search="search" density="compact"
-        :loading="loading" item-value="name" :expanded="expanded">
+    <v-data-table-server mobile :items="items" :items-length="totalItems" :sort-by="sortBy" multi-sort :search="search"
+        :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
+        v-model:items-per-page="itemsPerPage">
         <template v-slot:item="{ item }">
             <equipement :item="item" @click="expandRow(item)"></equipement>
         </template>
         <template v-slot:expanded-row="{ item }">
             <Ingredients :ingredients="item.ingredients"></Ingredients>
         </template>
-    </v-data-table-virtual>
+    </v-data-table-server>
 </template>
 
 <script lang="ts">
 import Equipement from "../Equipement.vue";
 import Ingredient from "../Ingredient.vue";
-import Ingredients from "../Ingredients.vue"
-import { backendUrl } from '../../config'
+import Ingredients from "../Ingredients.vue";
+import { backendUrl } from '../../config';
+
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
 export default {
@@ -27,12 +29,9 @@ export default {
     },
     data: () => ({
         expanded: [] as Array<any>,
-        subExpanded: [],
         backendUrl: backendUrl,
-        loading: true,
         search: '',
         sortBy: [{ key: 'rentabilite', order: 'desc' }, { key: 'cout_fabrication', order: 'asc' }] as Array<SortItem>,
-        subSortBy: [{ key: 'quantity', order: 'desc' }] as Array<SortItem>,
 
         headers: [
             { title: 'Nom', key: 'name', sortable: false },
@@ -43,13 +42,18 @@ export default {
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
         items: [] as Array<any>,
+        itemsPerPage: 15,
+        totalItems: 0,
+        loading: true,
+
     }),
 
     methods: {
-        async getDataFromAPI() {
-            const response = await this.axios.get(`${this.backendUrl}/api/equipements`)
+        async getDataFromAPI(page, itemsPerPage, sortBy) {
+            const response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}`)
             console.log(response.data)
-            this.items = response.data
+            this.items = response.data.results
+            this.totalItems = response.data.count
             this.loading = false
         },
         async getEquipmentDetailsFromAPI(item: any) {
@@ -66,9 +70,13 @@ export default {
                 this.expanded.push(item.name)
             }
         },
-    },
-    async mounted() {
-        await this.getDataFromAPI()
+        async loadItems({ page, itemsPerPage, sortBy }) {
+            this.loading = true
+            console.log(page, itemsPerPage, sortBy)
+            await this.getDataFromAPI(page, itemsPerPage, sortBy)
+        },
     },
 }
 </script>
+
+<style scoped></style>
