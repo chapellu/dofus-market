@@ -49,7 +49,7 @@ export default {
     }),
 
     methods: {
-        async getDataFromAPI(page, itemsPerPage, sortBy) {
+        async getDataFromAPI(page: any, itemsPerPage: any) {
             const response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}`)
             console.log(response.data)
             this.items = response.data.results
@@ -70,10 +70,10 @@ export default {
                 this.expanded.push(item.name)
             }
         },
-        async loadItems({ page, itemsPerPage, sortBy }) {
+        async loadItems({ page, itemsPerPage }: any) {
             this.loading = true
-            console.log(page, itemsPerPage, sortBy)
-            await this.getDataFromAPI(page, itemsPerPage, sortBy)
+            console.log(page, itemsPerPage)
+            await this.getDataFromAPI(page, itemsPerPage)
         },
     },
 }
