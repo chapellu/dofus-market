@@ -28,6 +28,7 @@ import {
   faHammer,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import "@mdi/font/css/materialdesignicons.css";
 
 library.add(faLandmark, faPercent, faCoins, faFlask, faHammer);
 
