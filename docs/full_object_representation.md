@@ -1,0 +1,221 @@
+# Full representation of an equipement
+
+```json
+{
+    "name": "Amulette de Shokkoth",
+    "level": 200,
+    "effects": [
+        {
+            "name": "vi",
+            "min": 301,
+            "max": 350,
+            "rune": {
+                "name": "Vi",
+                "prix_ra": 100,
+                "prix_pa": 10,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "fo",
+            "min": 31,
+            "max": 50,
+            "rune": {
+                "name": "Fo",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "ag",
+            "min": 31,
+            "max": 50,
+            "rune": {
+                "name": "Age",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "ch",
+            "min": 31,
+            "max": 50,
+            "rune": {
+                "name": "Cha",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "sa",
+            "min": 21,
+            "max": 30,
+            "rune": {
+                "name": "Sa",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "daf",
+            "min": 9,
+            "max": 12,
+            "rune": {
+                "name": "Do Air",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "dtf",
+            "min": 9,
+            "max": 12,
+            "rune": {
+                "name": "Do Terre",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "dnf",
+            "min": 9,
+            "max": 12,
+            "rune": {
+                "name": "Do Neutre",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "def",
+            "min": 9,
+            "max": 12,
+            "rune": {
+                "name": "Do Eau",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "rtp",
+            "min": 7,
+            "max": 10,
+            "rune": {
+                "name": "Ré Per Terre",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "cc",
+            "min": 2,
+            "max": 3,
+            "rune": {
+                "name": "Cri",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "po",
+            "min": 1,
+            "max": 1,
+            "rune": {
+                "name": "Po",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        },
+        {
+            "name": "pa",
+            "min": 1,
+            "max": 1,
+            "rune": {
+                "name": "Ga Pa",
+                "prix_ra": 0,
+                "prix_pa": 0,
+                "prix_ba": 0
+            }
+        }
+    ],
+    "ingredients": [
+        {
+            "name": "Condyle de Fuji Givrefoux",
+            "quantity": 4,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Incisive de Glourmand",
+            "quantity": 72,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Galet acajou",
+            "quantity": 3,
+            "price": 1000000000,
+            "ingredients": [
+                {
+                    "name": "Condyle de Fuji Givrefoux",
+                    "quantity": 4,
+                    "price": 1000000000,
+                    "ingredients": []
+                },
+                {
+                    "name": "Etoffe de Kolosso",
+                    "quantity": 4,
+                    "price": 1000000000,
+                    "ingredients": []
+                }
+            ]
+        },
+        {
+            "name": "Scapula du Comte Harebourg",
+            "quantity": 8,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Orbe irisé",
+            "quantity": 55,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Andésite",
+            "quantity": 25,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Épine de Plantala",
+            "quantity": 13,
+            "price": 1000000000,
+            "ingredients": []
+        },
+        {
+            "name": "Peau de Rouquette",
+            "quantity": 77,
+            "price": 1000000000,
+            "ingredients": []
+        }
+    ],
+    "cout_fabrication": 257000000000,
+    "gain_estime": 224,
+    "rentabilite": -99,
+    "nb_objet": 8,
+    "metier": "Bijoutier"
+}
+```
