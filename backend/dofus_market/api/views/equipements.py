@@ -19,12 +19,16 @@ class Equipements:
 @api_view(['GET'])
 def get_equipements(request):
     t1 = time.process_time()
-    print(request.query_params)
     page_size = request.query_params.get("page_size", 10)
     page = request.query_params.get("page", 1)
     print("Enter GET")
-    dofus_objects = DofusObject.objects.all().prefetch_related(
-        "_effects", "_ingredients", "metier")
+    if "search" in request.query_params:
+        dofus_objects = DofusObject.objects.filter(
+            name__contains=request.query_params["search"]).prefetch_related(
+                "_effects", "_ingredients", "metier").order_by("name")
+    else:
+        dofus_objects = DofusObject.objects.all().prefetch_related(
+            "_effects", "_ingredients", "metier").order_by("name")
     p = Paginator(dofus_objects, page_size)
     t2 = time.process_time()
     print("GET Done", t2 - t1)

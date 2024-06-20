@@ -1,9 +1,9 @@
 <template>
     <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
         single-line></v-text-field>
-    <v-data-table-server mobile :items="items" :items-length="totalItems" :sort-by="sortBy" multi-sort :search="search"
+    <v-data-table-server mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
         :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
-        v-model:items-per-page="itemsPerPage">
+        v-model:items-per-page="itemsPerPage" :search="search">
         <template v-slot:item="{ item }">
             <equipement :item="item" @click="expandRow(item)"></equipement>
         </template>
@@ -45,16 +45,20 @@ export default {
         itemsPerPage: 15,
         totalItems: 0,
         loading: true,
-
     }),
 
     methods: {
-        async getDataFromAPI(page: any, itemsPerPage: any) {
-            const response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}`)
-            console.log(response.data)
+        async getDataFromAPI(page: any, itemsPerPage: any, search: string) {
+            let response
+            if (search) {
+                response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}&search=${search}`)
+            }
+            else {
+                response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}`)
+            }
             this.items = response.data.results
             this.totalItems = response.data.count
-            this.loading = false
+            // this.loading = false
         },
         async getEquipmentDetailsFromAPI(item: any) {
             const response = await this.axios.get(`${this.backendUrl}/api/equipements/${item.name}`)
@@ -66,14 +70,13 @@ export default {
             }
             else {
                 this.items[this.items.indexOf(item)] = await this.getEquipmentDetailsFromAPI(item)
-                console.log(item)
                 this.expanded.push(item.name)
             }
         },
         async loadItems({ page, itemsPerPage }: any) {
-            this.loading = true
-            console.log(page, itemsPerPage)
-            await this.getDataFromAPI(page, itemsPerPage)
+            // this.loading = true
+            console.log(page, itemsPerPage, event)
+            await this.getDataFromAPI(page, itemsPerPage, this.search)
         },
     },
 }
