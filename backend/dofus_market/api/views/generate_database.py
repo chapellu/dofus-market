@@ -1,3 +1,4 @@
+import asyncio
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -13,11 +14,12 @@ def generate_data_base_post(request):
     return Response("ok")
 
 
-# Todo in progress, async doesn't work with writing DB, need to figrure a solution
-async def generate_data_base(request):
+@api_view(['POST'])
+def generate_data_base(request):
     DofusBookScraper.populateDB()
     data = OfficialWebsiteScraper()
     now = datetime.datetime.now()  #datetime(2024, 6, 14, 22, 15, 31, 0)
-    await data.load(now)
+    asyncio.run(data.load(now))
     data.populate_professions_db()
+    data.populate_recipes_db()
     return Response("ok")

@@ -1,3 +1,6 @@
+from market.database.ingredient_for_craft import IngredientForCraft
+from market.database.ingredient import Ingredient
+from market.database.recette import Recette
 from market.database.metier import Metier
 import json
 import requests
@@ -253,6 +256,8 @@ class OfficialWebsiteScraper:
         if os.path.isfile(self.cache_path):
             with open(self.cache_path, 'r') as f:
                 self.data.fromJSON(json.load(f))
+        else:
+            print("File not found")
 
         if last_update_date < self.data.scraping_date:
             self.data = OfficialWebsiteData()
@@ -263,7 +268,23 @@ class OfficialWebsiteScraper:
 
     def populate_professions_db(self):
         Metier.objects.bulk_create(
-            [Metier(name=name) for name in self.data.professions.keys()])
+            [Metier(name=name) for name in self.data.professions.keys()],
+            ignore_conflicts=True)
 
-    #def populate_recipes_db(self):
-    #todo
+    def populate_recipes_db(self):
+        for _, recipe in self.data.recipes.items():
+            ingredient, _ = Ingredient.objects.get_or_create(
+                name=recipe["object_name"])
+            metier, _ = Metier.objects.get_or_create(name=recipe["profession"])
+            recette, _ = Recette.objects.get_or_create(ingredient=ingredient,
+                                                       metier=metier,
+                                                       level=recipe["level"])
+            recette.save()
+            ingredients = []
+            for ingredient in recipe["ingredients"]:
+                _ingredient, _ = Ingredient.objects.get_or_create(
+                    name=ingredient["name"])
+                ingredient_for_craft, _ = IngredientForCraft.objects.get_or_create(
+                    ingredient=_ingredient, quantity=ingredient["count"])
+                ingredients.append(ingredient_for_craft.pk)
+            recette.ingredients.add(*ingredients)
