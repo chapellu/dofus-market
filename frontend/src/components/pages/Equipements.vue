@@ -1,9 +1,9 @@
 <template>
     <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-        single-line></v-text-field>
+        single-line @change="updateSearch()"></v-text-field>
     <v-data-table-server mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
         :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
-        v-model:items-per-page="itemsPerPage" :search="search">
+        v-model:items-per-page="itemsPerPage" :search="name">
         <template v-slot:item="{ item }">
             <equipement :item="item" @click="expandRow(item)"></equipement>
         </template>
@@ -42,9 +42,10 @@ export default {
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
         items: [] as Array<any>,
-        itemsPerPage: 15,
+        itemsPerPage: 10,
         totalItems: 0,
         loading: true,
+        name: ''
     }),
 
     methods: {
@@ -58,7 +59,7 @@ export default {
             }
             this.items = response.data.results
             this.totalItems = response.data.count
-            // this.loading = false
+            this.loading = false
         },
         async getEquipmentDetailsFromAPI(item: any) {
             const response = await this.axios.get(`${this.backendUrl}/api/equipements/${item.name}`)
@@ -73,11 +74,14 @@ export default {
                 this.expanded.push(item.name)
             }
         },
-        async loadItems({ page, itemsPerPage }: any) {
-            // this.loading = true
-            console.log(page, itemsPerPage, event)
-            await this.getDataFromAPI(page, itemsPerPage, this.search)
+        async loadItems({ page, itemsPerPage, search }: any) {
+            this.loading = true
+            console.log(page, itemsPerPage, search)
+            await this.getDataFromAPI(page, itemsPerPage, search)
         },
+        async updateSearch() {
+            this.name = this.search
+        }
     },
 }
 </script>
