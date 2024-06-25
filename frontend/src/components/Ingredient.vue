@@ -1,12 +1,12 @@
 <template>
     <div>
         <v-lazy :options="{ 'threshold': 0.5 }" transition="fade-transition">
-            <v-card class="d-flex flex-row" variant="elevated" color="surface-variant">
-                <v-col cols="6" class="d-flex align-center justify-left ">
+            <v-card class="d-flex flex-row" variant="elevated" color="surface-variant" style="width: 100%; padding: 1px;">
+                <v-col cols="6" class="d-flex align-center justify-left " style="width: 100%; padding: 1px;">
                     <div style="font-size: 12px;">{{ item.quantity }} X {{ item.name }}</div>
                 </v-col>
-                <v-col cols="6" class="d-flex flex-row">
-                    <v-col cols="3" class="d-flex flex-column align-center">
+                <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
+                    <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                         <div v-if="item.rentabilite > 0" class="d-flex flex-column align-center">
                             <font-awesome-icon icon="percent" />
                             <v-chip :color="getColor(item.rentabilite)">
@@ -14,20 +14,23 @@
                             </v-chip>
                         </div>
                     </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center">
+                    <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                         <font-awesome-icon icon="landmark" />
-                        <v-text-field width="100%" density="compact" hide-details v-model.lazy="computedPrice" @click.stop
-                            placeholder="-" @change="updatePrice(item)"></v-text-field>
+                        <v-text-field class="small-center-text-field" width="100%" density="compact" hide-details
+                            v-model="computedPrice" @click.stop placeholder="-" @change="updatePrice(item)"
+                            @update:model-value="updatePriceValue"></v-text-field>
                     </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0">
+                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0"
+                        style="width: 100%; padding: 1px;">
                         <font-awesome-icon icon="hammer" />
-                        <v-text-field width="100%" readonly density="compact" hide-details @click.stop
-                            v-model="computedCraftCost"></v-text-field>
+                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                            @click.stop v-model="computedCraftCost"></v-text-field>
                     </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0">
+                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0"
+                        style="width: 100%; padding: 1px;">
                         <font-awesome-icon icon="flask" />
-                        <v-text-field width="100%" readonly density="compact" hide-details @click.stop
-                            v-model="item.nb_objet"></v-text-field>
+                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                            @click.stop v-model="item.nb_objet"></v-text-field>
                     </v-col>
                 </v-col>
             </v-card>
@@ -42,6 +45,7 @@ export default {
     data: () => ({
         backendUrl: backendUrl,
         formatter: Intl.NumberFormat('FR', { notation: 'compact' }),
+        internalPrice: 0,
     }),
     props: {
         "item": {
@@ -82,9 +86,14 @@ export default {
             return number
         },
         async updatePrice(item: any) {
+            this.item.price = this.internalPrice
             console.log(item)
             await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
-        }
+        },
+
+        updatePriceValue(value: any) {
+            this.internalPrice = value
+        },
     },
     computed: {
         computedCraftCost: {
@@ -107,10 +116,26 @@ export default {
             get() {
                 return this.formatter.format(this.item.price);
             },
-            set(newValue: any) {
-                this.item.price = this.reverseFormatting(newValue)
+            set() {
             }
         }
     }
 }
 </script>
+
+<style>
+.v-chip.v-chip--size-default {
+    --v-chip-size: none;
+    --v-chip-height: none;
+    font-size: 12px;
+    padding: 0 12px;
+}
+
+.small-center-text-field .v-field__input {
+    padding-inline: 6px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-height: 0px;
+    text-align: center;
+}
+</style>

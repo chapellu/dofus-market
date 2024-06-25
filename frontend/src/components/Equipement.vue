@@ -1,29 +1,29 @@
 <template>
     <div>
-        <v-card class="d-flex flex-row" variant="elevated" color="surface-variant">
-            <v-col cols="6" class="d-flex align-center justify-center ">
+        <v-card class="d-flex flex-row" variant="elevated" color="surface-variant" style="margin: 2px; padding: 2px">
+            <v-col cols="6" class="d-flex align-center justify-center " style="width: 100%; padding: 1px;">
                 <div style="font-size: 12px;">{{ item.name }}</div>
             </v-col>
-            <v-col cols="6" class="d-flex flex-row">
-                <v-col cols="3" class="d-flex flex-column align-center">
+            <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="percent" />
                     <v-chip :color="getColor(item.rentabilite)">
                         {{ item.rentabilite }}
                     </v-chip>
                 </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center">
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="coins" />
-                    <v-text-field width="100%" readonly density="compact" hide-details v-model="item.gain_estime"
-                        placeholder="-"></v-text-field>
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                        v-model="item.gain_estime" placeholder="-"></v-text-field>
                 </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center">
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="hammer" />
-                    <v-text-field width="100%" readonly density="compact" hide-details
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
                         v-model="computedCraftCost"></v-text-field>
                 </v-col>
-                <v-col cols="3" class="d-flex flex-column align-center">
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="flask" />
-                    <v-text-field width="100%" readonly density="compact" hide-details
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
                         v-model="item.nb_objet"></v-text-field>
                 </v-col>
             </v-col>
@@ -81,33 +81,11 @@ export default {
     padding: 0 12px;
 }
 
-.v-card {
-    margin: 2px;
-    padding: 2px
-}
-
-.v-col {
-    width: 100%;
-    padding: 1px;
-}
-
-.v-field {
-    font-size: 12px;
-}
-
-.v-field__field {
-    align-items: center;
-}
-
-.v-field__input {
+.small-center-text-field .v-field__input {
     padding-inline: 6px;
     padding-top: 0px;
     padding-bottom: 0px;
     min-height: 0px;
     text-align: center;
-}
-
-.v-table .v-table__wrapper>table>thead>tr>th {
-    border-bottom: none;
 }
 </style>
