@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-lazy :options="{ 'threshold': 0.5 }" transition="fade-transition">
-            <v-card class="d-flex flex-row" variant="elevated" color="surface-variant" style="width: 100%; padding: 1px;">
+            <v-card class="d-flex flex-row" variant="elevated" style="width: 100%; padding: 1px;">
                 <v-col cols="6" class="d-flex align-center justify-left " style="width: 100%; padding: 1px;">
                     <div style="font-size: 12px;">{{ item.quantity }} X {{ item.name }}</div>
                 </v-col>
