@@ -253,8 +253,10 @@ class OfficialWebsiteScraper:
     print(str(datetime.now()))
 
     async def load(self, last_update_date: datetime.date):
-        if os.path.isfile(self.cache_path):
-            with open(self.cache_path, 'r') as f:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, self.cache_path)
+        if os.path.isfile(file_path):
+            with open(file_path, 'r') as f:
                 self.data.fromJSON(json.load(f))
         else:
             print("File not found")
@@ -263,7 +265,7 @@ class OfficialWebsiteScraper:
             self.data = OfficialWebsiteData()
             await self.data.generate()
 
-            with open(self.cache_path, 'w') as f:
+            with open(file_path, 'w') as f:
                 json.dump(self.data.toJSON(), f)
 
     def populate_professions_db(self):
