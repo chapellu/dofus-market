@@ -26,6 +26,7 @@ metier_name = {
 }
 
 ABSOLUTLY_NOT_RENTABLE = 10**12
+HDV_TAXE = 1.03
 
 
 class DofusObject(models.Model):
@@ -53,7 +54,7 @@ class DofusObject(models.Model):
             result = cursor.fetchone()
 
         if result:
-            return result[0]
+            return result[0] * HDV_TAXE
         else:
             return ABSOLUTLY_NOT_RENTABLE
 
@@ -86,8 +87,13 @@ class DofusObject(models.Model):
     def brisage(self):
         res = []
         for caracteristique in self.effects:
-            res.append(
-                (caracteristique.name, *caracteristique.brisage(self.level)))
+            ra, pa, ba = caracteristique.brisage(self.level)
+            res.append({
+                'rune': caracteristique.name,
+                'quantity_ra': ra,
+                "quantity_pa": pa,
+                "quantity_ba": ba
+            })
         return res
 
     @classmethod

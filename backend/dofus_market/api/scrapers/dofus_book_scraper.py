@@ -4,6 +4,7 @@ import requests
 
 
 class DofusBookScraper:
+
     def populateDB():
         url = "https://touch.dofusbook.net/items/touch/search/equipment"
         req = requests.get(url + '?page=1')
@@ -15,9 +16,7 @@ class DofusBookScraper:
             DofusObject.create_from_dofusbook_object(item)
 
         for i in range(2, page_count + 1):
-            response = requests.get(
-                url + f'?page={i}'
-            )
+            response = requests.get(url + f'?page={i}')
             page = json.loads(response.text)
             for item in page["data"]:
                 DofusObject.create_from_dofusbook_object(item)

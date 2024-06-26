@@ -1,14 +1,49 @@
 <template>
-    <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-        single-line @change="updateSearch()"></v-text-field>
+    <v-text-field v-model="name" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details single-line
+        @change="updateSearch()"></v-text-field>
+    <v-select label="Metier" :items="metiers" v-model:model-value="metier" @update:modelValue="updateSearch()"
+        clearable></v-select>
     <v-data-table-server mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
         :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
-        v-model:items-per-page="itemsPerPage" :search="name">
+        v-model:items-per-page="itemsPerPage" :search="search">
         <template v-slot:item="{ item }">
             <equipement :item="item" @click="expandRow(item)"></equipement>
         </template>
         <template v-slot:expanded-row="{ item }">
-            <Ingredients :ingredients="item.ingredients"></Ingredients>
+            <v-card>
+                <v-tabs v-model="tab" align-tabs="center" stacked>
+                    <v-tab value="tab-1">
+                        <v-icon icon="mdi-flask"></v-icon>
+                    </v-tab>
+
+                    <v-tab value="tab-2">
+                        <v-icon icon="mdi-diamond-stone"></v-icon>
+                    </v-tab>
+
+                    <v-tab value="tab-3">
+                        <v-icon icon="mdi-hammer"></v-icon>
+                    </v-tab>
+                </v-tabs>
+
+                <v-tabs-window v-model="tab">
+                    <v-tabs-window-item :value="'tab-1'">
+                        <v-card>
+                            <Ingredients :ingredients="item.ingredients"></Ingredients>
+                        </v-card>
+                    </v-tabs-window-item>
+                    <v-tabs-window-item :value="'tab-2'">
+                        <v-card>
+                            <v-data-table-virtual :items="item.brisage">
+                            </v-data-table-virtual>
+                        </v-card>
+                    </v-tabs-window-item>
+                    <v-tabs-window-item :value="'tab-3'">
+                        <v-card>
+                            To be defined
+                        </v-card>
+                    </v-tabs-window-item>
+                </v-tabs-window>
+            </v-card>
         </template>
     </v-data-table-server>
 </template>
@@ -42,21 +77,29 @@ export default {
             { title: "Nombre d'ingrédients", key: "nb_objet" }
         ],
         items: [] as Array<any>,
+        metiers: [] as Array<any>,
+        metier: '',
         itemsPerPage: 10,
         totalItems: 0,
         loading: true,
-        name: ''
+        name: '',
+        tab: 'tab-1'
     }),
 
     methods: {
-        async getDataFromAPI(page: any, itemsPerPage: any, search: string) {
-            let response
+        async getDataFromAPI(page: any, itemsPerPage: any, search: string, metier: string) {
+            const query = `${this.backendUrl}/api/equipements`
+            let params: Record<string, any> = {
+                "page": page,
+                "page_size": itemsPerPage
+            }
             if (search) {
-                response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}&search=${search}`)
+                params["search"] = search
             }
-            else {
-                response = await this.axios.get(`${this.backendUrl}/api/equipements?page=${page}&page_size=${itemsPerPage}`)
+            if (metier) {
+                params["metier"] = metier
             }
+            const response = await this.axios.get(query, { params: params })
             this.items = response.data.results
             this.totalItems = response.data.count
             this.loading = false
@@ -76,12 +119,17 @@ export default {
         },
         async loadItems({ page, itemsPerPage, search }: any) {
             this.loading = true
-            console.log(page, itemsPerPage, search)
-            await this.getDataFromAPI(page, itemsPerPage, search)
+            console.log(page, itemsPerPage, search, this.name, this.metier)
+            await this.getDataFromAPI(page, itemsPerPage, this.name, this.metier)
         },
         async updateSearch() {
-            this.name = this.search
+            this.search = String(Date.now())
         }
+    },
+    async mounted() {
+        let response = await this.axios.get(`${this.backendUrl}/api/metiers`)
+        this.metiers = response.data.map((profession: { name: any; }) => profession.name);
+        console.log(this.metiers)
     },
 }
 </script>

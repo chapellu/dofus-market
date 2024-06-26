@@ -1,4 +1,6 @@
 from django.urls import path
+
+from .views.metiers import get_metiers
 from .views.equipements import get_equipements, get_equipements_details
 from .views.caracteristiques import get_caracteristique
 from .views.runes import get_runes, update_rune
@@ -15,4 +17,5 @@ urlpatterns = [
     path('ingredients/<str:name>', update_ingredient),
     path('runes', get_runes),
     path('runes/<str:name>', update_rune),
+    path('metiers', get_metiers)
 ]

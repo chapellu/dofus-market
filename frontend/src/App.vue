@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer temporary v-model="drawer" app>
       <v-list v-model:selected="selectedItem">
         <v-list-item v-for="item in menuItems" :key="item.title" :value="item.title" @click="navigate(item.route)">
           <template v-slot:prepend>

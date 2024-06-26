@@ -5,16 +5,16 @@
         </v-row>
         <v-row class="align-center">
             <v-col cols="4">
-                <v-text-field label="Prix Ra" v-model="item.prix_ra" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K"></v-text-field>
+                <v-text-field label="Prix Ra" v-model.number="item.prix_ra" @change="updatePrice" density="compact"
+                    hide-details="auto" suffix="K" v-if="item.prix_ra != -1"></v-text-field>
             </v-col>
             <v-col cols="4">
-                <v-text-field label="Prix Pa" v-model="item.prix_pa" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K"></v-text-field>
+                <v-text-field label="Prix Pa" v-model.number="item.prix_pa" @change="updatePrice" density="compact"
+                    hide-details="auto" suffix="K" v-if="item.prix_pa != -1"></v-text-field>
             </v-col>
             <v-col cols="4">
-                <v-text-field label="Prix Ba" v-model="item.prix_ba" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K"></v-text-field>
+                <v-text-field label="Prix Ba" v-model.number="item.prix_ba" @change="updatePrice" density="compact"
+                    hide-details="auto" suffix="K" v-if="item.prix_ba != -1"></v-text-field>
             </v-col>
         </v-row>
     </div>

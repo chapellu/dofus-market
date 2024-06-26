@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 @api_view(["GET"])
 def get_runes(request):
-    runes = Rune.objects.all()
+    runes = Rune.objects.all().order_by("name")
     serializer = RuneSerializer(runes, many=True)
     return Response(serializer.data)
 

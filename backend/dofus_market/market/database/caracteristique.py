@@ -22,7 +22,7 @@ class Caracteristique(models.Model):
         return self.number_of_ra * self.rune.prix_ra + self.number_of_pa * self.rune.prix_pa + self.number_of_ba * self.rune.prix_ba
 
     def brisage(self, level):
-        return self.number_of_ba, self.number_of_pa, self.number_of_ba
+        return self.number_of_ra, self.number_of_pa, self.number_of_ba
 
     @classmethod
     def create_from_dofusbook(cls, dofusbook_caracteristique, level):
