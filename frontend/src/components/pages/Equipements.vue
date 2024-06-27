@@ -83,23 +83,27 @@ export default {
         totalItems: 0,
         loading: true,
         name: '',
-        tab: 'tab-1'
+        tab: 'tab-1',
+        mounted: false
     }),
-
+    watch: {
+        '$route.query': {
+            handler() {
+                this.getDataFromAPI()
+            },
+            immediate: true, // Fetch data on component mount
+        },
+    },
     methods: {
-        async getDataFromAPI(page: any, itemsPerPage: any, search: string, metier: string) {
-            const query = `${this.backendUrl}/api/equipements`
-            let params: Record<string, any> = {
-                "page": page,
-                "page_size": itemsPerPage
-            }
-            if (search) {
-                params["search"] = search
-            }
-            if (metier) {
-                params["metier"] = metier
-            }
-            const response = await this.axios.get(query, { params: params })
+        async getDataFromAPI() {
+            const response = await this.axios.get(`${this.backendUrl}/api/equipements`, {
+                params: {
+                    page: this.$route.query.page || 1, // Default to page 1 if not present
+                    page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
+                    search: this.$route.query.search || '',
+                    metier: this.$route.query.metier || '',
+                },
+            })
             this.items = response.data.results
             this.totalItems = response.data.count
             this.loading = false
@@ -117,10 +121,28 @@ export default {
                 this.expanded.push(item.name)
             }
         },
+        async updateURL(page: number, itemsPerPage: number, search: string, metier: string) {
+            let params: Record<string, any> = {
+                "page": page,
+                "page_size": itemsPerPage
+            }
+            if (search) {
+                params["search"] = search
+            }
+            if (metier) {
+                params["metier"] = this.metier
+            }
+            await this.$router.push({ path: this.$route.path, query: params });
+        },
         async loadItems({ page, itemsPerPage, search }: any) {
-            this.loading = true
-            console.log(page, itemsPerPage, search, this.name, this.metier)
-            await this.getDataFromAPI(page, itemsPerPage, this.name, this.metier)
+            if (this.mounted) {
+                this.loading = true
+                console.log(page, itemsPerPage, search, this.name, this.metier)
+                await this.updateURL(page, itemsPerPage, this.name, this.metier)
+            }
+            else {
+                this.mounted = true
+            }
         },
         async updateSearch() {
             this.search = String(Date.now())

@@ -21,6 +21,7 @@
 </template>
  
 <script lang="ts">
+import { debounce } from 'lodash';
 
 export default {
   data: () => ({
@@ -35,7 +36,11 @@ export default {
 
   methods: {
     navigate(route: string) {
-      this.$router.push(route);
+      // Debounce the navigation with a delay of 200ms
+      const debouncedNavigate = debounce(() => {
+        this.$router.push(route);
+      }, 200);
+      debouncedNavigate(); // Execute the debounced function
     }
   }
 };

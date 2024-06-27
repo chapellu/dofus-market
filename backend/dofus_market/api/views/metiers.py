@@ -12,8 +12,4 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 def get_metiers(request: Request):
     query_set: QuerySet = Metier.objects.all()
     serializer: Serializer = MetierSerializer(query_set, many=True)
-    data = serializer.data
-    print(query_set)
-    print(serializer)
-    print(data)
     return Response(serializer.data)

@@ -1,16 +1,34 @@
 from django.http import JsonResponse
-from api.serializers.ingredients import IngredientSerializer
+from api.serializers.ingredients import IngredientsSerializer, IngredientSerializer
 from market.database.ingredient import Ingredient
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from django.core.paginator import Paginator
+from rest_framework.request import Request
+
+
+class Ingredients:
+    count: int
+    results: []
+
+    def __init__(self, count, results):
+        self.count = count
+        self.results = results
 
 
 @api_view(['GET'])
-def get_ingredients(request):
-    ingredients = Ingredient.objects.all()
-    serializer = IngredientSerializer(ingredients, many=True)
+def get_ingredients(request: Request):
+    page_size: int = request.query_params.get("page_size", 10)
+    page: int = request.query_params.get("page", 1)
+    query_set = Ingredient.objects.all().order_by("name")
+    if "search" in request.query_params:
+        query_set = query_set.filter(
+            name__icontains=request.query_params["search"])
+    paginator = Paginator(query_set, page_size)
+    serializer = IngredientsSerializer(
+        Ingredients(paginator.count, paginator.page(page)))
     return Response(serializer.data)
 
 

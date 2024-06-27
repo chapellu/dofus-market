@@ -23,29 +23,43 @@ class Equipements:
 
 @api_view(['GET'])
 def get_equipements(request: Request):
-    t1: float = time.process_time()
     page_size: int = request.query_params.get("page_size", 10)
     page: int = request.query_params.get("page", 1)
-    print("Enter GET")
-    query_set: QuerySet = DofusObject.objects.all().prefetch_related(
-        "_effects", "_ingredients", "metier").order_by("name")
-    if "search" in request.query_params:
-        query_set = query_set.filter(
-            name__icontains=request.query_params["search"])
-    if "metier" in request.query_params:
-        query_set = query_set.filter(
-            metier__name__icontains=request.query_params["metier"])
+    query = """
+        WITH EstimatedGains AS (
+          SELECT
+            e.name,
+            SUM(c.number_of_ra * r.prix_ra + c.number_of_pa * r.prix_pa + c.number_of_ba * r.prix_ba) AS estimated_gain
+          FROM market_dofusobject e
+          JOIN market_dofusobject__effects ef ON e.name = ef.dofusobject_id
+          JOIN market_caracteristique c ON c.id = ef.caracteristique_id
+          JOIN market_rune r on r.name = c.rune_id
+          WHERE
+            CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
+          GROUP BY e.name
+        )
+        SELECT
+          e.name,
+          COALESCE(eg.estimated_gain, 0) AS equipement_estimated_gain
+        FROM market_dofusobject e
+        LEFT JOIN EstimatedGains eg ON e.name = eg.name
+        WHERE 
+            CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
+            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
+        ORDER BY equipement_estimated_gain DESC;
+        """
+    query_set = DofusObject.objects.raw(
+        query, {
+            "metier":
+            request.query_params.get("metier", None),
+            "equipment_name":
+            f"%{request.query_params['search']}%"
+            if "search" in request.query_params else None
+        })
     paginator = Paginator(query_set, page_size)
-    t2 = time.process_time()
-    print("GET Done", t2 - t1)
-    t3 = time.process_time()
-    print("Enter Serializer")
     serializer: Serializer = EquipementsSerializer(
         Equipements(paginator.count, paginator.page(page)))
     data: ReturnDict = serializer.data
-    t4 = time.process_time()
-    print("Serializer Done", t4 - t3)
-    print("Total request time", t4 - t1)
     return Response(data)
 
 

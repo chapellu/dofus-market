@@ -84,7 +84,7 @@ class DofusObject(models.Model):
         except ZeroDivisionError:
             return -1000.0
 
-    def brisage(self):
+    def brisage(self) -> list:
         res = []
         for caracteristique in self.effects:
             ra, pa, ba = caracteristique.brisage(self.level)
@@ -97,11 +97,11 @@ class DofusObject(models.Model):
         return res
 
     @classmethod
-    def create_from_dofusbook_object(cls, dofusbook_object):
+    def create_from_dofusbook_object(cls, dofusbook_object) -> "DofusObject":
         print(dofusbook_object["id"])
         if dofusbook_object["category_name"] in [
                 "tr", "do", "mt", "fa", "mo"
-        ]:  #Ignore trophée, dofus, montilier, familier, monture
+        ]:  # Ignore trophée, dofus, montilier, familier, monture
             return
         try:
             dofus_object = DofusObject.objects.get(

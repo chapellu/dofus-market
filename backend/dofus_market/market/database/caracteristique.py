@@ -18,14 +18,14 @@ class Caracteristique(models.Model):
     def __str__(self) -> str:
         return f"{{'name': \'{self.name}\', 'min': {self.min}, 'max': {self.max}}}"
 
-    def gain_estime(self, level):
+    def gain_estime(self, level: int):
         return self.number_of_ra * self.rune.prix_ra + self.number_of_pa * self.rune.prix_pa + self.number_of_ba * self.rune.prix_ba
 
-    def brisage(self, level):
+    def brisage(self, level: int):
         return self.number_of_ra, self.number_of_pa, self.number_of_ba
 
     @classmethod
-    def create_from_dofusbook(cls, dofusbook_caracteristique, level):
+    def create_from_dofusbook(cls, dofusbook_caracteristique, level: int):
         if dofusbook_caracteristique["type"] == "O":
             return
         if dofusbook_caracteristique["name"] in [
