@@ -6,6 +6,12 @@
     <v-data-table-server mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
         :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
         v-model:items-per-page="itemsPerPage" :search="search">
+        <template v-slot:loading>
+            <div class="text-center py-5">
+                <v-progress-circular indeterminate color="primary" />
+                <p class="mt-3">Loading data...</p>
+            </div>
+        </template>
         <template v-slot:item="{ item }">
             <equipement :item="item" @click="expandRow(item)"></equipement>
         </template>
@@ -89,8 +95,8 @@ export default {
     watch: {
         '$route.query': {
             handler() {
-                this.metier = this.$route.query.metier || ''
-                this.name = this.$route.query.search || ''
+                this.metier = this.$route.query.metier as string || ''
+                this.name = this.$route.query.search as string || ''
                 this.getDataFromAPI()
             },
             immediate: true, // Fetch data on component mount
@@ -98,7 +104,7 @@ export default {
     },
     methods: {
         async getDataFromAPI() {
-            let params = {
+            let params: Record<string, any> = {
                 page: this.$route.query.page || 1, // Default to page 1 if not present
                 page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
             }
