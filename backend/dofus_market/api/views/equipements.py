@@ -1,5 +1,3 @@
-import time
-
 from api.serializers.equipements import (EquipementDetailsSerializer,
                                          EquipementsSerializer)
 from django.core.paginator import Paginator
@@ -36,7 +34,7 @@ def get_equipements(request: Request):
           JOIN market_rune r on r.name = c.rune_id
           WHERE
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
-            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
+            AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE LOWER(e.name) LIKE LOWER(%(equipment_name)s) END
           GROUP BY e.name ),
         FabricationCosts AS (
           SELECT
@@ -48,14 +46,14 @@ def get_equipements(request: Request):
           JOIN market_ingredient i on if.ingredient_id = i.name
           WHERE 
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
-            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
+            AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE LOWER(e.name) LIKE LOWER(%(equipment_name)s) END
           GROUP BY e.name ),
         Rentability AS (
           SELECT
             eg.name,
             COALESCE(eg.estimated_gain, 0) AS equipement_estimated_gain,
             COALESCE(fc.fabrication_cost, 0) AS equipement_fabrication_cost,
-            (COALESCE(eg.estimated_gain, 0) - COALESCE(fc.fabrication_cost, 0)) / COALESCE(fc.fabrication_cost, 0) * 100 AS rentability
+            (COALESCE(eg.estimated_gain, 0) - COALESCE(fc.fabrication_cost, 1000000000)) / COALESCE(fc.fabrication_cost, 1) * 100 AS rentability
           FROM EstimatedGains eg
           LEFT JOIN FabricationCosts fc ON eg.name = fc.name
         )
@@ -69,7 +67,7 @@ def get_equipements(request: Request):
         LEFT JOIN Rentability r ON e.name = r.name
         WHERE 
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
-            AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE e.name LIKE %(equipment_name)s END
+            AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE LOWER(e.name) LIKE LOWER(%(equipment_name)s) END
         ORDER BY rentability DESC;
         """
     query_set = DofusObject.objects.raw(
