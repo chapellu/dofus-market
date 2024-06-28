@@ -1,3 +1,4 @@
+import decimal
 from typing import Iterable
 from django.db import models, connection
 
@@ -54,7 +55,7 @@ class DofusObject(models.Model):
             result = cursor.fetchone()
 
         if result:
-            return result[0] * HDV_TAXE
+            return result[0] * decimal.Decimal(HDV_TAXE)
         else:
             return ABSOLUTLY_NOT_RENTABLE
 

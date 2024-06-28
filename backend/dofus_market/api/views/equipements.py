@@ -36,17 +36,41 @@ def get_equipements(request: Request):
           JOIN market_rune r on r.name = c.rune_id
           WHERE
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
-          GROUP BY e.name
+            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
+          GROUP BY e.name ),
+        FabricationCosts AS (
+          SELECT
+            e.name,
+            SUM(i.price * if.quantity) * 1.03 AS fabrication_cost
+          FROM market_dofusobject e
+          JOIN market_dofusobject__ingredients ei ON e.name = ei.dofusobject_id
+          JOIN market_ingredientforcraft if ON ei.ingredientforcraft_id = if.id
+          JOIN market_ingredient i on if.ingredient_id = i.name
+          WHERE 
+            CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
+            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
+          GROUP BY e.name ),
+        Rentability AS (
+          SELECT
+            eg.name,
+            COALESCE(eg.estimated_gain, 0) AS equipement_estimated_gain,
+            COALESCE(fc.fabrication_cost, 0) AS equipement_fabrication_cost,
+            (COALESCE(eg.estimated_gain, 0) - COALESCE(fc.fabrication_cost, 0)) / COALESCE(fc.fabrication_cost, 0) * 100 AS rentability
+          FROM EstimatedGains eg
+          LEFT JOIN FabricationCosts fc ON eg.name = fc.name
         )
         SELECT
           e.name,
-          COALESCE(eg.estimated_gain, 0) AS equipement_estimated_gain
+          e.metier_id,
+          r.equipement_estimated_gain,
+          r.equipement_fabrication_cost,
+          r.rentability
         FROM market_dofusobject e
-        LEFT JOIN EstimatedGains eg ON e.name = eg.name
+        LEFT JOIN Rentability r ON e.name = r.name
         WHERE 
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
-            AND %(equipment_name)s IS NULL OR e.name LIKE %(equipment_name)s
-        ORDER BY equipement_estimated_gain DESC;
+            AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE e.name LIKE %(equipment_name)s END
+        ORDER BY rentability DESC;
         """
     query_set = DofusObject.objects.raw(
         query, {

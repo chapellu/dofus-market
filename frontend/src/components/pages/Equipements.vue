@@ -89,6 +89,8 @@ export default {
     watch: {
         '$route.query': {
             handler() {
+                this.metier = this.$route.query.metier || ''
+                this.name = this.$route.query.search || ''
                 this.getDataFromAPI()
             },
             immediate: true, // Fetch data on component mount
@@ -96,13 +98,18 @@ export default {
     },
     methods: {
         async getDataFromAPI() {
+            let params = {
+                page: this.$route.query.page || 1, // Default to page 1 if not present
+                page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
+            }
+            if (this.$route.query.search) {
+                params.search = this.$route.query.search
+            }
+            if (this.$route.query.metier) {
+                params.metier = this.$route.query.metier
+            }
             const response = await this.axios.get(`${this.backendUrl}/api/equipements`, {
-                params: {
-                    page: this.$route.query.page || 1, // Default to page 1 if not present
-                    page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
-                    search: this.$route.query.search || '',
-                    metier: this.$route.query.metier || '',
-                },
+                params: params,
             })
             this.items = response.data.results
             this.totalItems = response.data.count
