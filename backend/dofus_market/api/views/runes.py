@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-
+from django.db import connection
 
 @api_view(["GET"])
 def get_runes(request):
@@ -27,5 +27,11 @@ def update_rune(request, name):
     rune.prix_pa = data["prix_pa"]
     rune.prix_ba = data["prix_ba"]
     rune.save()
+
+    with connection.cursor() as cursor:
+        cursor.execute("REFRESH MATERIALIZED VIEW EstimatedGains;")
+        cursor.execute("REFRESH MATERIALIZED VIEW Rentability;")
+        cursor.execute("REFRESH MATERIALIZED VIEW OrderedByRentability;")
+
     serializer = RuneSerializer(rune)
     return Response(serializer.data)

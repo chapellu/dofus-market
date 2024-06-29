@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from django.contrib import admin
 from api.scrapers.dofus_book_scraper import DofusBookScraper
 from api.scrapers.official_website_scraper import OfficialWebsiteScraper
+from django.db import connection
 import datetime
 
 
@@ -22,4 +23,11 @@ def generate_data_base(request):
     asyncio.run(data.load(now))
     data.populate_professions_db()
     data.populate_recipes_db()
+
+    with connection.cursor() as cursor:
+        cursor.execute("REFRESH MATERIALIZED VIEW EstimatedGains;")
+        cursor.execute("REFRESH MATERIALIZED VIEW FabricationCosts;")
+        cursor.execute("REFRESH MATERIALIZED VIEW Rentability;")
+        cursor.execute("REFRESH MATERIALIZED VIEW OrderedByRentability;")
+
     return Response("ok")

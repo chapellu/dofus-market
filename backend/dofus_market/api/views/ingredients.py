@@ -7,7 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from django.core.paginator import Paginator
 from rest_framework.request import Request
-
+from django.db import connection
 
 class Ingredients:
     count: int
@@ -44,4 +44,11 @@ def update_ingredient(request, name):
     ingredient.price = data["price"]
     ingredient.save()
     serializer = IngredientSerializer(ingredient)
+
+    with connection.cursor() as cursor:
+        cursor.execute("REFRESH MATERIALIZED VIEW FabricationCosts;")
+        cursor.execute("REFRESH MATERIALIZED VIEW Rentability;")
+        cursor.execute("REFRESH MATERIALIZED VIEW OrderedByRentability;")
+
+
     return Response(serializer.data)
