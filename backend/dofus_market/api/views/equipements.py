@@ -1,7 +1,6 @@
 from api.serializers.equipements import (EquipementDetailsSerializer,
                                          EquipementsSerializer)
 from django.core.paginator import Paginator
-from django.db.models import QuerySet
 from market.database.equipement import DofusObject
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
@@ -54,7 +53,17 @@ def get_equipements(request: Request):
 
 @api_view(['GET'])
 def get_equipements_details(request: Request, name: str):
-    query_set: QuerySet = DofusObject.objects.get(name=name)
+    query = """
+      SELECT
+        e.name,
+        e.equipement_estimated_gain,
+        e.equipement_fabrication_cost,
+        e.rentability
+      FROM Rentability e
+        WHERE e.name = %s
+    """
+
+    query_set = DofusObject.objects.raw(query, [name])[0]
     serializer: Serializer = EquipementDetailsSerializer(query_set)
     data: ReturnDict = serializer.data
     return Response(data)

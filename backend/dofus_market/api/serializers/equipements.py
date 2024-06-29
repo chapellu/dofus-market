@@ -8,15 +8,14 @@ from .ingredients_for_craft import IngredientForCraftSerializer
 
 
 class EquipementSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    level = serializers.IntegerField()
+    name                = serializers.CharField()
+    level               = serializers.IntegerField()
 
-    cout_fabrication = serializers.SerializerMethodField(
-        'serialize_cout_fabrication')
-    gain_estime = serializers.SerializerMethodField('serialize_gain_estime')
-    rentabilite = serializers.SerializerMethodField('serialize_rentabilite')
-    nb_objet = serializers.SerializerMethodField('serialize_nb_objet')
-    metier = serializers.CharField()
+    cout_fabrication    = serializers.SerializerMethodField('serialize_cout_fabrication')
+    gain_estime         = serializers.SerializerMethodField('serialize_gain_estime')
+    rentabilite         = serializers.SerializerMethodField('serialize_rentabilite')
+    nb_objet            = serializers.SerializerMethodField('serialize_nb_objet')
+    metier              = serializers.CharField()
 
     def serialize_cout_fabrication(self, dofus_object: DofusObject):
         return dofus_object.cout_fabrication()
@@ -32,9 +31,9 @@ class EquipementSerializer(serializers.Serializer):
 
 
 class EquipementDetailsSerializer(EquipementSerializer):
-    effects = serializers.SerializerMethodField('serialize_effects')
-    ingredients = serializers.SerializerMethodField('serialize_ingredients')
-    brisage = serializers.SerializerMethodField('serialize_brisage')
+    effects         = serializers.SerializerMethodField('serialize_effects')
+    ingredients     = serializers.SerializerMethodField('serialize_ingredients')
+    brisage         = serializers.SerializerMethodField('serialize_brisage')
 
     def serialize_effects(self, dofus_object: DofusObject):
         return CaracteristiqueSerializer(dofus_object.effects, many=True).data
@@ -48,8 +47,8 @@ class EquipementDetailsSerializer(EquipementSerializer):
 
 
 class EquipementsSerializer(serializers.Serializer):
-    count = serializers.IntegerField()
-    results = serializers.SerializerMethodField('serialize_equipements')
+    count       = serializers.IntegerField()
+    results     = serializers.SerializerMethodField('serialize_equipements')
 
     def serialize_equipements(self, test):
         return EquipementSerializer(test.results, many=True).data
