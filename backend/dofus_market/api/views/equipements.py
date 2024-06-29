@@ -68,7 +68,7 @@ def get_equipements(request: Request):
         WHERE 
             CASE WHEN %(metier)s IS NULL THEN TRUE ELSE e.metier_id = %(metier)s END
             AND CASE WHEN %(equipment_name)s IS NULL THEN TRUE ELSE LOWER(e.name) LIKE LOWER(%(equipment_name)s) END
-        ORDER BY rentability DESC;
+        ORDER BY rentability DESC NULLS LAST;
         """
     query_set = DofusObject.objects.raw(
         query, {
