@@ -26,7 +26,7 @@ metier_name = {
     "tr": "Façonneur"
 }
 
-ABSOLUTLY_NOT_RENTABLE = 10**12
+ABSOLUTLY_NOT_PROFITABLE = 10**12
 HDV_TAXE = 1.03
 
 
@@ -57,7 +57,7 @@ class DofusObject(models.Model):
         if result:
             return result[0] * decimal.Decimal(HDV_TAXE)
         else:
-            return ABSOLUTLY_NOT_RENTABLE
+            return ABSOLUTLY_NOT_PROFITABLE
 
     def gain_estime(self) -> int:
         query = """
