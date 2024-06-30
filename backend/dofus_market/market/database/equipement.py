@@ -40,11 +40,11 @@ class DofusObject(models.Model):
         return self.name
 
     def cout_fabrication(self) -> int:
-        return self.equipement_fabrication_cost
+        return int(self.equipement_fabrication_cost)
 
     def gain_estime(self) -> int:
-        return self.equipement_estimated_gain
-    
+        return int(self.equipement_estimated_gain)
+
     def rentabilite(self) -> float:
         return self.rentability
 
