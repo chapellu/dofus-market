@@ -41,32 +41,33 @@
                         <v-card>
                             <v-data-table-virtual mobile :items="item.brisage" :headers="rune_headers">
                                 <template v-slot:item.prix_ra="{ item }">
-                                    <v-text-field label="Prix Ra" v-model.number="item.prix_ra" @change="updatePrice(item)"
-                                        density="compact" hide-details="auto" suffix="K"
-                                        v-if="item.prix_ra != -1"></v-text-field>
+                                    <v-text-field label="Prix Ra" v-model.number="(item as any).prix_ra"
+                                        @change="updatePrice(item)" density="compact" hide-details="auto" suffix="K"
+                                        v-if="(item as any).prix_ra != -1"></v-text-field>
                                 </template>
                                 <template v-slot:item.total_ra="{ item }">
-                                    {{ Number(item.prix_ra * item.quantity_ra).toFixed(0) }}
+                                    {{ Number((item as any).prix_ra * (item as any).quantity_ra).toFixed(0) }}
                                 </template>
                                 <template v-slot:item.prix_pa="{ item }">
-                                    <v-text-field label="Prix Pa" v-model.number="item.prix_pa" @change="updatePrice(item)"
-                                        density="compact" hide-details="auto" suffix="K"
-                                        v-if="item.prix_pa != -1"></v-text-field>
+                                    <v-text-field label="Prix Pa" v-model.number="(item as any).prix_pa"
+                                        @change="updatePrice(item)" density="compact" hide-details="auto" suffix="K"
+                                        v-if="(item as any).prix_pa != -1"></v-text-field>
                                 </template>
                                 <template v-slot:item.total_pa="{ item }">
-                                    {{ Number(item.prix_pa * item.quantity_pa).toFixed(0) }}
+                                    {{ Number((item as any).prix_pa * (item as any).quantity_pa).toFixed(0) }}
                                 </template>
                                 <template v-slot:item.prix_ba="{ item }">
-                                    <v-text-field label="Prix Ba" v-model.number="item.prix_ba" @change="updatePrice(item)"
-                                        density="compact" hide-details="auto" suffix="K"
-                                        v-if="item.prix_ba != -1"></v-text-field>
+                                    <v-text-field label="Prix Ba" v-model.number="(item as any).prix_ba"
+                                        @change="updatePrice(item)" density="compact" hide-details="auto" suffix="K"
+                                        v-if="(item as any).prix_ba != -1"></v-text-field>
                                 </template>
                                 <template v-slot:item.total_ba="{ item }">
-                                    {{ Number(item.prix_ba * item.quantity_ba).toFixed(0) }}
+                                    {{ Number((item as any).prix_ba * (item as any).quantity_ba).toFixed(0) }}
                                 </template>
                                 <template v-slot:item.total="{ item }">
-                                    {{ Number(item.prix_ra * item.quantity_ra + item.prix_pa * item.quantity_pa +
-                                        item.prix_ba * item.quantity_ba).toFixed(0) }}
+                                    {{ Number((item as any).prix_ra * (item as any).quantity_ra + (item as any).prix_pa *
+                                        (item as any).quantity_pa +
+                                        (item as any).prix_ba * (item as any).quantity_ba).toFixed(0) }}
                                 </template>
                             </v-data-table-virtual>
                         </v-card>
