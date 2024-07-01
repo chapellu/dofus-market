@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "build:docker": "npm run build && docker build -t chapellu/dofus-market-frontend:${version} -f deploy/Dockerfile .",
+    "build:docker": "docker build -t chapellu/dofus-market-frontend:${version} -f deploy/Dockerfile .",
     "preview": "vite preview",
     "serve": "vite serve",
     "serve:docker": "docker run -p 3000:3000 chapellu/dofus-market-frontend:${version}",
