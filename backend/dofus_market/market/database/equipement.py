@@ -1,10 +1,12 @@
 from typing import Iterable
+
 from django.db import models
 
 from .caracteristique import Caracteristique
-from .ingredient_for_craft import IngredientForCraft
 from .ingredient import Ingredient
+from .ingredient_for_craft import IngredientForCraft
 from .metier import Metier
+from .rune import Rune
 
 metier_name = {
     "bo": "Cordonnier",
@@ -52,11 +54,15 @@ class DofusObject(models.Model):
         res = []
         for caracteristique in self.effects:
             ra, pa, ba = caracteristique.brisage(self.level)
+            rune = Rune.objects.get(name=caracteristique.rune.name)
             res.append({
-                'rune': caracteristique.name,
+                'rune': caracteristique.rune.name,
                 'quantity_ra': ra,
+                "prix_ra": rune.prix_ra,
                 "quantity_pa": pa,
-                "quantity_ba": ba
+                "prix_pa": rune.prix_pa,
+                "quantity_ba": ba,
+                "prix_ba": rune.prix_ba
             })
         return res
 

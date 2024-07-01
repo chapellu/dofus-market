@@ -39,7 +39,35 @@
                     </v-tabs-window-item>
                     <v-tabs-window-item :value="'tab-2'">
                         <v-card>
-                            <v-data-table-virtual :items="item.brisage">
+                            <v-data-table-virtual mobile :items="item.brisage" :headers="rune_headers">
+                                <template v-slot:item.prix_ra="{ item }">
+                                    <v-text-field label="Prix Ra" v-model.number="item.prix_ra" @change="updatePrice(item)"
+                                        density="compact" hide-details="auto" suffix="K"
+                                        v-if="item.prix_ra != -1"></v-text-field>
+                                </template>
+                                <template v-slot:item.total_ra="{ item }">
+                                    {{ Number(item.prix_ra * item.quantity_ra).toFixed(0) }}
+                                </template>
+                                <template v-slot:item.prix_pa="{ item }">
+                                    <v-text-field label="Prix Pa" v-model.number="item.prix_pa" @change="updatePrice(item)"
+                                        density="compact" hide-details="auto" suffix="K"
+                                        v-if="item.prix_pa != -1"></v-text-field>
+                                </template>
+                                <template v-slot:item.total_pa="{ item }">
+                                    {{ Number(item.prix_pa * item.quantity_pa).toFixed(0) }}
+                                </template>
+                                <template v-slot:item.prix_ba="{ item }">
+                                    <v-text-field label="Prix Ba" v-model.number="item.prix_ba" @change="updatePrice(item)"
+                                        density="compact" hide-details="auto" suffix="K"
+                                        v-if="item.prix_ba != -1"></v-text-field>
+                                </template>
+                                <template v-slot:item.total_ba="{ item }">
+                                    {{ Number(item.prix_ba * item.quantity_ba).toFixed(0) }}
+                                </template>
+                                <template v-slot:item.total="{ item }">
+                                    {{ Number(item.prix_ra * item.quantity_ra + item.prix_pa * item.quantity_pa +
+                                        item.prix_ba * item.quantity_ba).toFixed(0) }}
+                                </template>
                             </v-data-table-virtual>
                         </v-card>
                     </v-tabs-window-item>
@@ -81,6 +109,20 @@ export default {
             { title: 'Cout de fabrication (K)', key: 'cout_fabrication' },
             { title: "Metier", key: "metier" },
             { title: "Nombre d'ingrédients", key: "nb_objet" }
+        ],
+
+        rune_headers: [
+            { title: 'Rune', key: 'rune' },
+            { title: 'Quantity RA', key: 'quantity_ra' },
+            { title: 'Prix RA', key: 'prix_ra' },
+            { title: 'Total Ra', key: 'total_ra' },
+            { title: 'Quantity PA', key: 'quantity_pa' },
+            { title: 'Prix PA', key: 'prix_pa' },
+            { title: 'Total Pa', key: 'total_pa' },
+            { title: 'Quantity BA', key: 'quantity_ba' },
+            { title: 'Prix BA', key: 'prix_ba' },
+            { title: 'Total Ba', key: 'total_ba' },
+            { title: 'Total', key: 'total' },
         ],
         items: [] as Array<any>,
         metiers: [] as Array<any>,
@@ -159,6 +201,9 @@ export default {
         },
         async updateSearch() {
             this.search = String(Date.now())
+        },
+        async updatePrice(rune: any) {
+            await this.axios.put(`${this.backendUrl}/api/runes/${rune.rune}`, { "prix_ra": rune.prix_ra, "prix_pa": rune.prix_pa, "prix_ba": rune.prix_ba })
         }
     },
     async mounted() {
