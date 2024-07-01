@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22-alpine AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,9 +7,23 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
-COPY vite.config.ts ./
+COPY index.html .
+COPY tsconfig.json .
+COPY tsconfig.node.json .
+COPY vite.config.ts .
+COPY package.json .
+COPY src/ /app/src/
 
-COPY dist .
+
+RUN npm run build
+
+FROM node:22-alpine
+
+COPY package.json ./
+RUN npm install
+
+COPY vite.config.ts ./
+COPY --from=build /app/dist .
 
 
 EXPOSE 80
