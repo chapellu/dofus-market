@@ -66,7 +66,7 @@ spec:
             - name: POSTGRESQL_DB_NAME
               value: {{.Values.postgresql.db_name}}
             - name: POSTGRESQL_USER
-              value: postgres
+              value: {{.Values.postgresql.user}}
             - name: POSTGRESQL_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -86,7 +86,7 @@ spec:
             - name: POSTGRESQL_DB_NAME
               value: {{.Values.postgresql.db_name}}
             - name: POSTGRESQL_USER
-              value: postgres
+              value: {{.Values.postgresql.user}}
             - name: POSTGRESQL_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -95,11 +95,8 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "64Mi"
+              memory: "64M"
               cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "300m"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,10 +119,3 @@ spec:
           ports:
             - containerPort: 5173
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "300m"

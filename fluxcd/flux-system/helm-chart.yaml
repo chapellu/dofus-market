@@ -12,3 +12,4 @@ spec:
         kind: HelmRepository
         name: chapellu
         namespace: default
+        version: "*"

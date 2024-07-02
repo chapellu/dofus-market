@@ -1,6 +1,6 @@
 global:
   ingress:
-    host: dofus-market.msv-project.com
+    host: dofus-market.com
   logLevel: INFO
 
 serviceName: dofus-market
@@ -8,6 +8,6 @@ serviceName: dofus-market
 postgresql:
   host: dofus-market-postgresql
   port: 5432
-  db_name: dofus-market
-  user: dofus-market
+  db_name: dofusmarket
+  user: postgres
   password: an-awesome-password
