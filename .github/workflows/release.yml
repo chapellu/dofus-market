@@ -42,6 +42,8 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Update Helm chart version
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
         run: |
           ls -als deploy/charts
           sed -i "s/version: .*/version: $(echo $VERSION)/g" deploy/charts/Chart.yaml
