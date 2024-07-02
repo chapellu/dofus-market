@@ -95,7 +95,7 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "64M"
+              memory: "128Mi"
               cpu: "250m"
 ---
 apiVersion: apps/v1
@@ -117,5 +117,9 @@ spec:
         - image: chapellu/dofus-market-frontend:{{.Chart.Version}}
           name: {{.Values.serviceName}}-front
           ports:
-            - containerPort: 5173
+            - containerPort: 80
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "264Mi"
+              cpu: "250m"
