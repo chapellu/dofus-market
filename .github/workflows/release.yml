@@ -43,7 +43,7 @@ jobs:
 
       - name: Update Helm chart version
         run: |
-          ls -als deploy
+          ls -als deploy/charts
           sed -i "s/version: .*/version: $(echo $VERSION)/g" deploy/Chart.yaml
 
       - name: Run chart-releaser
