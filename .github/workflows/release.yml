@@ -45,6 +45,7 @@ jobs:
         run: |
           ls -als deploy/charts
           sed -i "s/version: .*/version: $(echo $VERSION)/g" deploy/charts/Chart.yaml
+          cat deploy/charts/Chart.yaml
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
