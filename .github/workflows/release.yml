@@ -35,7 +35,7 @@ jobs:
           npx semantic-release | tee release-output.txt
           VERSION=$(grep 'Published release' release-output.txt | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
           echo "Extracted version: $VERSION"
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -45,11 +45,9 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Update Helm chart version
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
         run: |
           ls -als deploy/charts
-          sed -i "s/version: .*/version: $(echo $VERSION)/g" deploy/charts/Chart.yaml
+          sed -i "s/version: .*/version: ${{ steps.release.outputs.version}}/g" deploy/charts/Chart.yaml
           cat deploy/charts/Chart.yaml
 
       - name: Run chart-releaser
