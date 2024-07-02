@@ -46,7 +46,7 @@ jobs:
 
       - name: Update Helm chart version
         run: |
-          ls -als deploy/charts
+          echo ${{ steps.release.outputs.version}}
           sed -i "s/version: .*/version: ${{ steps.release.outputs.version}}/g" deploy/charts/Chart.yaml
           cat deploy/charts/Chart.yaml
 
