@@ -4,10 +4,10 @@
 ![Vue.js](https://img.shields.io/badge/vue.js-3-brightgreen.svg?logo=vue.js)
 ![Vuetify](https://img.shields.io/badge/vuetify-3-blue.svg?logo=vuetify)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
-![docker](https://img.shields.io/badge/docker-grey?logo=docker)
-![kubernetes](https://img.shields.io/badge/kubernetes-grey?logo=kubernetes)
-![helm](https://img.shields.io/badge/helm-grey?logo=helm)
-![fluxcd](https://img.shields.io/badge/fluxcd-grey?logo=flux)
+![Docker](https://img.shields.io/badge/docker-grey?logo=docker)
+![Kubernetes](https://img.shields.io/badge/kubernetes-grey?logo=kubernetes)
+![Helm](https://img.shields.io/badge/helm-grey?logo=helm)
+![Fluxcd](https://img.shields.io/badge/fluxcd-grey?logo=flux)
 
 # Dofus Market
 
@@ -21,7 +21,7 @@ For detailed documentation, please refer to the `docs` folder.
 
 ### Environment Configuration
 
-To switch between development and production environments, modify the commented code in `config.ts` and setup a `.env` file.
+To switch between development and production environments, modify the commented code in `config.ts` and set up a `.env` file.
 
 ### Backend (Django REST API + Database)
 
