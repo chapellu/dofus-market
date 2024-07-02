@@ -1,90 +1,169 @@
-# dofus-market
+![Release](https://img.shields.io/github/v/release/chapellu/dofus-market)
+![Python](https://img.shields.io/badge/python-3.12-blue.svg?logo=python)
+![Django](https://img.shields.io/badge/django-5-green.svg?logo=django)
+![Vue.js](https://img.shields.io/badge/vue.js-3-brightgreen.svg?logo=vue.js)
+![Vuetify](https://img.shields.io/badge/vuetify-3-blue.svg?logo=vuetify)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+![docker](https://img.shields.io/badge/docker-grey?logo=docker)
+![kubernetes](https://img.shields.io/badge/kubernetes-grey?logo=kubernetes)
+![helm](https://img.shields.io/badge/helm-grey?logo=helm)
+![fluxcd](https://img.shields.io/badge/fluxcd-grey?logo=flux)
 
-For more documentation see the docs folder
+# Dofus Market
 
-## Dev
+Welcome to the Dofus Market project! This repository contains the code for both the backend and frontend components of the Dofus Market application.
 
-For now, you have to switch commented code in settings.py and config.ts to switch between dev and prod mode
+## Documentation
 
-### Backend REST API + Database (Django)
+For detailed documentation, please refer to the `docs` folder.
 
-Install dependencies
+## Development Setup
 
-```shell
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+### Environment Configuration
 
-Migrate database and run dev server
+To switch between development and production environments, modify the commented code in `config.ts` and setup a `.env` file.
 
-```shell
-cd dofus_market
-python manage.py makemigrations market
-python manage.py migrate
-python manage.py runserver
-```
+### Backend (Django REST API + Database)
 
-Docker build
+#### Setup and Installation
 
-```shell
-export version=1.0.0-alpha.1
-docker build -t chapellu/dofus-market-backend:${version} -f deploy/Dockerfile .
-```
+1. **Navigate to the frontend directory and install dependencies:**
 
-Docker run
+    ```shell
 
-```shell
-docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:${version}
-```
+    cd dofus_market/frontend
 
-Docker push to dockerhub
+    npm install
 
-```shell
-docker push chapellu/dofus-market-backend:${version}
-```
+    ```
 
-### Frontend (vuejs)
+2. **Create and activate a virtual environment:**
 
-Install dependencies
+    ```shell
 
-```shell
-cd dofus_market/frondend
-npm install
-```
+    python -m venv .venv
 
-Run dev server
+    source .venv/bin/activate
 
-```shell
-npm run dev
-```
+    ```
 
-Compiles and minifies for production
+3. **Install dependencies:**
 
-```shell
-npm run build
-```
+    ```shell
 
-#### Docker
+    pip install -r requirements.txt
 
-Docker build
+    ```
 
-```shell
-export version=1.0.0-alpha.1
-npm run build:docker
-```
+4. **Database Migrations and Server:**
 
-Docker run
+    ```shell
 
-```shell
-npm run serve:docker
-```
+    cd dofus_market
 
-Docker push to dockerhub
+    python manage.py makemigrations market
 
-```shell
-npm run push:docker
-```
+    python manage.py migrate
+
+    python manage.py runserver
+
+    ```
+
+#### Docker Commands
+
+- **Build:**
+
+    ```shell
+
+    export version=1.0.0-alpha.1
+
+    docker build -t chapellu/dofus-market-backend:${version} -f deploy/Dockerfile .
+
+    ```
+
+- **Run:**
+
+    ```shell
+
+    docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:${version}
+
+    ```
+
+- **Push to Docker Hub:**
+
+    ```shell
+
+    docker push chapellu/dofus-market-backend:${version}
+
+    ```
+
+### Frontend (Vue.js)
+
+#### Setup and Installation
+
+1. **Navigate to the frontend directory and install dependencies:**
+
+    ```shell
+
+    cd dofus_market/frontend
+
+    npm install
+
+    ```
+
+2. **Run the development server:**
+
+    ```shell
+
+    npm run dev
+
+    ```
+
+3. **Build for production:**
+
+    ```shell
+
+    npm run build
+
+    ```
+
+#### Docker Commands
+
+- **Build:**
+
+    ```shell
+
+    export version=1.0.0-alpha.1
+
+    npm run build:docker
+
+    ```
+
+
+- **Run:**
+
+    ```shell
+
+    npm run serve:docker
+
+    ```
+
+- **Push to Docker Hub:**
+
+    ```shell
+
+    npm run push:docker
+
+    ```
 
 ## Production
 
+For production deployment details, refer to the `docs` folder.
+
+## Contributing
+
+Contributions are welcome! Please read our contributing guidelines in `CONTRIBUTING.md` to get started.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the `LICENSE` file for details.
