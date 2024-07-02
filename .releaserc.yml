@@ -1,0 +1,14 @@
+branches:
+- name: main # this branch hosts staging code, prerelease tags Major.minor.patch-master will stay in this branch
+- name: +([0-9])+(-*) # dev branch, i.e. 17-test-issue
+  prerelease: '${name.replace(/^(\d+)-(.+)/gi, "alpha-$1")}' # create version having format alpha-17 if branch name is 17-test-issue
+  channel: false
+
+tagFormat: ${version}
+
+# This section defines the Javascript plugins of semantic-release library to be used during the release process
+# The 4 plugins are sufficient. Feel free to add more plugins if necessary
+plugins:
+- "@semantic-release/commit-analyzer"
+- "@semantic-release/release-notes-generator"
+- "@semantic-release/changelog"
