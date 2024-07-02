@@ -3,6 +3,15 @@ entries:
   dofus-market:
   - apiVersion: v1
     appVersion: 1.0.0
+    created: "2024-07-02T09:30:41.574710732Z"
+    description: My awesome dofus-market
+    digest: 7da6445694b4cd73b061aca7fbd8d1eef034604fad9e11777c0aa1c6f071d0f1
+    name: dofus-market
+    urls:
+    - https://github.com/chapellu/dofus-market/releases/download/dofus-market-1.0.7/dofus-market-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v1
+    appVersion: 1.0.0
     created: "2024-07-01T14:41:40.813143047Z"
     description: My awesome dofus-market
     digest: 4c21f933eeefdb1f23b8fa1090f65697886ccf3f396ce141f64a0ac00c5cd6c4
@@ -10,4 +19,4 @@ entries:
     urls:
     - https://github.com/chapellu/dofus-market/releases/download/dofus-market-1.0.0/dofus-market-1.0.0.tgz
     version: 1.0.0
-generated: "2024-07-01T14:41:40.813153186Z"
+generated: "2024-07-02T09:30:41.574719919Z"
