@@ -1,0 +1,14 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dofus-market
+  namespace: default
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: dofus-market
+      sourceRef:
+        kind: HelmRepository
+        name: chapellu
+        namespace: default
