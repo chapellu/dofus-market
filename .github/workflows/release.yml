@@ -23,6 +23,12 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: lts/*
+
       - name: Release
         run: npx semantic-release
         env:
