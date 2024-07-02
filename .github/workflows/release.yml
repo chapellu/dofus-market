@@ -31,6 +31,7 @@ jobs:
           node-version: lts/*
 
       - name: Release
+        id: release
         run: |
           npx semantic-release | tee release-output.txt
           VERSION=$(grep 'Published release' release-output.txt | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
@@ -46,8 +47,8 @@ jobs:
 
       - name: Update Helm chart version
         run: |
-          echo ${{ steps.release.outputs.version}}
-          sed -i "s/version: .*/version: ${{ steps.release.outputs.version}}/g" deploy/charts/Chart.yaml
+          echo "Using version: ${{ steps.release.outputs.version }}"
+          sed -i "s/version: .*/version: ${{ steps.release.outputs.version }}/g" deploy/charts/Chart.yaml
           cat deploy/charts/Chart.yaml
 
       - name: Run chart-releaser
