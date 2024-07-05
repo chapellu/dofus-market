@@ -8,3 +8,4 @@ beautifulsoup4~=4.12.3
 aiohttp~=3.9.5
 psycopg2~=2.9.9
 django-dotenv~=1.4.2
+django-socio-grpc~=0.22.8

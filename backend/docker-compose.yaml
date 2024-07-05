@@ -1,0 +1,58 @@
+version: "3.1"
+
+services:
+  postgresql:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    networks:
+      dofus-market-network:
+
+  dofus-market-back:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+    command: runserver 0.0.0.0:80
+    volumes:
+      - ./dofus_market:/opt/dofus_market/dofus_market
+    ports:
+      - "9081:80"
+    env_file:
+      - ./dofus_market/.env
+    links:
+      - postgresql
+    networks:
+      dofus-market-network:
+
+  dofus-market-grpc:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+    command: grpcrunaioserver --dev
+    volumes:
+      - ./dofus_market:/opt/dofus_market/dofus_market
+    ports:
+      - "50052:50051"
+    env_file:
+      - ./dofus_market/.env
+    links:
+      - postgresql
+    networks:
+      dofus-market-network:
+
+  envoy:
+    image: envoyproxy/envoy:v1.28.0
+    volumes:
+      - ./deploy/envoy:/etc/envoy
+    ports:
+      - "9002:9001"
+    links:
+      - dofus-market-grpc
+    networks:
+      dofus-market-network:
+
+networks:
+  dofus-market-network:

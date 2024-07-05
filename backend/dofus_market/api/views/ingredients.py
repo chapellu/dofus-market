@@ -18,8 +18,14 @@ class Ingredients:
         self.results = results
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def get_ingredients(request: Request):
+    if request.method == 'POST':
+        serializer = IngredientSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     page_size: int = request.query_params.get("page_size", 10)
     page: int = request.query_params.get("page", 1)
     query_set = Ingredient.objects.all().order_by("name")

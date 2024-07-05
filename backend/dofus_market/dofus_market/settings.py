@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "corsheaders", 'market.apps.MarketConfig', 'django.contrib.admin',
     'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages',
-    'django.contrib.staticfiles', 'rest_framework'
+    'django.contrib.staticfiles', 'rest_framework', 'django_socio_grpc', 'grpc_market'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +128,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
+
+GRPC_FRAMEWORK = {
+    "ROOT_HANDLERS_HOOK" : 'grpc_market.handlers.grpc_handlers',
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package dofus_market.grpc_market;
+
+import "google/protobuf/empty.proto";
+
+service IngredientController {
+    rpc Create(IngredientRequest) returns (IngredientResponse) {}
+    rpc Destroy(IngredientDestroyRequest) returns (google.protobuf.Empty) {}
+    rpc List(IngredientListRequest) returns (IngredientListResponse) {}
+    rpc PartialUpdate(IngredientPartialUpdateRequest) returns (IngredientResponse) {}
+    rpc Retrieve(IngredientRetrieveRequest) returns (IngredientResponse) {}
+    rpc Update(IngredientRequest) returns (IngredientResponse) {}
+}
+
+message IngredientDestroyRequest {
+    string name = 1;
+}
+
+message IngredientListRequest {
+}
+
+message IngredientListResponse {
+    repeated IngredientResponse results = 1;
+}
+
+message IngredientPartialUpdateRequest {
+    string name = 1;
+    repeated string _partial_update_fields = 2;
+    optional int32 price = 3;
+}
+
+message IngredientRequest {
+    string name = 1;
+    optional int32 price = 2;
+}
+
+message IngredientResponse {
+    string name = 1;
+    optional int32 price = 2;
+}
+
+message IngredientRetrieveRequest {
+    string name = 1;
+}
+
