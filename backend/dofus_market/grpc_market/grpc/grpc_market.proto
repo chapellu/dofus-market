@@ -13,6 +13,15 @@ service IngredientController {
     rpc Update(IngredientRequest) returns (IngredientResponse) {}
 }
 
+service RecetteController {
+    rpc Create(RecetteRequest) returns (RecetteResponse) {}
+    rpc Destroy(RecetteDestroyRequest) returns (google.protobuf.Empty) {}
+    rpc List(RecetteListRequest) returns (RecetteListResponse) {}
+    rpc PartialUpdate(RecettePartialUpdateRequest) returns (RecetteResponse) {}
+    rpc Retrieve(RecetteRetrieveRequest) returns (RecetteResponse) {}
+    rpc Update(RecetteRequest) returns (RecetteResponse) {}
+}
+
 service RuneController {
     rpc Create(RuneRequest) returns (RuneResponse) {}
     rpc Destroy(RuneDestroyRequest) returns (google.protobuf.Empty) {}
@@ -53,6 +62,43 @@ message IngredientRetrieveRequest {
     string name = 1;
 }
 
+message RecetteDestroyRequest {
+    string ingredient = 1;
+}
+
+message RecetteListRequest {
+}
+
+message RecetteListResponse {
+    repeated RecetteResponse results = 1;
+}
+
+message RecettePartialUpdateRequest {
+    string ingredient = 1;
+    repeated string partial_update_fields = 2;
+    optional int32 level = 3;
+    optional string metier = 4;
+    repeated int64 ingredients = 5;
+}
+
+message RecetteRequest {
+    string ingredient = 1;
+    optional int32 level = 2;
+    optional string metier = 3;
+    repeated int64 ingredients = 4;
+}
+
+message RecetteResponse {
+    string ingredient = 1;
+    optional int32 level = 2;
+    optional string metier = 3;
+    repeated int64 ingredients = 4;
+}
+
+message RecetteRetrieveRequest {
+    string ingredient = 1;
+}
+
 message RuneDestroyRequest {
     string name = 1;
 }
@@ -66,10 +112,10 @@ message RuneListResponse {
 
 message RunePartialUpdateRequest {
     string name = 1;
-    repeated string partial_update_fields = 2;
     optional int32 prix_ra = 3;
     optional int32 prix_pa = 4;
     optional int32 prix_ba = 5;
+    repeated string partial_update_fields = 6;
 }
 
 message RuneRequest {

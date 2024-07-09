@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11grpc_market.proto\x12\x18\x64ofus_market.grpc_market\x1a\x1bgoogle/protobuf/empty.proto\"(\n\x18IngredientDestroyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x17\n\x15IngredientListRequest\"W\n\x16IngredientListResponse\x12=\n\x07results\x18\x01 \x03(\x0b\x32,.dofus_market.grpc_market.IngredientResponse\"k\n\x1eIngredientPartialUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x1d\n\x15partial_update_fields\x18\x04 \x03(\tB\x08\n\x06_price\"?\n\x11IngredientRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x02 \x01(\x05H\x00\x88\x01\x01\x42\x08\n\x06_price\"@\n\x12IngredientResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x02 \x01(\x05H\x00\x88\x01\x01\x42\x08\n\x06_price\")\n\x19IngredientRetrieveRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\"\n\x12RuneDestroyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x11\n\x0fRuneListRequest\"K\n\x10RuneListResponse\x12\x37\n\x07results\x18\x01 \x03(\x0b\x32&.dofus_market.grpc_market.RuneResponse\"\xad\x01\n\x18RunePartialUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15partial_update_fields\x18\x02 \x03(\t\x12\x14\n\x07prix_ra\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x04 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x05 \x01(\x05H\x02\x88\x01\x01\x42\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"\x81\x01\n\x0bRuneRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07prix_ra\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x04 \x01(\x05H\x02\x88\x01\x01\x42\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"\x82\x01\n\x0cRuneResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07prix_ra\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x04 \x01(\x05H\x02\x88\x01\x01\x42\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"#\n\x13RuneRetrieveRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x96\x05\n\x14IngredientController\x12\x65\n\x06\x43reate\x12+.dofus_market.grpc_market.IngredientRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12W\n\x07\x44\x65stroy\x12\x32.dofus_market.grpc_market.IngredientDestroyRequest\x1a\x16.google.protobuf.Empty\"\x00\x12k\n\x04List\x12/.dofus_market.grpc_market.IngredientListRequest\x1a\x30.dofus_market.grpc_market.IngredientListResponse\"\x00\x12y\n\rPartialUpdate\x12\x38.dofus_market.grpc_market.IngredientPartialUpdateRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12o\n\x08Retrieve\x12\x33.dofus_market.grpc_market.IngredientRetrieveRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12\x65\n\x06Update\x12+.dofus_market.grpc_market.IngredientRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x32\xce\x04\n\x0eRuneController\x12Y\n\x06\x43reate\x12%.dofus_market.grpc_market.RuneRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12Q\n\x07\x44\x65stroy\x12,.dofus_market.grpc_market.RuneDestroyRequest\x1a\x16.google.protobuf.Empty\"\x00\x12_\n\x04List\x12).dofus_market.grpc_market.RuneListRequest\x1a*.dofus_market.grpc_market.RuneListResponse\"\x00\x12m\n\rPartialUpdate\x12\x32.dofus_market.grpc_market.RunePartialUpdateRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12\x63\n\x08Retrieve\x12-.dofus_market.grpc_market.RuneRetrieveRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12Y\n\x06Update\x12%.dofus_market.grpc_market.RuneRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11grpc_market.proto\x12\x18\x64ofus_market.grpc_market\x1a\x1bgoogle/protobuf/empty.proto\"(\n\x18IngredientDestroyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x17\n\x15IngredientListRequest\"W\n\x16IngredientListResponse\x12=\n\x07results\x18\x01 \x03(\x0b\x32,.dofus_market.grpc_market.IngredientResponse\"k\n\x1eIngredientPartialUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x1d\n\x15partial_update_fields\x18\x04 \x03(\tB\x08\n\x06_price\"?\n\x11IngredientRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x02 \x01(\x05H\x00\x88\x01\x01\x42\x08\n\x06_price\"@\n\x12IngredientResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\x05price\x18\x02 \x01(\x05H\x00\x88\x01\x01\x42\x08\n\x06_price\")\n\x19IngredientRetrieveRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"+\n\x15RecetteDestroyRequest\x12\x12\n\ningredient\x18\x01 \x01(\t\"\x14\n\x12RecetteListRequest\"Q\n\x13RecetteListResponse\x12:\n\x07results\x18\x01 \x03(\x0b\x32).dofus_market.grpc_market.RecetteResponse\"\xa3\x01\n\x1bRecettePartialUpdateRequest\x12\x12\n\ningredient\x18\x01 \x01(\t\x12\x1d\n\x15partial_update_fields\x18\x02 \x03(\t\x12\x12\n\x05level\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x13\n\x06metier\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x13\n\x0bingredients\x18\x05 \x03(\x03\x42\x08\n\x06_levelB\t\n\x07_metier\"w\n\x0eRecetteRequest\x12\x12\n\ningredient\x18\x01 \x01(\t\x12\x12\n\x05level\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x13\n\x06metier\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x13\n\x0bingredients\x18\x04 \x03(\x03\x42\x08\n\x06_levelB\t\n\x07_metier\"x\n\x0fRecetteResponse\x12\x12\n\ningredient\x18\x01 \x01(\t\x12\x12\n\x05level\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x13\n\x06metier\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x13\n\x0bingredients\x18\x04 \x03(\x03\x42\x08\n\x06_levelB\t\n\x07_metier\",\n\x16RecetteRetrieveRequest\x12\x12\n\ningredient\x18\x01 \x01(\t\"\"\n\x12RuneDestroyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x11\n\x0fRuneListRequest\"K\n\x10RuneListResponse\x12\x37\n\x07results\x18\x01 \x03(\x0b\x32&.dofus_market.grpc_market.RuneResponse\"\xad\x01\n\x18RunePartialUpdateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07prix_ra\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x04 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x05 \x01(\x05H\x02\x88\x01\x01\x12\x1d\n\x15partial_update_fields\x18\x06 \x03(\tB\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"\x81\x01\n\x0bRuneRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07prix_ra\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x04 \x01(\x05H\x02\x88\x01\x01\x42\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"\x82\x01\n\x0cRuneResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07prix_ra\x18\x02 \x01(\x05H\x00\x88\x01\x01\x12\x14\n\x07prix_pa\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12\x14\n\x07prix_ba\x18\x04 \x01(\x05H\x02\x88\x01\x01\x42\n\n\x08_prix_raB\n\n\x08_prix_paB\n\n\x08_prix_ba\"#\n\x13RuneRetrieveRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\x96\x05\n\x14IngredientController\x12\x65\n\x06\x43reate\x12+.dofus_market.grpc_market.IngredientRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12W\n\x07\x44\x65stroy\x12\x32.dofus_market.grpc_market.IngredientDestroyRequest\x1a\x16.google.protobuf.Empty\"\x00\x12k\n\x04List\x12/.dofus_market.grpc_market.IngredientListRequest\x1a\x30.dofus_market.grpc_market.IngredientListResponse\"\x00\x12y\n\rPartialUpdate\x12\x38.dofus_market.grpc_market.IngredientPartialUpdateRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12o\n\x08Retrieve\x12\x33.dofus_market.grpc_market.IngredientRetrieveRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x12\x65\n\x06Update\x12+.dofus_market.grpc_market.IngredientRequest\x1a,.dofus_market.grpc_market.IngredientResponse\"\x00\x32\xf2\x04\n\x11RecetteController\x12_\n\x06\x43reate\x12(.dofus_market.grpc_market.RecetteRequest\x1a).dofus_market.grpc_market.RecetteResponse\"\x00\x12T\n\x07\x44\x65stroy\x12/.dofus_market.grpc_market.RecetteDestroyRequest\x1a\x16.google.protobuf.Empty\"\x00\x12\x65\n\x04List\x12,.dofus_market.grpc_market.RecetteListRequest\x1a-.dofus_market.grpc_market.RecetteListResponse\"\x00\x12s\n\rPartialUpdate\x12\x35.dofus_market.grpc_market.RecettePartialUpdateRequest\x1a).dofus_market.grpc_market.RecetteResponse\"\x00\x12i\n\x08Retrieve\x12\x30.dofus_market.grpc_market.RecetteRetrieveRequest\x1a).dofus_market.grpc_market.RecetteResponse\"\x00\x12_\n\x06Update\x12(.dofus_market.grpc_market.RecetteRequest\x1a).dofus_market.grpc_market.RecetteResponse\"\x00\x32\xce\x04\n\x0eRuneController\x12Y\n\x06\x43reate\x12%.dofus_market.grpc_market.RuneRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12Q\n\x07\x44\x65stroy\x12,.dofus_market.grpc_market.RuneDestroyRequest\x1a\x16.google.protobuf.Empty\"\x00\x12_\n\x04List\x12).dofus_market.grpc_market.RuneListRequest\x1a*.dofus_market.grpc_market.RuneListResponse\"\x00\x12m\n\rPartialUpdate\x12\x32.dofus_market.grpc_market.RunePartialUpdateRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12\x63\n\x08Retrieve\x12-.dofus_market.grpc_market.RuneRetrieveRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x12Y\n\x06Update\x12%.dofus_market.grpc_market.RuneRequest\x1a&.dofus_market.grpc_market.RuneResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,22 +36,38 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_INGREDIENTRESPONSE']._serialized_end=470
   _globals['_INGREDIENTRETRIEVEREQUEST']._serialized_start=472
   _globals['_INGREDIENTRETRIEVEREQUEST']._serialized_end=513
-  _globals['_RUNEDESTROYREQUEST']._serialized_start=515
-  _globals['_RUNEDESTROYREQUEST']._serialized_end=549
-  _globals['_RUNELISTREQUEST']._serialized_start=551
-  _globals['_RUNELISTREQUEST']._serialized_end=568
-  _globals['_RUNELISTRESPONSE']._serialized_start=570
-  _globals['_RUNELISTRESPONSE']._serialized_end=645
-  _globals['_RUNEPARTIALUPDATEREQUEST']._serialized_start=648
-  _globals['_RUNEPARTIALUPDATEREQUEST']._serialized_end=821
-  _globals['_RUNEREQUEST']._serialized_start=824
-  _globals['_RUNEREQUEST']._serialized_end=953
-  _globals['_RUNERESPONSE']._serialized_start=956
-  _globals['_RUNERESPONSE']._serialized_end=1086
-  _globals['_RUNERETRIEVEREQUEST']._serialized_start=1088
-  _globals['_RUNERETRIEVEREQUEST']._serialized_end=1123
-  _globals['_INGREDIENTCONTROLLER']._serialized_start=1126
-  _globals['_INGREDIENTCONTROLLER']._serialized_end=1788
-  _globals['_RUNECONTROLLER']._serialized_start=1791
-  _globals['_RUNECONTROLLER']._serialized_end=2381
+  _globals['_RECETTEDESTROYREQUEST']._serialized_start=515
+  _globals['_RECETTEDESTROYREQUEST']._serialized_end=558
+  _globals['_RECETTELISTREQUEST']._serialized_start=560
+  _globals['_RECETTELISTREQUEST']._serialized_end=580
+  _globals['_RECETTELISTRESPONSE']._serialized_start=582
+  _globals['_RECETTELISTRESPONSE']._serialized_end=663
+  _globals['_RECETTEPARTIALUPDATEREQUEST']._serialized_start=666
+  _globals['_RECETTEPARTIALUPDATEREQUEST']._serialized_end=829
+  _globals['_RECETTEREQUEST']._serialized_start=831
+  _globals['_RECETTEREQUEST']._serialized_end=950
+  _globals['_RECETTERESPONSE']._serialized_start=952
+  _globals['_RECETTERESPONSE']._serialized_end=1072
+  _globals['_RECETTERETRIEVEREQUEST']._serialized_start=1074
+  _globals['_RECETTERETRIEVEREQUEST']._serialized_end=1118
+  _globals['_RUNEDESTROYREQUEST']._serialized_start=1120
+  _globals['_RUNEDESTROYREQUEST']._serialized_end=1154
+  _globals['_RUNELISTREQUEST']._serialized_start=1156
+  _globals['_RUNELISTREQUEST']._serialized_end=1173
+  _globals['_RUNELISTRESPONSE']._serialized_start=1175
+  _globals['_RUNELISTRESPONSE']._serialized_end=1250
+  _globals['_RUNEPARTIALUPDATEREQUEST']._serialized_start=1253
+  _globals['_RUNEPARTIALUPDATEREQUEST']._serialized_end=1426
+  _globals['_RUNEREQUEST']._serialized_start=1429
+  _globals['_RUNEREQUEST']._serialized_end=1558
+  _globals['_RUNERESPONSE']._serialized_start=1561
+  _globals['_RUNERESPONSE']._serialized_end=1691
+  _globals['_RUNERETRIEVEREQUEST']._serialized_start=1693
+  _globals['_RUNERETRIEVEREQUEST']._serialized_end=1728
+  _globals['_INGREDIENTCONTROLLER']._serialized_start=1731
+  _globals['_INGREDIENTCONTROLLER']._serialized_end=2393
+  _globals['_RECETTECONTROLLER']._serialized_start=2396
+  _globals['_RECETTECONTROLLER']._serialized_end=3022
+  _globals['_RUNECONTROLLER']._serialized_start=3025
+  _globals['_RUNECONTROLLER']._serialized_end=3615
 # @@protoc_insertion_point(module_scope)

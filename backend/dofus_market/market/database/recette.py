@@ -12,3 +12,6 @@ class Recette(models.Model):
     level = models.IntegerField(default=0)
     ingredients = models.ManyToManyField(IngredientForCraft)
     metier = models.ForeignKey(Metier, on_delete=models.CASCADE, default=None)
+
+    def __str__(self) -> str:
+        return str(self.ingredient)

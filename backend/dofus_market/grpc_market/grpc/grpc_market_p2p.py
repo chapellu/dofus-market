@@ -40,6 +40,44 @@ class IngredientRetrieveRequest(BaseModel):
     name: str = Field(default="")
 
 
+class RecetteDestroyRequest(BaseModel):
+    ingredient: str = Field(default="")
+
+
+class RecetteListRequest(BaseModel):
+    pass
+
+
+class RecetteResponse(BaseModel):
+    ingredient: str = Field(default="")
+    level: typing.Optional[int] = Field(default=0)
+    metier: typing.Optional[str] = Field(default="")
+    ingredients: typing.List[int] = Field(default_factory=list)
+
+
+class RecetteListResponse(BaseModel):
+    results: typing.List[RecetteResponse] = Field(default_factory=list)
+
+
+class RecettePartialUpdateRequest(BaseModel):
+    ingredient: str = Field(default="")
+    partial_update_fields: typing.List[str] = Field(default_factory=list)
+    level: typing.Optional[int] = Field(default=0)
+    metier: typing.Optional[str] = Field(default="")
+    ingredients: typing.List[int] = Field(default_factory=list)
+
+
+class RecetteRequest(BaseModel):
+    ingredient: str = Field(default="")
+    level: typing.Optional[int] = Field(default=0)
+    metier: typing.Optional[str] = Field(default="")
+    ingredients: typing.List[int] = Field(default_factory=list)
+
+
+class RecetteRetrieveRequest(BaseModel):
+    ingredient: str = Field(default="")
+
+
 class RuneDestroyRequest(BaseModel):
     name: str = Field(default="")
 
@@ -61,10 +99,10 @@ class RuneListResponse(BaseModel):
 
 class RunePartialUpdateRequest(BaseModel):
     name: str = Field(default="")
-    partial_update_fields: typing.List[str] = Field(default_factory=list)
     prix_ra: typing.Optional[int] = Field(default=0)
     prix_pa: typing.Optional[int] = Field(default=0)
     prix_ba: typing.Optional[int] = Field(default=0)
+    partial_update_fields: typing.List[str] = Field(default_factory=list)
 
 
 class RuneRequest(BaseModel):
