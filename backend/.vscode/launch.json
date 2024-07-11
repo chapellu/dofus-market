@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+
+  "configurations": [
+    {
+      "name": "Python: Debug Library",
+      "type": "python",
+      "request": "test",
+      "program": "${file}",
+      "justMyCode": false, // Set to false to enable debugging of library code
+      "console": "integratedTerminal"
+    }
+  ]
+}

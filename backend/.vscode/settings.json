@@ -1,5 +1,5 @@
 {
-  "python.testing.pytestArgs": ["dofus_market"],
+  "python.testing.pytestArgs": ["dofus_market", "-vv"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.envFile": "${workspaceFolder}/dofus_market/.env",

@@ -31,6 +31,132 @@ if _version_not_supported:
         f' scheduled for release on {SCHEDULED_RELEASE_DATE}.', RuntimeWarning)
 
 
+class EquipementControllerStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.List = channel.unary_unary(
+            '/dofus_market.grpc_market.EquipementController/List',
+            request_serializer=grpc__market__pb2.EquipementListRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.EquipementListResponse.
+            FromString,
+            _registered_method=True)
+        self.Retrieve = channel.unary_unary(
+            '/dofus_market.grpc_market.EquipementController/Retrieve',
+            request_serializer=grpc__market__pb2.EquipementRetrieveRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.EquipementResponse.
+            FromString,
+            _registered_method=True)
+
+
+class EquipementControllerServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Retrieve(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_EquipementControllerServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'List':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.List,
+            request_deserializer=grpc__market__pb2.EquipementListRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.EquipementListResponse.
+            SerializeToString,
+        ),
+        'Retrieve':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Retrieve,
+            request_deserializer=grpc__market__pb2.EquipementRetrieveRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.EquipementResponse.
+            SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'dofus_market.grpc_market.EquipementController', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler, ))
+    server.add_registered_method_handlers(
+        'dofus_market.grpc_market.EquipementController', rpc_method_handlers)
+
+
+# This class is part of an EXPERIMENTAL API.
+class EquipementController(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def List(request,
+             target,
+             options=(),
+             channel_credentials=None,
+             call_credentials=None,
+             insecure=False,
+             compression=None,
+             wait_for_ready=None,
+             timeout=None,
+             metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.EquipementController/List',
+            grpc__market__pb2.EquipementListRequest.SerializeToString,
+            grpc__market__pb2.EquipementListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Retrieve(request,
+                 target,
+                 options=(),
+                 channel_credentials=None,
+                 call_credentials=None,
+                 insecure=False,
+                 compression=None,
+                 wait_for_ready=None,
+                 timeout=None,
+                 metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.EquipementController/Retrieve',
+            grpc__market__pb2.EquipementRetrieveRequest.SerializeToString,
+            grpc__market__pb2.EquipementResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
 class IngredientControllerStub(object):
     """Missing associated documentation comment in .proto file."""
 
@@ -338,6 +464,641 @@ class IngredientController(object):
             '/dofus_market.grpc_market.IngredientController/Update',
             grpc__market__pb2.IngredientRequest.SerializeToString,
             grpc__market__pb2.IngredientResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class IngredientForCraftControllerStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Create = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/Create',
+            request_serializer=grpc__market__pb2.IngredientForCraftRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.IngredientForCraftResponse.
+            FromString,
+            _registered_method=True)
+        self.Destroy = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/Destroy',
+            request_serializer=grpc__market__pb2.
+            IngredientForCraftDestroyRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.
+            FromString,
+            _registered_method=True)
+        self.List = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/List',
+            request_serializer=grpc__market__pb2.IngredientForCraftListRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.
+            IngredientForCraftListResponse.FromString,
+            _registered_method=True)
+        self.PartialUpdate = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/PartialUpdate',
+            request_serializer=grpc__market__pb2.
+            IngredientForCraftPartialUpdateRequest.SerializeToString,
+            response_deserializer=grpc__market__pb2.IngredientForCraftResponse.
+            FromString,
+            _registered_method=True)
+        self.Retrieve = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/Retrieve',
+            request_serializer=grpc__market__pb2.
+            IngredientForCraftRetrieveRequest.SerializeToString,
+            response_deserializer=grpc__market__pb2.IngredientForCraftResponse.
+            FromString,
+            _registered_method=True)
+        self.Update = channel.unary_unary(
+            '/dofus_market.grpc_market.IngredientForCraftController/Update',
+            request_serializer=grpc__market__pb2.IngredientForCraftRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.IngredientForCraftResponse.
+            FromString,
+            _registered_method=True)
+
+
+class IngredientForCraftControllerServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Create(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Destroy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PartialUpdate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Retrieve(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Update(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_IngredientForCraftControllerServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'Create':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Create,
+            request_deserializer=grpc__market__pb2.IngredientForCraftRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.IngredientForCraftResponse.
+            SerializeToString,
+        ),
+        'Destroy':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Destroy,
+            request_deserializer=grpc__market__pb2.
+            IngredientForCraftDestroyRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.
+            SerializeToString,
+        ),
+        'List':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.List,
+            request_deserializer=grpc__market__pb2.
+            IngredientForCraftListRequest.FromString,
+            response_serializer=grpc__market__pb2.
+            IngredientForCraftListResponse.SerializeToString,
+        ),
+        'PartialUpdate':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.PartialUpdate,
+            request_deserializer=grpc__market__pb2.
+            IngredientForCraftPartialUpdateRequest.FromString,
+            response_serializer=grpc__market__pb2.IngredientForCraftResponse.
+            SerializeToString,
+        ),
+        'Retrieve':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Retrieve,
+            request_deserializer=grpc__market__pb2.
+            IngredientForCraftRetrieveRequest.FromString,
+            response_serializer=grpc__market__pb2.IngredientForCraftResponse.
+            SerializeToString,
+        ),
+        'Update':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Update,
+            request_deserializer=grpc__market__pb2.IngredientForCraftRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.IngredientForCraftResponse.
+            SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'dofus_market.grpc_market.IngredientForCraftController',
+        rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler, ))
+    server.add_registered_method_handlers(
+        'dofus_market.grpc_market.IngredientForCraftController',
+        rpc_method_handlers)
+
+
+# This class is part of an EXPERIMENTAL API.
+class IngredientForCraftController(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Create(request,
+               target,
+               options=(),
+               channel_credentials=None,
+               call_credentials=None,
+               insecure=False,
+               compression=None,
+               wait_for_ready=None,
+               timeout=None,
+               metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/Create',
+            grpc__market__pb2.IngredientForCraftRequest.SerializeToString,
+            grpc__market__pb2.IngredientForCraftResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Destroy(request,
+                target,
+                options=(),
+                channel_credentials=None,
+                call_credentials=None,
+                insecure=False,
+                compression=None,
+                wait_for_ready=None,
+                timeout=None,
+                metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/Destroy',
+            grpc__market__pb2.IngredientForCraftDestroyRequest.
+            SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def List(request,
+             target,
+             options=(),
+             channel_credentials=None,
+             call_credentials=None,
+             insecure=False,
+             compression=None,
+             wait_for_ready=None,
+             timeout=None,
+             metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/List',
+            grpc__market__pb2.IngredientForCraftListRequest.SerializeToString,
+            grpc__market__pb2.IngredientForCraftListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PartialUpdate(request,
+                      target,
+                      options=(),
+                      channel_credentials=None,
+                      call_credentials=None,
+                      insecure=False,
+                      compression=None,
+                      wait_for_ready=None,
+                      timeout=None,
+                      metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/PartialUpdate',
+            grpc__market__pb2.IngredientForCraftPartialUpdateRequest.
+            SerializeToString,
+            grpc__market__pb2.IngredientForCraftResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Retrieve(request,
+                 target,
+                 options=(),
+                 channel_credentials=None,
+                 call_credentials=None,
+                 insecure=False,
+                 compression=None,
+                 wait_for_ready=None,
+                 timeout=None,
+                 metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/Retrieve',
+            grpc__market__pb2.IngredientForCraftRetrieveRequest.
+            SerializeToString,
+            grpc__market__pb2.IngredientForCraftResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Update(request,
+               target,
+               options=(),
+               channel_credentials=None,
+               call_credentials=None,
+               insecure=False,
+               compression=None,
+               wait_for_ready=None,
+               timeout=None,
+               metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.IngredientForCraftController/Update',
+            grpc__market__pb2.IngredientForCraftRequest.SerializeToString,
+            grpc__market__pb2.IngredientForCraftResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class MetierControllerStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Create = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/Create',
+            request_serializer=grpc__market__pb2.MetierRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.MetierResponse.FromString,
+            _registered_method=True)
+        self.Destroy = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/Destroy',
+            request_serializer=grpc__market__pb2.MetierDestroyRequest.
+            SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.
+            FromString,
+            _registered_method=True)
+        self.List = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/List',
+            request_serializer=grpc__market__pb2.MetierListRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.MetierListResponse.
+            FromString,
+            _registered_method=True)
+        self.PartialUpdate = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/PartialUpdate',
+            request_serializer=grpc__market__pb2.MetierPartialUpdateRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.MetierResponse.FromString,
+            _registered_method=True)
+        self.Retrieve = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/Retrieve',
+            request_serializer=grpc__market__pb2.MetierRetrieveRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.MetierResponse.FromString,
+            _registered_method=True)
+        self.Update = channel.unary_unary(
+            '/dofus_market.grpc_market.MetierController/Update',
+            request_serializer=grpc__market__pb2.MetierRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.MetierResponse.FromString,
+            _registered_method=True)
+
+
+class MetierControllerServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Create(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Destroy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PartialUpdate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Retrieve(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Update(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_MetierControllerServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'Create':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Create,
+            request_deserializer=grpc__market__pb2.MetierRequest.FromString,
+            response_serializer=grpc__market__pb2.MetierResponse.
+            SerializeToString,
+        ),
+        'Destroy':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Destroy,
+            request_deserializer=grpc__market__pb2.MetierDestroyRequest.
+            FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.
+            SerializeToString,
+        ),
+        'List':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.List,
+            request_deserializer=grpc__market__pb2.MetierListRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.MetierListResponse.
+            SerializeToString,
+        ),
+        'PartialUpdate':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.PartialUpdate,
+            request_deserializer=grpc__market__pb2.MetierPartialUpdateRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.MetierResponse.
+            SerializeToString,
+        ),
+        'Retrieve':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Retrieve,
+            request_deserializer=grpc__market__pb2.MetierRetrieveRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.MetierResponse.
+            SerializeToString,
+        ),
+        'Update':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Update,
+            request_deserializer=grpc__market__pb2.MetierRequest.FromString,
+            response_serializer=grpc__market__pb2.MetierResponse.
+            SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'dofus_market.grpc_market.MetierController', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler, ))
+    server.add_registered_method_handlers(
+        'dofus_market.grpc_market.MetierController', rpc_method_handlers)
+
+
+# This class is part of an EXPERIMENTAL API.
+class MetierController(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Create(request,
+               target,
+               options=(),
+               channel_credentials=None,
+               call_credentials=None,
+               insecure=False,
+               compression=None,
+               wait_for_ready=None,
+               timeout=None,
+               metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/Create',
+            grpc__market__pb2.MetierRequest.SerializeToString,
+            grpc__market__pb2.MetierResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Destroy(request,
+                target,
+                options=(),
+                channel_credentials=None,
+                call_credentials=None,
+                insecure=False,
+                compression=None,
+                wait_for_ready=None,
+                timeout=None,
+                metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/Destroy',
+            grpc__market__pb2.MetierDestroyRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def List(request,
+             target,
+             options=(),
+             channel_credentials=None,
+             call_credentials=None,
+             insecure=False,
+             compression=None,
+             wait_for_ready=None,
+             timeout=None,
+             metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/List',
+            grpc__market__pb2.MetierListRequest.SerializeToString,
+            grpc__market__pb2.MetierListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PartialUpdate(request,
+                      target,
+                      options=(),
+                      channel_credentials=None,
+                      call_credentials=None,
+                      insecure=False,
+                      compression=None,
+                      wait_for_ready=None,
+                      timeout=None,
+                      metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/PartialUpdate',
+            grpc__market__pb2.MetierPartialUpdateRequest.SerializeToString,
+            grpc__market__pb2.MetierResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Retrieve(request,
+                 target,
+                 options=(),
+                 channel_credentials=None,
+                 call_credentials=None,
+                 insecure=False,
+                 compression=None,
+                 wait_for_ready=None,
+                 timeout=None,
+                 metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/Retrieve',
+            grpc__market__pb2.MetierRetrieveRequest.SerializeToString,
+            grpc__market__pb2.MetierResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Update(request,
+               target,
+               options=(),
+               channel_credentials=None,
+               call_credentials=None,
+               insecure=False,
+               compression=None,
+               wait_for_ready=None,
+               timeout=None,
+               metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.MetierController/Update',
+            grpc__market__pb2.MetierRequest.SerializeToString,
+            grpc__market__pb2.MetierResponse.FromString,
             options,
             channel_credentials,
             insecure,

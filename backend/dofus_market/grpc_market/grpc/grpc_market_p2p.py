@@ -8,8 +8,66 @@ from pydantic import Field
 import typing
 
 
+class EquipementListRequest(BaseModel):
+    pass
+
+
+class EquipementResponse(BaseModel):
+    metier: str = Field(default="")
+    name: str = Field(default="")
+    level: typing.Optional[int] = Field(default=0)
+    cout_fabrication: float = Field(default=0.0)
+    gain_estime: float = Field(default=0.0)
+    rentabilite: int = Field(default=0)
+    nb_object: typing.Optional[int] = Field(default=0)
+
+
+class EquipementListResponse(BaseModel):
+    results: typing.List[EquipementResponse] = Field(default_factory=list)
+
+
+class EquipementRetrieveRequest(BaseModel):
+    name: str = Field(default="")
+
+
 class IngredientDestroyRequest(BaseModel):
     name: str = Field(default="")
+
+
+class IngredientForCraftDestroyRequest(BaseModel):
+    id: int = Field(default=0)
+
+
+class IngredientForCraftListRequest(BaseModel):
+    pass
+
+
+class IngredientForCraftResponse(BaseModel):
+    id: typing.Optional[int] = Field(default=0)
+    quantity: int = Field(default=0)
+    ingredient: str = Field(default="")
+
+
+class IngredientForCraftListResponse(BaseModel):
+    results: typing.List[IngredientForCraftResponse] = Field(
+        default_factory=list)
+
+
+class IngredientForCraftPartialUpdateRequest(BaseModel):
+    id: typing.Optional[int] = Field(default=0)
+    quantity: int = Field(default=0)
+    ingredient: str = Field(default="")
+    partial_update_fields: typing.List[str] = Field(default_factory=list)
+
+
+class IngredientForCraftRequest(BaseModel):
+    id: typing.Optional[int] = Field(default=0)
+    quantity: int = Field(default=0)
+    ingredient: str = Field(default="")
+
+
+class IngredientForCraftRetrieveRequest(BaseModel):
+    id: int = Field(default=0)
 
 
 class IngredientListRequest(BaseModel):
@@ -40,6 +98,35 @@ class IngredientRetrieveRequest(BaseModel):
     name: str = Field(default="")
 
 
+class MetierDestroyRequest(BaseModel):
+    name: str = Field(default="")
+
+
+class MetierListRequest(BaseModel):
+    pass
+
+
+class MetierResponse(BaseModel):
+    name: str = Field(default="")
+
+
+class MetierListResponse(BaseModel):
+    results: typing.List[MetierResponse] = Field(default_factory=list)
+
+
+class MetierPartialUpdateRequest(BaseModel):
+    name: str = Field(default="")
+    partial_update_fields: typing.List[str] = Field(default_factory=list)
+
+
+class MetierRequest(BaseModel):
+    name: str = Field(default="")
+
+
+class MetierRetrieveRequest(BaseModel):
+    name: str = Field(default="")
+
+
 class RecetteDestroyRequest(BaseModel):
     ingredient: str = Field(default="")
 
@@ -61,10 +148,10 @@ class RecetteListResponse(BaseModel):
 
 class RecettePartialUpdateRequest(BaseModel):
     ingredient: str = Field(default="")
-    partial_update_fields: typing.List[str] = Field(default_factory=list)
     level: typing.Optional[int] = Field(default=0)
     metier: typing.Optional[str] = Field(default="")
     ingredients: typing.List[int] = Field(default_factory=list)
+    partial_update_fields: typing.List[str] = Field(default_factory=list)
 
 
 class RecetteRequest(BaseModel):

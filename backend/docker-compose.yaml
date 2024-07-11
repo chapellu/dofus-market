@@ -19,7 +19,7 @@ services:
     volumes:
       - ./dofus_market:/opt/dofus_market/dofus_market
     ports:
-      - "9081:80"
+      - "8000:80"
     env_file:
       - ./dofus_market/.env
     links:
@@ -35,9 +35,11 @@ services:
     volumes:
       - ./dofus_market:/opt/dofus_market/dofus_market
     ports:
-      - "50052:50051"
+      - "50051:50051"
     env_file:
       - ./dofus_market/.env
+    environment:
+      - POSTGRESQL_HOST=postgresql
     links:
       - postgresql
     networks:
@@ -48,7 +50,7 @@ services:
     volumes:
       - ./deploy/envoy:/etc/envoy
     ports:
-      - "9002:9001"
+      - "9001:9001"
     links:
       - dofus-market-grpc
     networks:

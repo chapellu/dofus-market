@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "corsheaders", 'market.apps.MarketConfig', 'django.contrib.admin',
     'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages',
-    'django.contrib.staticfiles', 'rest_framework', 'django_socio_grpc', 'grpc_market'
+    'django.contrib.staticfiles', 'rest_framework', 'django_socio_grpc',
+    'grpc_market'
 ]
 
 MIDDLEWARE = [
@@ -147,5 +148,6 @@ LOGGING = {
 }
 
 GRPC_FRAMEWORK = {
-    "ROOT_HANDLERS_HOOK" : 'grpc_market.handlers.grpc_handlers',
+    "ROOT_HANDLERS_HOOK": 'grpc_market.handlers.grpc_handlers',
+    "GRPC_ASYNC": True,
 }

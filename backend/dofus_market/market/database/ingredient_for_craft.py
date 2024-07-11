@@ -7,6 +7,11 @@ class IngredientForCraft(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+    class Meta:
+        unique_together = (
+            'ingredient', 'quantity'
+        )  # Ensuring uniqueness for the combination of ingredient and quantity
+
     def __str__(self) -> str:
         return f"{{name: \"{self.ingredient}\", quantity: {self.quantity}}}"
 

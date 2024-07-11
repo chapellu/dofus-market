@@ -4,6 +4,11 @@ package dofus_market.grpc_market;
 
 import "google/protobuf/empty.proto";
 
+service EquipementController {
+    rpc List(EquipementListRequest) returns (EquipementListResponse) {}
+    rpc Retrieve(EquipementRetrieveRequest) returns (EquipementResponse) {}
+}
+
 service IngredientController {
     rpc Create(IngredientRequest) returns (IngredientResponse) {}
     rpc Destroy(IngredientDestroyRequest) returns (google.protobuf.Empty) {}
@@ -11,6 +16,24 @@ service IngredientController {
     rpc PartialUpdate(IngredientPartialUpdateRequest) returns (IngredientResponse) {}
     rpc Retrieve(IngredientRetrieveRequest) returns (IngredientResponse) {}
     rpc Update(IngredientRequest) returns (IngredientResponse) {}
+}
+
+service IngredientForCraftController {
+    rpc Create(IngredientForCraftRequest) returns (IngredientForCraftResponse) {}
+    rpc Destroy(IngredientForCraftDestroyRequest) returns (google.protobuf.Empty) {}
+    rpc List(IngredientForCraftListRequest) returns (IngredientForCraftListResponse) {}
+    rpc PartialUpdate(IngredientForCraftPartialUpdateRequest) returns (IngredientForCraftResponse) {}
+    rpc Retrieve(IngredientForCraftRetrieveRequest) returns (IngredientForCraftResponse) {}
+    rpc Update(IngredientForCraftRequest) returns (IngredientForCraftResponse) {}
+}
+
+service MetierController {
+    rpc Create(MetierRequest) returns (MetierResponse) {}
+    rpc Destroy(MetierDestroyRequest) returns (google.protobuf.Empty) {}
+    rpc List(MetierListRequest) returns (MetierListResponse) {}
+    rpc PartialUpdate(MetierPartialUpdateRequest) returns (MetierResponse) {}
+    rpc Retrieve(MetierRetrieveRequest) returns (MetierResponse) {}
+    rpc Update(MetierRequest) returns (MetierResponse) {}
 }
 
 service RecetteController {
@@ -31,8 +54,63 @@ service RuneController {
     rpc Update(RuneRequest) returns (RuneResponse) {}
 }
 
+message EquipementListRequest {
+}
+
+message EquipementListResponse {
+    repeated EquipementResponse results = 1;
+}
+
+message EquipementResponse {
+    string metier = 7;
+    string name = 8;
+    optional int32 level = 9;
+    double cout_fabrication = 10;
+    double gain_estime = 11;
+    int32 rentabilite = 12;
+    optional int32 nb_object = 13;
+}
+
+message EquipementRetrieveRequest {
+    string name = 1;
+}
+
 message IngredientDestroyRequest {
     string name = 1;
+}
+
+message IngredientForCraftDestroyRequest {
+    int32 id = 1;
+}
+
+message IngredientForCraftListRequest {
+}
+
+message IngredientForCraftListResponse {
+    repeated IngredientForCraftResponse results = 1;
+}
+
+message IngredientForCraftPartialUpdateRequest {
+    optional int32 id = 1;
+    int32 quantity = 3;
+    string ingredient = 4;
+    repeated string partial_update_fields = 5;
+}
+
+message IngredientForCraftRequest {
+    optional int32 id = 1;
+    int32 quantity = 2;
+    string ingredient = 3;
+}
+
+message IngredientForCraftResponse {
+    optional int32 id = 1;
+    int32 quantity = 2;
+    string ingredient = 3;
+}
+
+message IngredientForCraftRetrieveRequest {
+    int32 id = 1;
 }
 
 message IngredientListRequest {
@@ -62,6 +140,34 @@ message IngredientRetrieveRequest {
     string name = 1;
 }
 
+message MetierDestroyRequest {
+    string name = 1;
+}
+
+message MetierListRequest {
+}
+
+message MetierListResponse {
+    repeated MetierResponse results = 1;
+}
+
+message MetierPartialUpdateRequest {
+    string name = 1;
+    repeated string partial_update_fields = 2;
+}
+
+message MetierRequest {
+    string name = 1;
+}
+
+message MetierResponse {
+    string name = 1;
+}
+
+message MetierRetrieveRequest {
+    string name = 1;
+}
+
 message RecetteDestroyRequest {
     string ingredient = 1;
 }
@@ -75,10 +181,10 @@ message RecetteListResponse {
 
 message RecettePartialUpdateRequest {
     string ingredient = 1;
-    repeated string partial_update_fields = 2;
     optional int32 level = 3;
     optional string metier = 4;
     repeated int64 ingredients = 5;
+    repeated string partial_update_fields = 6;
 }
 
 message RecetteRequest {
