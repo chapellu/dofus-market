@@ -80,3 +80,32 @@ async def test__list_equipement__list_with_1_item__ok(
     assert len(response.results) == 1
     equipement = response.results[0]
     assert equipement.model_dump() == expected_values
+
+
+@pytest.mark.asyncio
+@pytest.mark.django_db(transaction=True)
+async def test__retrieve_equipement__ok(grpc_client,
+                                        populate_database_with_test_data):
+    # Given
+    await populate_database_with_test_data
+    await sync_to_async(refresh_materialized_view)()
+
+    expected_values = {
+        "name": equipement1.name,
+        "level": equipement1.level,
+        "cout_fabrication": 25.75,
+        "gain_estime": 1350.0,
+        "rentabilite": 5142,
+        "nb_object": 1,
+        "metier": equipement1.metier.name,
+    }
+
+    # When
+    request = EquipementRetrieveRequest(name=equipement1.name)
+    grpc_response: pb2.EquipementRetrieveRequest = await grpc_client.Retrieve(
+        request)
+    response: EquipementResponse = EquipementResponse(
+        **MessageToDict(grpc_response, preserving_proto_field_name=True))
+
+    # Then
+    assert response.model_dump() == expected_values

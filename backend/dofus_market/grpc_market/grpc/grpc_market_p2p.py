@@ -15,11 +15,11 @@ class EquipementListRequest(BaseModel):
 class EquipementResponse(BaseModel):
     metier: str = Field(default="")
     name: str = Field(default="")
-    level: typing.Optional[int] = Field(default=0)
+    level: int = Field(default=0)
     cout_fabrication: float = Field(default=0.0)
     gain_estime: float = Field(default=0.0)
     rentabilite: int = Field(default=0)
-    nb_object: typing.Optional[int] = Field(default=0)
+    nb_object: int = Field(default=0)
 
 
 class EquipementListResponse(BaseModel):

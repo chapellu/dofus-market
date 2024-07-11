@@ -5,11 +5,11 @@ from market.database.metier import Metier
 
 
 class OrderedByRentability(models.Model):
-    equipement = models.ForeignKey(DofusObject,
-                                   on_delete=models.DO_NOTHING,
-                                   db_column='name',
-                                   to_field='name',
-                                   primary_key=True)
+    name = models.ForeignKey(DofusObject,
+                             on_delete=models.DO_NOTHING,
+                             db_column='name',
+                             to_field='name',
+                             primary_key=True)
     metier = models.ForeignKey(Metier,
                                on_delete=models.DO_NOTHING,
                                db_column='metier_id')

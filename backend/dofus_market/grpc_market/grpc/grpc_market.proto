@@ -64,11 +64,11 @@ message EquipementListResponse {
 message EquipementResponse {
     string metier = 7;
     string name = 8;
-    optional int32 level = 9;
+    int32 level = 9;
     double cout_fabrication = 10;
     double gain_estime = 11;
     int32 rentabilite = 12;
-    optional int32 nb_object = 13;
+    int32 nb_object = 13;
 }
 
 message EquipementRetrieveRequest {
@@ -94,7 +94,7 @@ message IngredientForCraftPartialUpdateRequest {
     optional int32 id = 1;
     int32 quantity = 3;
     string ingredient = 4;
-    repeated string partial_update_fields = 5;
+    repeated string _partial_update_fields = 5;
 }
 
 message IngredientForCraftRequest {
@@ -123,7 +123,7 @@ message IngredientListResponse {
 message IngredientPartialUpdateRequest {
     string name = 1;
     optional int32 price = 3;
-    repeated string partial_update_fields = 4;
+    repeated string _partial_update_fields = 4;
 }
 
 message IngredientRequest {
@@ -153,7 +153,7 @@ message MetierListResponse {
 
 message MetierPartialUpdateRequest {
     string name = 1;
-    repeated string partial_update_fields = 2;
+    repeated string _partial_update_fields = 2;
 }
 
 message MetierRequest {
@@ -184,7 +184,7 @@ message RecettePartialUpdateRequest {
     optional int32 level = 3;
     optional string metier = 4;
     repeated int64 ingredients = 5;
-    repeated string partial_update_fields = 6;
+    repeated string _partial_update_fields = 6;
 }
 
 message RecetteRequest {
@@ -221,7 +221,7 @@ message RunePartialUpdateRequest {
     optional int32 prix_ra = 3;
     optional int32 prix_pa = 4;
     optional int32 prix_ba = 5;
-    repeated string partial_update_fields = 6;
+    repeated string _partial_update_fields = 6;
 }
 
 message RuneRequest {

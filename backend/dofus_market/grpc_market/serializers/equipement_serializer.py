@@ -6,7 +6,6 @@ from grpc_market.grpc.grpc_market_pb2 import EquipementResponse, EquipementListR
 
 
 class EquipementProtoSerializer(proto_serializers.ModelProtoSerializer):
-    name = serializers.CharField(source="equipement")
     cout_fabrication = serializers.DecimalField(
         max_digits=12, decimal_places=2, source="equipement_fabrication_cost")
     gain_estime = serializers.DecimalField(max_digits=12,
