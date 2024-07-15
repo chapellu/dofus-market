@@ -8,7 +8,7 @@
 ![Kubernetes](https://img.shields.io/badge/kubernetes-grey?logo=kubernetes)
 ![Helm](https://img.shields.io/badge/helm-grey?logo=helm)
 ![Fluxcd](https://img.shields.io/badge/fluxcd-grey?logo=flux)
-
+![Backend tests](https://github.com/chapellu/dofus-market/actions/workflows/test.yml/badge.svg)
 # Dofus Market
 
 Welcome to the Dofus Market project! This repository contains the code for both the backend and frontend components of the Dofus Market application.
