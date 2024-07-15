@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Django tests
         run: |
-          pytest --cov
+          cd backend && pytest --cov
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
