@@ -5,6 +5,7 @@ package dofus_market.grpc_market;
 import "google/protobuf/empty.proto";
 
 service EquipementController {
+    rpc Details(EquipementDetailsRequest) returns (EquipementDetailsResponse) {}
     rpc List(EquipementListRequest) returns (EquipementListResponse) {}
     rpc Retrieve(EquipementRetrieveRequest) returns (EquipementResponse) {}
 }
@@ -54,21 +55,73 @@ service RuneController {
     rpc Update(RuneRequest) returns (RuneResponse) {}
 }
 
+message BrokenRune {
+    string rune = 1;
+    float quantity_ra = 2;
+    int32 prix_ra = 3;
+    float quantity_pa = 4;
+    int32 prix_pa = 5;
+    float quantity_ba = 6;
+    int32 prix_ba = 7;
+}
+
+message Rune {
+    string name = 1;
+    int32 prix_ra = 2;
+    int32 prix_pa = 3;
+    int32 prix_ba = 4;
+}
+
+message Caracteristique {
+    string name = 1;
+    int32 min = 2;
+    int32 max = 3;
+    Rune rune = 4;
+}
+
+message Ingredient {
+    string name = 1;
+    int32 quantity = 2;
+    int32 price =3;
+    repeated Ingredient ingredients = 4;
+    optional int32 nb_objet = 5;
+    optional float cout_fabrication = 6;
+    optional float rentabilite = 7;
+}
+
+message EquipementDetailsRequest {
+    string name = 1;
+}
+
+message EquipementDetailsResponse {
+    string name = 1;
+    int32 level = 2;
+    float cout_fabrication = 3;
+    float gain_estime = 4;
+    float rentabilite = 5;
+    int32 nb_objet = 6;
+    string metier = 7;
+    repeated Caracteristique effects = 8;
+    repeated Ingredient ingredients = 9;
+    repeated BrokenRune brisage = 10;
+}
+
 message EquipementListRequest {
 }
 
 message EquipementListResponse {
     repeated EquipementResponse results = 1;
+    int32 count = 2;
 }
 
 message EquipementResponse {
     string metier = 7;
     string name = 8;
     int32 level = 9;
-    double cout_fabrication = 10;
-    double gain_estime = 11;
+    float cout_fabrication = 10;
+    float gain_estime = 11;
     int32 rentabilite = 12;
-    int32 nb_object = 13;
+    int32 nb_objet = 13;
 }
 
 message EquipementRetrieveRequest {

@@ -64,6 +64,7 @@ async def populate_database_with_test_data(request):
 
     await equipement1._effects.aadd(caracteristique1)
     await equipement1._ingredients.aadd(craft_ressource1)
+    await equipement1._ingredients.aadd(craft_ressource2)
 
     async def _cleanup_test_data():
         await ingredient.adelete()

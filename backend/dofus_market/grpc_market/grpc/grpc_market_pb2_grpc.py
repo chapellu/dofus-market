@@ -40,6 +40,13 @@ class EquipementControllerStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.Details = channel.unary_unary(
+            '/dofus_market.grpc_market.EquipementController/Details',
+            request_serializer=grpc__market__pb2.EquipementDetailsRequest.
+            SerializeToString,
+            response_deserializer=grpc__market__pb2.EquipementDetailsResponse.
+            FromString,
+            _registered_method=True)
         self.List = channel.unary_unary(
             '/dofus_market.grpc_market.EquipementController/List',
             request_serializer=grpc__market__pb2.EquipementListRequest.
@@ -59,6 +66,12 @@ class EquipementControllerStub(object):
 class EquipementControllerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
+    def Details(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def List(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -74,6 +87,14 @@ class EquipementControllerServicer(object):
 
 def add_EquipementControllerServicer_to_server(servicer, server):
     rpc_method_handlers = {
+        'Details':
+        grpc.unary_unary_rpc_method_handler(
+            servicer.Details,
+            request_deserializer=grpc__market__pb2.EquipementDetailsRequest.
+            FromString,
+            response_serializer=grpc__market__pb2.EquipementDetailsResponse.
+            SerializeToString,
+        ),
         'List':
         grpc.unary_unary_rpc_method_handler(
             servicer.List,
@@ -101,6 +122,33 @@ def add_EquipementControllerServicer_to_server(servicer, server):
 # This class is part of an EXPERIMENTAL API.
 class EquipementController(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Details(request,
+                target,
+                options=(),
+                channel_credentials=None,
+                call_credentials=None,
+                insecure=False,
+                compression=None,
+                wait_for_ready=None,
+                timeout=None,
+                metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dofus_market.grpc_market.EquipementController/Details',
+            grpc__market__pb2.EquipementDetailsRequest.SerializeToString,
+            grpc__market__pb2.EquipementDetailsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
 
     @staticmethod
     def List(request,

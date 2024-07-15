@@ -5,5 +5,5 @@ from market.database.rune import Rune
 
 
 class RuneService(generics.AsyncModelService):
-    queryset = Rune.objects.all()
+    queryset = Rune.objects.all().order_by("name")
     serializer_class = RuneProtoSerializer

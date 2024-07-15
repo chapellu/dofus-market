@@ -8,6 +8,57 @@ from pydantic import Field
 import typing
 
 
+class BrokenRune(BaseModel):
+    rune: str = Field(default="")
+    quantity_ra: float = Field(default=0.0)
+    prix_ra: int = Field(default=0)
+    quantity_pa: float = Field(default=0.0)
+    prix_pa: int = Field(default=0)
+    quantity_ba: float = Field(default=0.0)
+    prix_ba: int = Field(default=0)
+
+
+class Rune(BaseModel):
+    name: str = Field(default="")
+    prix_ra: int = Field(default=0)
+    prix_pa: int = Field(default=0)
+    prix_ba: int = Field(default=0)
+
+
+class Caracteristique(BaseModel):
+    name: str = Field(default="")
+    min: int = Field(default=0)
+    max: int = Field(default=0)
+    rune: Rune = Field()
+
+
+class Ingredient(BaseModel):
+    name: str = Field(default="")
+    quantity: int = Field(default=0)
+    price: int = Field(default=0)
+    ingredients: typing.List["Ingredient"] = Field(default_factory=list)
+    nb_objet: typing.Optional[int] = Field(default=0)
+    cout_fabrication: typing.Optional[float] = Field(default=0.0)
+    rentabilite: typing.Optional[float] = Field(default=0.0)
+
+
+class EquipementDetailsRequest(BaseModel):
+    name: str = Field(default="")
+
+
+class EquipementDetailsResponse(BaseModel):
+    name: str = Field(default="")
+    level: int = Field(default=0)
+    cout_fabrication: float = Field(default=0.0)
+    gain_estime: float = Field(default=0.0)
+    rentabilite: float = Field(default=0.0)
+    nb_objet: int = Field(default=0)
+    metier: str = Field(default="")
+    effects: typing.List[Caracteristique] = Field(default_factory=list)
+    ingredients: typing.List[Ingredient] = Field(default_factory=list)
+    brisage: typing.List[BrokenRune] = Field(default_factory=list)
+
+
 class EquipementListRequest(BaseModel):
     pass
 
@@ -19,11 +70,12 @@ class EquipementResponse(BaseModel):
     cout_fabrication: float = Field(default=0.0)
     gain_estime: float = Field(default=0.0)
     rentabilite: int = Field(default=0)
-    nb_object: int = Field(default=0)
+    nb_objet: int = Field(default=0)
 
 
 class EquipementListResponse(BaseModel):
     results: typing.List[EquipementResponse] = Field(default_factory=list)
+    count: int = Field(default=0)
 
 
 class EquipementRetrieveRequest(BaseModel):

@@ -51,11 +51,11 @@ class TestPost(TestCase):
         # Given
         ingredients = []
         ingredients.append(await
-                           Ingredient.objects.acreate(name="Laine de Bouftou",
-                                                      price=10))
-        ingredients.append(await
                            Ingredient.objects.acreate(name="Bave de Bouftou",
                                                       price=100))
+        ingredients.append(await
+                           Ingredient.objects.acreate(name="Laine de Bouftou",
+                                                      price=10))
 
         # When
         request = IngredientListRequest()

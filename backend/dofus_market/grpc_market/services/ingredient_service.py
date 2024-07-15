@@ -5,5 +5,5 @@ from market.database.ingredient import Ingredient
 
 
 class IngredientService(generics.AsyncModelService):
-    queryset = Ingredient.objects.all()
+    queryset = Ingredient.objects.all().order_by("name")
     serializer_class = IngredientProtoSerializer

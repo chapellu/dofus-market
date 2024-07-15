@@ -52,14 +52,14 @@ class TestRune(TestCase):
     async def test__list_rune__list_with_2_items__ok(self):
         # Given
         runes = []
-        runes.append(await Rune.objects.acreate(name="Vitalité",
-                                                prix_ba=10,
-                                                prix_pa=100,
-                                                prix_ra=100))
         runes.append(await Rune.objects.acreate(name="Force",
                                                 prix_ba=20,
                                                 prix_pa=200,
                                                 prix_ra=200))
+        runes.append(await Rune.objects.acreate(name="Vitalité",
+                                                prix_ba=10,
+                                                prix_pa=100,
+                                                prix_ra=100))
 
         # When
         request = RuneListRequest()

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 	            e.name,
                 e.level,
 	            e.metier_id,
-                COUNT(DISTINCT ei.dofusobject_id) AS number_of_ingredients,
+                COUNT(ei.dofusobject_id) AS number_of_ingredients,
 	            r.equipement_estimated_gain,
 	            r.equipement_fabrication_cost,
 	            r.rentability
