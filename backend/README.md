@@ -8,13 +8,6 @@ First and foremost create a virtualenv
 python3 -m venv .venv  # Creates a virtual environment named ".venv"
 ```
 
-``` shell
-source .venv/bin/activate  # Activates the virtual environment on Linux/macOS
-
-.venv\Scripts\activate  # Activates the virtual environment on Windows
-
-poetry install
-```
 
 Then activate it
 
@@ -35,6 +28,7 @@ source .venv/bin/activate  # Activates the virtual environment on Linux/macOS
 ```
 
 </details>
+
 
 Once that's done you can install the requirements
 
