@@ -4,7 +4,6 @@ from market.database.rune import Rune
 
 
 class RuneSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Rune
-        fields = '__all__'
+        fields = "__all__"

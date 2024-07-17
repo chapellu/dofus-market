@@ -4,9 +4,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('market', '0004_alter_ingredient_price'),
+        ("market", "0004_alter_ingredient_price"),
     ]
 
     operations = [
@@ -22,7 +21,6 @@ class Migration(migrations.Migration):
             GROUP BY e.name
             )
             """),
-    
         migrations.RunSQL("""
             CREATE MATERIALIZED VIEW FabricationCosts AS (
             SELECT
@@ -35,7 +33,6 @@ class Migration(migrations.Migration):
             GROUP BY e.name 
             )
             """),
-
         migrations.RunSQL("""
             CREATE MATERIALIZED VIEW Rentability AS (
             SELECT

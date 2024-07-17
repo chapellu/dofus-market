@@ -8,8 +8,9 @@ ARG POSTGRESQL_PASSWORD
 
 WORKDIR /opt/dofus_market
 
-COPY requirements.txt /opt/dofus_market/requirements.txt
-RUN pip install --no-cache-dir -r /opt/dofus_market/requirements.txt
+COPY poetry.lock pyproject.toml /opt/dofus_market/
+RUN pip install --no-cache-dir --upgrade pip && \
+    poetry install --without dev,tests --no-interaction
 
 # Mounts the application code to the image
 COPY ./ /opt/dofus_market/

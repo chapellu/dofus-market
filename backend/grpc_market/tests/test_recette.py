@@ -8,20 +8,37 @@ import pytest
 from django.test import TestCase, override_settings
 from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
 from google.protobuf.empty_pb2 import Empty
-from grpc_market.grpc.grpc_market_p2p import (RecetteDestroyRequest,
-                                              RecetteListRequest,
-                                              RecetteListResponse,
-                                              RecetteRequest, RecetteResponse,
-                                              RecetteRetrieveRequest)
+from grpc_market.grpc.grpc_market_p2p import (
+    RecetteDestroyRequest,
+    RecetteListRequest,
+    RecetteListResponse,
+    RecetteRequest,
+    RecetteResponse,
+    RecetteRetrieveRequest,
+)
 from grpc_market.grpc.grpc_market_pb2_grpc import (
-    RecetteControllerStub, add_RecetteControllerServicer_to_server)
+    RecetteControllerStub,
+    add_RecetteControllerServicer_to_server,
+)
 from grpc_market.services.recette_service import RecetteService
 from market.database.recette import Recette
 from asgiref.sync import sync_to_async
 from google.protobuf.json_format import MessageToDict
 from django.forms.models import model_to_dict
 
-from conftest import ingredient, ingredient2, ressource1, ressource2, craft_ressource1, craft_ressource2, metier, recette1, recette2, recettes, craft_ingredients
+from conftest import (
+    ingredient,
+    ingredient2,
+    ressource1,
+    ressource2,
+    craft_ressource1,
+    craft_ressource2,
+    metier,
+    recette1,
+    recette2,
+    recettes,
+    craft_ingredients,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -64,7 +81,8 @@ async def test__list_recette__empty_list__ok(grpc_client):
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
 async def test__list_recette__list_with_2_items__ok(
-        grpc_client, populate_database_with_test_data):
+    grpc_client, populate_database_with_test_data
+):
     # Given
     await populate_database_with_test_data
 
@@ -72,7 +90,8 @@ async def test__list_recette__list_with_2_items__ok(
     request = RecetteListRequest()
     grpc_response: pb2.RecetteListResponse = await grpc_client.List(request)
     response: RecetteListResponse = RecetteListResponse(
-        **MessageToDict(grpc_response, preserving_proto_field_name=True))
+        **MessageToDict(grpc_response, preserving_proto_field_name=True)
+    )
 
     # Then
     assert len(response.results) == len(recettes)
@@ -98,14 +117,13 @@ async def test__retrieve_recette__not_found(grpc_client):
     assert code == grpc.StatusCode.NOT_FOUND
     assert json.loads(details) == {
         "message": f"Recette: {ingredient.name} not found!",
-        "code": "not_found"
+        "code": "not_found",
     }
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
-async def test__retrieve_recette__ok(grpc_client,
-                                     populate_database_with_test_data):
+async def test__retrieve_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
     await populate_database_with_test_data
 
@@ -113,14 +131,15 @@ async def test__retrieve_recette__ok(grpc_client,
         "ingredient": recette1.ingredient.name,
         "level": recette1.level,
         "metier": recette1.metier.name,
-        "ingredients": craft_ingredients
+        "ingredients": craft_ingredients,
     }
 
     # When
     request = RecetteRetrieveRequest(ingredient=recette1.ingredient.name)
     grpc_response: pb2.RecetteResponse = await grpc_client.Retrieve(request)
     response: RecetteResponse = RecetteResponse(
-        **MessageToDict(grpc_response, preserving_proto_field_name=True))
+        **MessageToDict(grpc_response, preserving_proto_field_name=True)
+    )
 
     # Then
     assert response.model_dump() == expected_values
@@ -133,8 +152,7 @@ async def async_model_to_dict(instance):
 
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
-async def test__create_recette__ok(grpc_client,
-                                   populate_database_with_test_data):
+async def test__create_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
     await populate_database_with_test_data
     ingredient_name = "Potion de soin majeur"
@@ -146,18 +164,19 @@ async def test__create_recette__ok(grpc_client,
         "ingredient": ingredient_name,
         "level": level,
         "metier": metier,
-        "ingredients": ingredients
+        "ingredients": ingredients,
     }
 
     # When
-    request = RecetteRequest(ingredient=ingredient_name,
-                             level=level,
-                             metier=metier,
-                             ingredients=ingredients)
+    request = RecetteRequest(
+        ingredient=ingredient_name, level=level, metier=metier, ingredients=ingredients
+    )
     grpc_response: pb2.RecetteResponse = await grpc_client.Create(
-        pb2.RecetteRequest(**request.model_dump()))
+        pb2.RecetteRequest(**request.model_dump())
+    )
     response: RecetteResponse = RecetteResponse(
-        **MessageToDict(grpc_response, preserving_proto_field_name=True))
+        **MessageToDict(grpc_response, preserving_proto_field_name=True)
+    )
 
     # Then
     assert response.model_dump() == expected_values
@@ -168,7 +187,7 @@ async def test__create_recette__ok(grpc_client,
         "ingredient": recette.ingredient_id,
         "level": recette.level,
         "metier": recette.metier_id,
-        "ingredients": [ingredient.pk for ingredient in ingredients]
+        "ingredients": [ingredient.pk for ingredient in ingredients],
     }
     assert actual_values == expected_values
 
@@ -176,7 +195,8 @@ async def test__create_recette__ok(grpc_client,
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
 async def test__create_recette__already_exist(
-        grpc_client, populate_database_with_test_data):
+    grpc_client, populate_database_with_test_data
+):
     # Given
     await populate_database_with_test_data
 
@@ -186,25 +206,28 @@ async def test__create_recette__already_exist(
             ingredient=recette1.ingredient.name,
             level=recette1.level,
             metier=recette1.metier.name,
-            ingredients=[craft_ressource1.pk, craft_ressource2.pk])
+            ingredients=[craft_ressource1.pk, craft_ressource2.pk],
+        )
         response: RecetteResponse = await grpc_client.Create(
-            pb2.RecetteRequest(**request.model_dump()))
+            pb2.RecetteRequest(**request.model_dump())
+        )
 
     # Then
     code, details = expected_error.value.args
     assert code == grpc.StatusCode.INVALID_ARGUMENT
     assert json.loads(details) == {
-        "ingredient": [{
-            "message": "recette with this ingredient already exists.",
-            "code": "unique"
-        }]
+        "ingredient": [
+            {
+                "message": "recette with this ingredient already exists.",
+                "code": "unique",
+            }
+        ]
     }
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
-async def test__destroy_recette__ok(grpc_client,
-                                    populate_database_with_test_data):
+async def test__destroy_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
     await populate_database_with_test_data
 
@@ -234,14 +257,13 @@ async def test__destroy_recette__does_not_exist(grpc_client):
     assert code == grpc.StatusCode.NOT_FOUND
     assert json.loads(details) == {
         "message": f"Recette: {recette_name} not found!",
-        "code": "not_found"
+        "code": "not_found",
     }
 
 
 @pytest.mark.asyncio
 @pytest.mark.django_db(transaction=True)
-async def test__update_recette__ok(grpc_client,
-                                   populate_database_with_test_data):
+async def test__update_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
     await populate_database_with_test_data
 
@@ -252,18 +274,22 @@ async def test__update_recette__ok(grpc_client,
         "ingredient": recette1.ingredient.name,
         "level": new_level,
         "metier": new_metier.name,
-        "ingredients": new_ingredients
+        "ingredients": new_ingredients,
     }
 
     # When
-    request = RecetteRequest(ingredient=recette1.ingredient.name,
-                             level=new_level,
-                             metier=new_metier.name,
-                             ingredients=new_ingredients)
+    request = RecetteRequest(
+        ingredient=recette1.ingredient.name,
+        level=new_level,
+        metier=new_metier.name,
+        ingredients=new_ingredients,
+    )
     grpc_response: pb2.RecetteResponse = await grpc_client.Update(
-        pb2.RecetteRequest(**request.model_dump()))
+        pb2.RecetteRequest(**request.model_dump())
+    )
     response: RecetteResponse = RecetteResponse(
-        **MessageToDict(grpc_response, preserving_proto_field_name=True))
+        **MessageToDict(grpc_response, preserving_proto_field_name=True)
+    )
 
     # Then
     assert response.model_dump() == expected_values
@@ -274,6 +300,6 @@ async def test__update_recette__ok(grpc_client,
         "ingredient": recette.ingredient_id,
         "level": recette.level,
         "metier": recette.metier_id,
-        "ingredients": [ingredient.pk for ingredient in ingredients]
+        "ingredients": [ingredient.pk for ingredient in ingredients],
     }
     assert actual_values == expected_values

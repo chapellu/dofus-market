@@ -101,8 +101,7 @@ class IngredientForCraftResponse(BaseModel):
 
 
 class IngredientForCraftListResponse(BaseModel):
-    results: typing.List[IngredientForCraftResponse] = Field(
-        default_factory=list)
+    results: typing.List[IngredientForCraftResponse] = Field(default_factory=list)
 
 
 class IngredientForCraftPartialUpdateRequest(BaseModel):

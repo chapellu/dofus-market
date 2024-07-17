@@ -16,10 +16,14 @@ class Caracteristique(models.Model):
     number_of_ba = models.FloatField(default=0.0)
 
     def __str__(self) -> str:
-        return f"{{'name': \'{self.name}\', 'min': {self.min}, 'max': {self.max}}}"
+        return f"{{'name': '{self.name}', 'min': {self.min}, 'max': {self.max}}}"
 
     def gain_estime(self, level: int):
-        return self.number_of_ra * self.rune.prix_ra + self.number_of_pa * self.rune.prix_pa + self.number_of_ba * self.rune.prix_ba
+        return (
+            self.number_of_ra * self.rune.prix_ra
+            + self.number_of_pa * self.rune.prix_pa
+            + self.number_of_ba * self.rune.prix_ba
+        )
 
     def brisage(self, level: int):
         return self.number_of_ra, self.number_of_pa, self.number_of_ba
@@ -29,16 +33,27 @@ class Caracteristique(models.Model):
         if dofusbook_caracteristique["type"] == "O":
             return
         if dofusbook_caracteristique["name"] in [
-                'pap', 'ptp', 'paf', 'pnf', 'pep', 'ptf', 'pfp', 'pnp', 'pef',
-                'pff'
+            "pap",
+            "ptp",
+            "paf",
+            "pnf",
+            "pep",
+            "ptf",
+            "pfp",
+            "pnp",
+            "pef",
+            "pff",
         ]:
             return
         ra, pa, ba = brisage_rune(
-            level, dofusbook_caracteristique["min"],
+            level,
+            dofusbook_caracteristique["min"],
             dofusbook_caracteristique["max"],
-            runes_name[dofusbook_caracteristique["name"]])
+            runes_name[dofusbook_caracteristique["name"]],
+        )
         rune, _ = Rune.objects.get_or_create(
-            name=runes_name[dofusbook_caracteristique["name"]])
+            name=runes_name[dofusbook_caracteristique["name"]]
+        )
         carac, _ = cls.objects.get_or_create(
             name=dofusbook_caracteristique["name"],
             min=dofusbook_caracteristique["min"],
@@ -47,5 +62,6 @@ class Caracteristique(models.Model):
             level=level,
             number_of_ra=ra,
             number_of_pa=pa,
-            number_of_ba=ba)
+            number_of_ba=ba,
+        )
         return carac.pk

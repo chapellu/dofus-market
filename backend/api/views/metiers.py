@@ -8,7 +8,7 @@ from rest_framework.serializers import Serializer
 from rest_framework.utils.serializer_helpers import ReturnDict
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_metiers(request: Request):
     query_set: QuerySet = Metier.objects.all()
     serializer: Serializer = MetierSerializer(query_set, many=True)

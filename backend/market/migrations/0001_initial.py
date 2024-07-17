@@ -5,69 +5,111 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Caracteristique',
+            name="Caracteristique",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('min', models.IntegerField()),
-                ('max', models.IntegerField()),
-                ('level', models.IntegerField()),
-                ('number_of_ra', models.FloatField(default=0.0)),
-                ('number_of_pa', models.FloatField(default=0.0)),
-                ('number_of_ba', models.FloatField(default=0.0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("min", models.IntegerField()),
+                ("max", models.IntegerField()),
+                ("level", models.IntegerField()),
+                ("number_of_ra", models.FloatField(default=0.0)),
+                ("number_of_pa", models.FloatField(default=0.0)),
+                ("number_of_ba", models.FloatField(default=0.0)),
             ],
         ),
         migrations.CreateModel(
-            name='Ingredient',
+            name="Ingredient",
             fields=[
-                ('name', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('price', models.IntegerField(default=1000000000)),
+                (
+                    "name",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("price", models.IntegerField(default=1000000000)),
             ],
         ),
         migrations.CreateModel(
-            name='Metier',
+            name="Metier",
             fields=[
-                ('name', models.CharField(max_length=100, primary_key=True, serialize=False)),
+                (
+                    "name",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Rune',
+            name="Rune",
             fields=[
-                ('name', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('prix_ra', models.IntegerField(default=0)),
-                ('prix_pa', models.IntegerField(default=0)),
-                ('prix_ba', models.IntegerField(default=0)),
+                (
+                    "name",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("prix_ra", models.IntegerField(default=0)),
+                ("prix_pa", models.IntegerField(default=0)),
+                ("prix_ba", models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(
-            name='IngredientForCraft',
+            name="IngredientForCraft",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField()),
-                ('ingredient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='market.ingredient')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.IntegerField()),
+                (
+                    "ingredient",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="market.ingredient",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='DofusObject',
+            name="DofusObject",
             fields=[
-                ('name', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('level', models.IntegerField()),
-                ('_effects', models.ManyToManyField(to='market.caracteristique')),
-                ('_ingredients', models.ManyToManyField(to='market.ingredientforcraft')),
-                ('metier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='market.metier')),
+                (
+                    "name",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("level", models.IntegerField()),
+                ("_effects", models.ManyToManyField(to="market.caracteristique")),
+                (
+                    "_ingredients",
+                    models.ManyToManyField(to="market.ingredientforcraft"),
+                ),
+                (
+                    "metier",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="market.metier"
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='caracteristique',
-            name='rune',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='market.rune'),
+            model_name="caracteristique",
+            name="rune",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="market.rune"
+            ),
         ),
     ]

@@ -5,18 +5,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('market', '0001_initial'),
+        ("market", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Recette',
+            name="Recette",
             fields=[
-                ('ingredient', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='market.ingredient')),
-                ('level', models.IntegerField(default=0)),
-                ('ingredients', models.ManyToManyField(to='market.ingredientforcraft')),
+                (
+                    "ingredient",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        primary_key=True,
+                        serialize=False,
+                        to="market.ingredient",
+                    ),
+                ),
+                ("level", models.IntegerField(default=0)),
+                ("ingredients", models.ManyToManyField(to="market.ingredientforcraft")),
             ],
         ),
     ]

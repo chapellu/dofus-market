@@ -5,9 +5,8 @@ from grpc_market.grpc.grpc_market_pb2 import RecetteResponse, RecetteListRespons
 
 
 class RecetteProtoSerializer(proto_serializers.ModelProtoSerializer):
-
     class Meta:
         model = Recette
-        fields = '__all__'
+        fields = "__all__"
         proto_class = RecetteResponse
         proto_class_list = RecetteListResponse

@@ -6,7 +6,11 @@
   "[python]": {
     "editor.formatOnSaveMode": "file",
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "eeyore.yapf",
-    "editor.formatOnType": false
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
   }
 }

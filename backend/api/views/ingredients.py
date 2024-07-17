@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from rest_framework.request import Request
 from django.db import connection
 
+
 class Ingredients:
     count: int
     results: []
@@ -18,9 +19,9 @@ class Ingredients:
         self.results = results
 
 
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 def get_ingredients(request: Request):
-    if request.method == 'POST':
+    if request.method == "POST":
         serializer = IngredientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -30,21 +31,23 @@ def get_ingredients(request: Request):
     page: int = request.query_params.get("page", 1)
     query_set = Ingredient.objects.all().order_by("name")
     if "search" in request.query_params:
-        query_set = query_set.filter(
-            name__icontains=request.query_params["search"])
+        query_set = query_set.filter(name__icontains=request.query_params["search"])
     paginator = Paginator(query_set, page_size)
     serializer = IngredientsSerializer(
-        Ingredients(paginator.count, paginator.page(page)))
+        Ingredients(paginator.count, paginator.page(page))
+    )
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(["PUT"])
 def update_ingredient(request, name):
     try:
         ingredient = Ingredient.objects.get(name=name)
     except Ingredient.DoesNotExist:
-        return JsonResponse({'message': 'This ingredient does not exist'},
-                            status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse(
+            {"message": "This ingredient does not exist"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
     data = JSONParser().parse(request)
     ingredient.price = data["price"]
@@ -55,6 +58,5 @@ def update_ingredient(request, name):
         cursor.execute("REFRESH MATERIALIZED VIEW FabricationCosts;")
         cursor.execute("REFRESH MATERIALIZED VIEW Rentability;")
         cursor.execute("REFRESH MATERIALIZED VIEW OrderedByRentability;")
-
 
     return Response(serializer.data)

@@ -4,27 +4,32 @@ import pytest
 from django.test import TestCase, override_settings
 from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
 from google.protobuf.empty_pb2 import Empty
-from grpc_market.grpc.grpc_market_p2p import (RuneDestroyRequest,
-                                              RuneListRequest,
-                                              RuneListResponse, RuneRequest,
-                                              RuneResponse,
-                                              RuneRetrieveRequest)
+from grpc_market.grpc.grpc_market_p2p import (
+    RuneDestroyRequest,
+    RuneListRequest,
+    RuneListResponse,
+    RuneRequest,
+    RuneResponse,
+    RuneRetrieveRequest,
+)
 from grpc_market.grpc.grpc_market_pb2_grpc import (
-    RuneControllerStub, add_RuneControllerServicer_to_server)
+    RuneControllerStub,
+    add_RuneControllerServicer_to_server,
+)
 from grpc_market.services.rune_service import RuneService
 from market.database.rune import Rune
 
 
 @override_settings(GRPC_FRAMEWORK={"GRPC_ASYNC": True})
 class TestRune(TestCase):
-
     def setUp(self):
         self.fake_grpc = FakeFullAIOGRPC(
             add_RuneControllerServicer_to_server,
             RuneService.as_servicer(),
         )
         self.client: RuneControllerStub = self.fake_grpc.get_fake_stub(
-            RuneControllerStub)
+            RuneControllerStub
+        )
 
     def tearDown(self) -> None:
         self.fake_grpc.close()
@@ -52,14 +57,16 @@ class TestRune(TestCase):
     async def test__list_rune__list_with_2_items__ok(self):
         # Given
         runes = []
-        runes.append(await Rune.objects.acreate(name="Force",
-                                                prix_ba=20,
-                                                prix_pa=200,
-                                                prix_ra=200))
-        runes.append(await Rune.objects.acreate(name="Vitalité",
-                                                prix_ba=10,
-                                                prix_pa=100,
-                                                prix_ra=100))
+        runes.append(
+            await Rune.objects.acreate(
+                name="Force", prix_ba=20, prix_pa=200, prix_ra=200
+            )
+        )
+        runes.append(
+            await Rune.objects.acreate(
+                name="Vitalité", prix_ba=10, prix_pa=100, prix_ra=100
+            )
+        )
 
         # When
         request = RuneListRequest()
@@ -83,11 +90,10 @@ class TestRune(TestCase):
             await self.client.Retrieve(request)
 
         # Then
-        self.assertEqual(expected_error.value.args[0],
-                         grpc.StatusCode.NOT_FOUND)
+        self.assertEqual(expected_error.value.args[0], grpc.StatusCode.NOT_FOUND)
         self.assertEqual(
-            expected_error.value.args[1].encode().decode('unicode_escape'),
-            f'{{"message": "Rune: {rune_name} not found!", "code": "not_found"}}'
+            expected_error.value.args[1].encode().decode("unicode_escape"),
+            f'{{"message": "Rune: {rune_name} not found!", "code": "not_found"}}',
         )
 
     async def test__retrieve_rune__ok(self):
@@ -96,10 +102,12 @@ class TestRune(TestCase):
         rune_prix_ba = 10
         rune_prix_pa = 100
         rune_prix_ra = 100
-        await Rune.objects.acreate(name=rune_name,
-                                   prix_ba=rune_prix_ba,
-                                   prix_pa=rune_prix_pa,
-                                   prix_ra=rune_prix_ra)
+        await Rune.objects.acreate(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
         # When
         request = RuneRetrieveRequest(name=rune_name)
         response: RuneResponse = await self.client.Retrieve(request)
@@ -118,12 +126,15 @@ class TestRune(TestCase):
         rune_prix_ra = 100
 
         # When
-        request = RuneRequest(name=rune_name,
-                              prix_ba=rune_prix_ba,
-                              prix_pa=rune_prix_pa,
-                              prix_ra=rune_prix_ra)
+        request = RuneRequest(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
         response: RuneResponse = await self.client.Create(
-            pb2.RuneRequest(**request.model_dump()))
+            pb2.RuneRequest(**request.model_dump())
+        )
 
         # Then
         self.assertEqual(response.name, rune_name)
@@ -142,25 +153,29 @@ class TestRune(TestCase):
         rune_prix_ba = 10
         rune_prix_pa = 100
         rune_prix_ra = 100
-        await Rune.objects.acreate(name=rune_name,
-                                   prix_ba=rune_prix_ba,
-                                   prix_pa=rune_prix_pa,
-                                   prix_ra=rune_prix_ra)
+        await Rune.objects.acreate(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
         # When
         with pytest.raises(grpc.RpcError) as expected_error:
-            request = RuneRequest(name=rune_name,
-                                  prix_ba=rune_prix_ba,
-                                  prix_pa=rune_prix_pa,
-                                  prix_ra=rune_prix_ra)
+            request = RuneRequest(
+                name=rune_name,
+                prix_ba=rune_prix_ba,
+                prix_pa=rune_prix_pa,
+                prix_ra=rune_prix_ra,
+            )
             response: RuneResponse = await self.client.Create(
-                pb2.RuneRequest(**request.model_dump()))
+                pb2.RuneRequest(**request.model_dump())
+            )
 
         # Then
-        self.assertEqual(expected_error.value.args[0],
-                         grpc.StatusCode.INVALID_ARGUMENT)
+        self.assertEqual(expected_error.value.args[0], grpc.StatusCode.INVALID_ARGUMENT)
         self.assertEqual(
             expected_error.value.args[1],
-            '{"name": [{"message": "rune with this name already exists.", "code": "unique"}]}'
+            '{"name": [{"message": "rune with this name already exists.", "code": "unique"}]}',
         )
 
     async def test__destroy_rune__ok(self):
@@ -169,10 +184,12 @@ class TestRune(TestCase):
         rune_prix_ba = 10
         rune_prix_pa = 100
         rune_prix_ra = 100
-        await Rune.objects.acreate(name=rune_name,
-                                   prix_ba=rune_prix_ba,
-                                   prix_pa=rune_prix_pa,
-                                   prix_ra=rune_prix_ra)
+        await Rune.objects.acreate(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
 
         # When
         request = RuneDestroyRequest(name=rune_name)
@@ -193,11 +210,10 @@ class TestRune(TestCase):
             response: Empty = await self.client.Destroy(request)
 
         # Then
-        self.assertEqual(expected_error.value.args[0],
-                         grpc.StatusCode.NOT_FOUND)
+        self.assertEqual(expected_error.value.args[0], grpc.StatusCode.NOT_FOUND)
         self.assertEqual(
-            expected_error.value.args[1].encode().decode('unicode_escape'),
-            f'{{"message": "Rune: {rune_name} not found!", "code": "not_found"}}'
+            expected_error.value.args[1].encode().decode("unicode_escape"),
+            f'{{"message": "Rune: {rune_name} not found!", "code": "not_found"}}',
         )
 
     async def test__update_rune__ok(self):
@@ -206,18 +222,23 @@ class TestRune(TestCase):
         rune_prix_ba = 10
         rune_prix_pa = 100
         rune_prix_ra = 100
-        await Rune.objects.acreate(name=rune_name,
-                                   prix_ba=rune_prix_ba,
-                                   prix_pa=rune_prix_pa,
-                                   prix_ra=rune_prix_ra)
+        await Rune.objects.acreate(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
 
         # When
-        request = RuneRequest(name=rune_name,
-                              prix_ba=rune_prix_ba,
-                              prix_pa=rune_prix_pa,
-                              prix_ra=rune_prix_ra)
+        request = RuneRequest(
+            name=rune_name,
+            prix_ba=rune_prix_ba,
+            prix_pa=rune_prix_pa,
+            prix_ra=rune_prix_ra,
+        )
         response: RuneResponse = await self.client.Update(
-            pb2.RuneRequest(**request.model_dump()))
+            pb2.RuneRequest(**request.model_dump())
+        )
 
         # Then
         self.assertEqual(response.name, rune_name)

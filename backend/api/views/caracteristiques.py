@@ -5,7 +5,7 @@ from api.serializers.caracteristique import CaracteristiqueSerializer
 from market.database.caracteristique import Caracteristique
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_caracteristique(request):
     dofus_objects = Caracteristique.objects.all()
     serializer = CaracteristiqueSerializer(dofus_objects, many=True)

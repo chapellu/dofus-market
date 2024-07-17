@@ -3,7 +3,9 @@ import pytest
 from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
 from market.database.rune import Rune
 from grpc_market.grpc.grpc_market_pb2_grpc import (
-    RecetteControllerStub, add_RecetteControllerServicer_to_server)
+    RecetteControllerStub,
+    add_RecetteControllerServicer_to_server,
+)
 from grpc_market.services.recette_service import RecetteService
 
 from market.database.ingredient import Ingredient
@@ -30,14 +32,16 @@ metiers = [metier, metier2]
 
 equipement1 = Equipement(name="Marteau du Testeur", level=200, metier=metier)
 rune1 = Rune(name="Age", prix_ra=1000, prix_pa=100, prix_ba=10)
-caracteristique1 = Caracteristique(name="Agilité",
-                                   min=50,
-                                   max=100,
-                                   rune=rune1,
-                                   level=equipement1.level,
-                                   number_of_ra=1,
-                                   number_of_pa=3,
-                                   number_of_ba=5)
+caracteristique1 = Caracteristique(
+    name="Agilité",
+    min=50,
+    max=100,
+    rune=rune1,
+    level=equipement1.level,
+    number_of_ra=1,
+    number_of_pa=3,
+    number_of_ba=5,
+)
 
 
 @pytest.fixture

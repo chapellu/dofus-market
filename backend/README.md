@@ -20,3 +20,16 @@ Manually rename _partial_update_fields to partial_update_fields
 # Pas convaincu par le résultat de cette commande... Better proto pas ouf
 python -m grpc_tools.protoc -I . --python_betterproto_out=./ grpc_market.proto
 ```
+
+
+# Dev
+
+```
+python3 -m venv .venv  # Creates a virtual environment named ".venv"
+
+source .venv/bin/activate  # Activates the virtual environment on Linux/macOS
+
+.venv\Scripts\activate  # Activates the virtual environment on Windows
+
+poetry install
+```

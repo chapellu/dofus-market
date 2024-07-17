@@ -12,15 +12,19 @@ def rune_power(jet: int, percentile: int, poids_unitaire: float) -> float:
 
 
 def decoupage_ra(_rune_power: float, rune_name: str) -> tuple[float, float]:
-    power_ra = runes[rune_name]["poids_ra"] + 2 * runes[rune_name][
-        "poids_pa"] + 4 * runes[rune_name]["poids_ba"]
+    power_ra = (
+        runes[rune_name]["poids_ra"]
+        + 2 * runes[rune_name]["poids_pa"]
+        + 4 * runes[rune_name]["poids_ba"]
+    )
     _decoupage_ra = _rune_power // power_ra
     rest_ra = _rune_power - _decoupage_ra * runes[rune_name]["poids_ra"]
     return _decoupage_ra, rest_ra
 
 
-def decoupage_pa(_rune_power: float,
-                 rune_name: str) -> tuple[float, float, float, float]:
+def decoupage_pa(
+    _rune_power: float, rune_name: str
+) -> tuple[float, float, float, float]:
     power_pa = runes[rune_name]["poids_pa"] + 2 * runes[rune_name]["poids_ba"]
     _decoupage_ra, rest_ra = decoupage_ra(_rune_power, rune_name)
     _decoupage_pa = rest_ra // power_pa
@@ -28,11 +32,9 @@ def decoupage_pa(_rune_power: float,
     return _decoupage_ra, rest_ra, _decoupage_pa, rest_pa
 
 
-def decoupage_ba(_rune_power: float,
-                 rune_name: str) -> tuple[float, float, float]:
+def decoupage_ba(_rune_power: float, rune_name: str) -> tuple[float, float, float]:
     power_ba = runes[rune_name]["poids_ba"]
-    _decoupage_ra, _, _decoupage_pa, rest_pa = decoupage_pa(
-        _rune_power, rune_name)
+    _decoupage_ra, _, _decoupage_pa, rest_pa = decoupage_pa(_rune_power, rune_name)
     return _decoupage_ra, _decoupage_pa, rest_pa // power_ba
 
 
@@ -42,8 +44,7 @@ def decoupage(jet: int, rune_name: str):
     runes_ra = []
 
     for percentile in range(0, 101, 20):
-        _rune_power = rune_power(jet, percentile,
-                                 runes[rune_name]["poids_unitaire"])
+        _rune_power = rune_power(jet, percentile, runes[rune_name]["poids_unitaire"])
         ra, pa, ba = decoupage_ba(_rune_power, rune_name)
         runes_ra.append(ra)
         runes_pa.append(pa)
@@ -61,8 +62,9 @@ def decoupage_special(lvl, rune, jet_max):
     return 0, 0, ba
 
 
-def brisage_rune(lvl: int, jet_min: int, jet_max: int,
-                 rune: str) -> tuple[float, float, float]:
+def brisage_rune(
+    lvl: int, jet_min: int, jet_max: int, rune: str
+) -> tuple[float, float, float]:
     jet_min = max(jet_min, 0)
     jet_max = max(jet_max, 0)
     runes_ba = []
@@ -78,5 +80,4 @@ def brisage_rune(lvl: int, jet_min: int, jet_max: int,
             runes_ra.append(ra)
             runes_pa.append(pa)
             runes_ba.append(ba)
-    return round(mean(runes_ra), 2), round(mean(runes_pa),
-                                           2), round(mean(runes_ba), 2)
+    return round(mean(runes_ra), 2), round(mean(runes_pa), 2), round(mean(runes_ba), 2)

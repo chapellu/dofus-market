@@ -4,9 +4,8 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('market', '0005_add_materialized_views'),
+        ("market", "0005_add_materialized_views"),
     ]
 
     operations = [
@@ -29,5 +28,5 @@ class Migration(migrations.Migration):
             GROUP BY e.name, e.level, e.metier_id, r.equipement_estimated_gain, r.equipement_fabrication_cost, r.rentability
 	        ORDER BY r.rentability DESC
             )
-        """)
+        """),
     ]

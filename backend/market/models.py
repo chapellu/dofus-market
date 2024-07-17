@@ -81,5 +81,5 @@ runes_price = {
     "Pa Ré Terre": 3200,
     "Ga Pa": 106910,
     "Ga Pme": 104554,
-    "Pa So": 400
+    "Pa So": 400,
 }

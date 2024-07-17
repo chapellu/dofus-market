@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from django.db import connection
 
+
 @api_view(["GET"])
 def get_runes(request):
     runes = Rune.objects.all().order_by("name")
@@ -14,13 +15,14 @@ def get_runes(request):
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(["PUT"])
 def update_rune(request, name):
     try:
         rune = Rune.objects.get(name=name)
     except Rune.DoesNotExist:
-        return JsonResponse({'message': 'This Rune does not exist'},
-                            status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse(
+            {"message": "This Rune does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
 
     data = JSONParser().parse(request)
     rune.prix_ra = data["prix_ra"]

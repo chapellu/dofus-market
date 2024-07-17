@@ -9,17 +9,17 @@ from django.db import connection
 import datetime
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def generate_data_base_post(request):
     DofusBookScraper.populateDB()
     return Response("ok")
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def generate_data_base(request):
     DofusBookScraper.populateDB()
     data = OfficialWebsiteScraper()
-    now = datetime.datetime.now()  #datetime(2024, 6, 14, 22, 15, 31, 0)
+    now = datetime.datetime.now()  # datetime(2024, 6, 14, 22, 15, 31, 0)
     asyncio.run(data.load(now))
     data.populate_professions_db()
     data.populate_recipes_db()

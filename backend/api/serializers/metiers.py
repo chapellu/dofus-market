@@ -4,5 +4,4 @@ from market.database.metier import Metier
 
 
 class MetierSerializer(serializers.Serializer):
-
     name = serializers.CharField()

@@ -24,7 +24,7 @@ metier_name = {
     "ch": "Coiffeur",
     "ca": "Cape",
     "br": "Façonneur",
-    "tr": "Façonneur"
+    "tr": "Façonneur",
 }
 
 ABSOLUTLY_NOT_PROFITABLE = 10**12
@@ -55,41 +55,52 @@ class DofusObject(models.Model):
         for caracteristique in self.effects:
             ra, pa, ba = caracteristique.brisage(self.level)
             rune = Rune.objects.get(name=caracteristique.rune.name)
-            res.append({
-                'rune': caracteristique.rune.name,
-                'quantity_ra': ra,
-                "prix_ra": rune.prix_ra,
-                "quantity_pa": pa,
-                "prix_pa": rune.prix_pa,
-                "quantity_ba": ba,
-                "prix_ba": rune.prix_ba
-            })
+            res.append(
+                {
+                    "rune": caracteristique.rune.name,
+                    "quantity_ra": ra,
+                    "prix_ra": rune.prix_ra,
+                    "quantity_pa": pa,
+                    "prix_pa": rune.prix_pa,
+                    "quantity_ba": ba,
+                    "prix_ba": rune.prix_ba,
+                }
+            )
         return res
 
     @classmethod
     def create_from_dofusbook_object(cls, dofusbook_object) -> "DofusObject":
         print(dofusbook_object["id"])
         if dofusbook_object["category_name"] in [
-                "tr", "do", "mt", "fa", "mo"
+            "tr",
+            "do",
+            "mt",
+            "fa",
+            "mo",
         ]:  # Ignore trophée, dofus, montilier, familier, monture
             return
         try:
-            dofus_object = DofusObject.objects.get(
-                name=dofusbook_object["name"])
+            dofus_object = DofusObject.objects.get(name=dofusbook_object["name"])
         except DofusObject.DoesNotExist:
             metier, _ = Metier.objects.get_or_create(
-                name=metier_name[dofusbook_object["category_name"]])
-            dofus_object = cls(name=dofusbook_object["name"],
-                               level=dofusbook_object["level"],
-                               metier=metier)
+                name=metier_name[dofusbook_object["category_name"]]
+            )
+            dofus_object = cls(
+                name=dofusbook_object["name"],
+                level=dofusbook_object["level"],
+                metier=metier,
+            )
             dofus_object.save()
 
             caracteristiques = [
                 Caracteristique.create_from_dofusbook(
-                    caracteristique, dofusbook_object["level"])
+                    caracteristique, dofusbook_object["level"]
+                )
                 for caracteristique in dofusbook_object["effects"]
                 if Caracteristique.create_from_dofusbook(
-                    caracteristique, dofusbook_object["level"]) is not None
+                    caracteristique, dofusbook_object["level"]
+                )
+                is not None
             ]
 
             dofus_object._effects.add(*caracteristiques)
