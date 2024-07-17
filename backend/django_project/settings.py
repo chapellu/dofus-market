@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from django_socio_grpc.settings import FilterAndPaginationBehaviorOptions
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'dofus_market.urls'
+ROOT_URLCONF = 'django_project.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'dofus_market.wsgi.application'
+WSGI_APPLICATION = 'django_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -148,6 +149,10 @@ LOGGING = {
 }
 
 GRPC_FRAMEWORK = {
-    "ROOT_HANDLERS_HOOK": 'grpc_market.handlers.grpc_handlers',
-    "GRPC_ASYNC": True,
+    "ROOT_HANDLERS_HOOK":
+    'grpc_market.handlers.grpc_handlers',
+    "GRPC_ASYNC":
+    True,
+    "PAGINATION_BEHAVIOR":
+    FilterAndPaginationBehaviorOptions.METADATA_AND_REQUEST_STRUCT
 }

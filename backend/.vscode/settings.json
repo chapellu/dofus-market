@@ -1,8 +1,8 @@
 {
-  "python.testing.pytestArgs": ["dofus_market", "-vv"],
+  "python.testing.pytestArgs": ["-vv"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "python.envFile": "${workspaceFolder}/dofus_market/.env",
+  "python.envFile": "${workspaceFolder}/.env",
   "[python]": {
     "editor.formatOnSaveMode": "file",
     "editor.formatOnSave": true,

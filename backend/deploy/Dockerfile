@@ -8,15 +8,15 @@ ARG POSTGRESQL_PASSWORD
 
 WORKDIR /opt/dofus_market
 
-COPY dofus_market/requirements.txt /opt/dofus_market/requirements.txt
+COPY requirements.txt /opt/dofus_market/requirements.txt
 RUN pip install --no-cache-dir -r /opt/dofus_market/requirements.txt
 
 # Mounts the application code to the image
-COPY dofus_market /opt/dofus_market/dofus_market
+COPY ./ /opt/dofus_market/
 
 
 EXPOSE 8000
 
 # runs the production server
-ENTRYPOINT ["python", "dofus_market/manage.py"]
+ENTRYPOINT ["python", "manage.py"]
 CMD ["runserver", "0.0.0.0:8000"]

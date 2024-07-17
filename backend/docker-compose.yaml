@@ -17,11 +17,13 @@ services:
       dockerfile: ./deploy/Dockerfile
     command: runserver 0.0.0.0:80
     volumes:
-      - ./dofus_market:/opt/dofus_market/dofus_market
+      - ./:/opt/dofus_market/
     ports:
       - "8000:80"
     env_file:
-      - ./dofus_market/.env
+      - ./.env
+    environment:
+      - POSTGRESQL_HOST=postgresql
     links:
       - postgresql
     networks:
@@ -33,11 +35,11 @@ services:
       dockerfile: ./deploy/Dockerfile
     command: grpcrunaioserver --dev
     volumes:
-      - ./dofus_market:/opt/dofus_market/dofus_market
+      - ./:/opt/dofus_market/
     ports:
       - "50051:50051"
     env_file:
-      - ./dofus_market/.env
+      - ./.env
     environment:
       - POSTGRESQL_HOST=postgresql
     links:
