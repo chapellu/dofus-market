@@ -1,3 +1,10 @@
 {
-  "recommendations": ["charliermarsh.ruff", "ms-python.mypy-type-checker"]
+  "recommendations": [
+    "charliermarsh.ruff",
+    "ms-python.mypy-type-checker",
+    "dancheg97.grpc-clicker",
+    "mhutchie.git-graph",
+    "tamasfe.even-better-toml",
+    "rangav.vscode-thunder-client"
+  ]
 }
