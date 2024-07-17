@@ -1,19 +1,14 @@
+import asyncio
+
 import pytest
 
-from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
-from market.database.rune import Rune
-from grpc_market.grpc.grpc_market_pb2_grpc import (
-    RecetteControllerStub,
-    add_RecetteControllerServicer_to_server,
-)
-from grpc_market.services.recette_service import RecetteService
-
+from market.database.caracteristique import Caracteristique
+from market.database.equipement import DofusObject as Equipement
 from market.database.ingredient import Ingredient
 from market.database.ingredient_for_craft import IngredientForCraft
 from market.database.metier import Metier
 from market.database.recette import Recette
-from market.database.equipement import DofusObject as Equipement
-from market.database.caracteristique import Caracteristique
+from market.database.rune import Rune
 
 ingredient = Ingredient(name="Potion d'oubli", price=1000)
 ingredient2 = Ingredient(name="Potion de soin", price=100)
@@ -85,4 +80,4 @@ async def populate_database_with_test_data(request):
         await caracteristique1.adelete()
         await equipement1.adelete()
 
-    request.addfinalizer(_cleanup_test_data)
+    request.addfinalizer(lambda: asyncio.ensure_future(_cleanup_test_data()))
