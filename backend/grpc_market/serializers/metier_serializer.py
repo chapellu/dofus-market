@@ -1,7 +1,7 @@
 from django_socio_grpc import proto_serializers
 
+from grpc_market.grpc.grpc_market_pb2 import MetierListResponse, MetierResponse
 from market.database.metier import Metier
-from grpc_market.grpc.grpc_market_pb2 import MetierResponse, MetierListResponse
 
 
 class MetierProtoSerializer(proto_serializers.ModelProtoSerializer):

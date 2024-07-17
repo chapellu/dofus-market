@@ -2,10 +2,9 @@
 # gen by protobuf_to_pydantic[v0.2.6.2](https://github.com/so1n/protobuf_to_pydantic)
 # Protobuf Version: 5.27.2
 # Pydantic Version: 2.8.2
-from google.protobuf.message import Message  # type: ignore
-from pydantic import BaseModel
-from pydantic import Field
 import typing
+
+from pydantic import BaseModel, Field
 
 
 class BrokenRune(BaseModel):

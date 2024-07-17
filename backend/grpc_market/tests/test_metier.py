@@ -1,12 +1,13 @@
 import json
 
 import grpc
-import grpc_market.grpc.grpc_market_pb2 as pb2
 import pytest
 from conftest import metier, metiers
 from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.json_format import MessageToDict
+
+import grpc_market.grpc.grpc_market_pb2 as pb2
 from grpc_market.grpc.grpc_market_p2p import (
     MetierDestroyRequest,
     MetierListRequest,

@@ -1,4 +1,4 @@
-from .database.runes_data import runes, proba, specific_runes
+from .database.runes_data import proba, runes, specific_runes
 
 
 def mean(liste: list) -> float:

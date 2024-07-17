@@ -7,4 +7,3 @@ from market.database.recette import Recette
 class RecetteService(generics.AsyncModelService):
     queryset = Recette.objects.all()
     serializer_class = RecetteProtoSerializer
-    # lookup_field = "ingredient"

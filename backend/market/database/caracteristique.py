@@ -1,8 +1,8 @@
 from django.db import models
 
+from ..runes import brisage_rune
 from .rune import Rune
 from .runes_data import runes_name
-from ..runes import brisage_rune
 
 
 class Caracteristique(models.Model):

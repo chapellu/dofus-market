@@ -1,40 +1,24 @@
-import json
-
-import grpc
-from grpc_market.serializers.equipement_serializer import (
-    EquipementDetailsProtoSerializer,
-)
-from market.database.caracteristique import Caracteristique
-import grpc_market.grpc.grpc_market_pb2 as pb2
 import pytest
-from conftest import (
-    craft_ressource1,
-    craft_ressource2,
-    ingredient,
-    ingredient2,
-    equipement1,
-)
+from asgiref.sync import sync_to_async
+from conftest import equipement1
+from django.db import connection
 from django_socio_grpc.tests.grpc_test_utils.fake_grpc import FakeFullAIOGRPC
-from google.protobuf.empty_pb2 import Empty
 from google.protobuf.json_format import MessageToDict
+
+import grpc_market.grpc.grpc_market_pb2 as pb2
 from grpc_market.grpc.grpc_market_p2p import (
+    EquipementDetailsRequest,
+    EquipementDetailsResponse,
     EquipementListRequest,
     EquipementListResponse,
     EquipementResponse,
     EquipementRetrieveRequest,
-    EquipementDetailsRequest,
-    EquipementDetailsResponse,
 )
 from grpc_market.grpc.grpc_market_pb2_grpc import (
     EquipementControllerStub,
     add_EquipementControllerServicer_to_server,
 )
 from grpc_market.services.equipement_service import EquipementService
-from market.database.materialized_views.orderered_by_rentability import (
-    OrderedByRentability as Equipement,
-)
-from django.db import connection, connections
-from asgiref.sync import sync_to_async, async_to_sync
 
 
 @pytest.fixture(autouse=True)
