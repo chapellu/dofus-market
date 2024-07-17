@@ -17,7 +17,10 @@ services:
       dockerfile: ./deploy/Dockerfile
     command: runserver 0.0.0.0:80
     volumes:
-      - ./:/opt/dofus_market/
+      - ./django_project:/opt/dofus_market/django_project
+      - ./market:/opt/dofus_market/market
+      - ./grpc_market:/opt/dofus_market/grpc_market
+      - ./api:/opt/dofus_market/api
     ports:
       - "8000:80"
     env_file:
@@ -35,7 +38,10 @@ services:
       dockerfile: ./deploy/Dockerfile
     command: grpcrunaioserver --dev
     volumes:
-      - ./:/opt/dofus_market/
+      - ./django_project:/opt/dofus_market/django_project
+      - ./market:/opt/dofus_market/market
+      - ./grpc_market:/opt/dofus_market/grpc_market
+      - ./api:/opt/dofus_market/api
     ports:
       - "50051:50051"
     env_file:

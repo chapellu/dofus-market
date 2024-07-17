@@ -19,7 +19,7 @@ django-dotenv = "^1.4.2"
 django-socio-grpc = "^0.22.8"
 pydantic = "^2.8.2"
 django-cors-headers = "^4.4.0"
-
+python-dotenv = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
