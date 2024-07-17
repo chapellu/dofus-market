@@ -25,77 +25,7 @@ To switch between development and production environments, modify the commented 
 
 ### Backend (Django REST API + Database)
 
-#### Setup and Installation
-
-1. **Navigate to the frontend directory and install dependencies:**
-
-    ```shell
-
-    cd dofus_market/frontend
-
-    npm install
-
-    ```
-
-2. **Create and activate a virtual environment:**
-
-    ```shell
-
-    python -m venv .venv
-
-    source .venv/bin/activate
-
-    ```
-
-3. **Install dependencies:**
-
-    ```shell
-
-    pip install -r requirements.txt
-
-    ```
-
-4. **Database Migrations and Server:**
-
-    ```shell
-
-    cd dofus_market
-
-    python manage.py makemigrations market
-
-    python manage.py migrate
-
-    python manage.py runserver
-
-    ```
-
-#### Docker Commands
-
-- **Build:**
-
-    ```shell
-
-    export version=1.0.0-alpha.1
-
-    docker build -t chapellu/dofus-market-backend:${version} -f deploy/Dockerfile .
-
-    ```
-
-- **Run:**
-
-    ```shell
-
-    docker run -p 8000:8000 --name dofus-market-backend chapellu/dofus-market-backend:${version}
-
-    ```
-
-- **Push to Docker Hub:**
-
-    ```shell
-
-    docker push chapellu/dofus-market-backend:${version}
-
-    ```
+See ![Backend README](backend/README.md)
 
 ### Frontend (Vue.js)
 
