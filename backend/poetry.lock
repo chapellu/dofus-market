@@ -751,6 +751,23 @@ files = [
 ]
 
 [[package]]
+name = "lark"
+version = "1.1.9"
+description = "a modern parsing library"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "lark-1.1.9-py3-none-any.whl", hash = "sha256:a0dd3a87289f8ccbb325901e4222e723e7d745dbfc1803eaf5f3d2ace19cf2db"},
+    {file = "lark-1.1.9.tar.gz", hash = "sha256:15fa5236490824c2c4aba0e22d2d6d823575dcaf4cdd1848e34b6ad836240fba"},
+]
+
+[package.extras]
+atomic-cache = ["atomicwrites"]
+interegular = ["interegular (>=0.3.1,<0.4.0)"]
+nearley = ["js2py"]
+regex = ["regex"]
+
+[[package]]
 name = "lark-parser"
 version = "0.12.0"
 description = "a modern parsing library"
@@ -877,6 +894,21 @@ files = [
 ]
 
 [[package]]
+name = "mypy-protobuf"
+version = "3.6.0"
+description = "Generate mypy stub files from protobuf specs"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mypy-protobuf-3.6.0.tar.gz", hash = "sha256:02f242eb3409f66889f2b1a3aa58356ec4d909cdd0f93115622e9e70366eca3c"},
+    {file = "mypy_protobuf-3.6.0-py3-none-any.whl", hash = "sha256:56176e4d569070e7350ea620262478b49b7efceba4103d468448f1d21492fd6c"},
+]
+
+[package.dependencies]
+protobuf = ">=4.25.3"
+types-protobuf = ">=4.24"
+
+[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -948,6 +980,30 @@ files = [
     {file = "protobuf-5.27.2-py3-none-any.whl", hash = "sha256:54330f07e4949d09614707c48b06d1a22f8ffb5763c159efd5c0928326a91470"},
     {file = "protobuf-5.27.2.tar.gz", hash = "sha256:f3ecdef226b9af856075f28227ff2c90ce3a594d092c39bee5513573f25e2714"},
 ]
+
+[[package]]
+name = "protobuf-to-pydantic"
+version = "0.2.6.2"
+description = "Generate the `pydantic.BaseModel` class (and the corresponding source code) with parameter verification function through the Protobuf file"
+optional = false
+python-versions = "<4.0,>=3.7"
+files = [
+    {file = "protobuf_to_pydantic-0.2.6.2-py3-none-any.whl", hash = "sha256:8c254f56af983e54e9b3a40f78bb957171935d47a4924bacea9d84f25819ea23"},
+    {file = "protobuf_to_pydantic-0.2.6.2.tar.gz", hash = "sha256:23f62e785a202b1d81f9e17ca3a3d48f31602e77e88c6ea56a95b563aca8591f"},
+]
+
+[package.dependencies]
+lark = {version = ">=1.1.2,<2.0.0", optional = true, markers = "extra == \"lark\" or extra == \"all\""}
+mypy-protobuf = {version = ">=3.2.0,<4.0.0", optional = true, markers = "extra == \"mypy-protobuf\" or extra == \"all\""}
+protobuf = ">=3.20.3"
+pydantic = ">=1.9.2,<3.0.0"
+toml = {version = ">=0.10.2,<0.11.0", optional = true, markers = "extra == \"toml\" or extra == \"all\""}
+
+[package.extras]
+all = ["lark (>=1.1.2,<2.0.0)", "mypy-protobuf (>=3.2.0,<4.0.0)", "toml (>=0.10.2,<0.11.0)"]
+lark = ["lark (>=1.1.2,<2.0.0)"]
+mypy-protobuf = ["mypy-protobuf (>=3.2.0,<4.0.0)"]
+toml = ["toml (>=0.10.2,<0.11.0)"]
 
 [[package]]
 name = "psycopg2-binary"
@@ -1346,6 +1402,28 @@ dev = ["build", "hatch"]
 doc = ["sphinx"]
 
 [[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
+]
+
+[[package]]
+name = "types-protobuf"
+version = "5.27.0.20240626"
+description = "Typing stubs for protobuf"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-protobuf-5.27.0.20240626.tar.gz", hash = "sha256:683ba14043bade6785e3f937a7498f243b37881a91ac8d81b9202ecf8b191e9c"},
+    {file = "types_protobuf-5.27.0.20240626-py3-none-any.whl", hash = "sha256:688e8f7e8d9295db26bc560df01fb731b27a25b77cbe4c1ce945647f7024f5c1"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -1490,4 +1568,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a6e92877122af22d592d79c6bd1f1d901e3e1e4603d7d2216c63d16a67e961a7"
+content-hash = "e0e8c7c97fcc12ac5aba59e66b8b6bcaf04cd797cd911377b1e4183d4ca91b63"
