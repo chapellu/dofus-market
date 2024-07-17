@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          cd backend/dofus_market && poetry install --no-interaction
+          cd backend && poetry install --no-interaction
 
       - name: Set up environment variables
         run: |
