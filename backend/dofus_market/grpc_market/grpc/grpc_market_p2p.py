@@ -69,7 +69,7 @@ class EquipementResponse(BaseModel):
     level: int = Field(default=0)
     cout_fabrication: float = Field(default=0.0)
     gain_estime: float = Field(default=0.0)
-    rentabilite: int = Field(default=0)
+    rentabilite: float = Field(default=0.0)
     nb_objet: int = Field(default=0)
 
 

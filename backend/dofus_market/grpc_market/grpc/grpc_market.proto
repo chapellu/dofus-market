@@ -120,7 +120,7 @@ message EquipementResponse {
     int32 level = 9;
     float cout_fabrication = 10;
     float gain_estime = 11;
-    int32 rentabilite = 12;
+    float rentabilite = 12;
     int32 nb_objet = 13;
 }
 
