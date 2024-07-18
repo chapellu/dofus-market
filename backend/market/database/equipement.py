@@ -1,12 +1,12 @@
-from typing import Iterable
+from typing import Any, Iterable
 
 from django.db import models
 
-from .caracteristique import Caracteristique
-from .ingredient import Ingredient
-from .ingredient_for_craft import IngredientForCraft
-from .metier import Metier
-from .rune import Rune
+from market.database.caracteristique import Caracteristique
+from market.database.ingredient import Ingredient
+from market.database.ingredient_for_craft import IngredientForCraft
+from market.database.metier import Metier
+from market.database.rune import Rune
 
 metier_name = {
     "bo": "Cordonnier",
@@ -69,7 +69,7 @@ class DofusObject(models.Model):
         return res
 
     @classmethod
-    def create_from_dofusbook_object(cls, dofusbook_object) -> "DofusObject":
+    def create_from_dofusbook_object(cls, dofusbook_object: Any) -> "DofusObject":
         print(dofusbook_object["id"])
         if dofusbook_object["category_name"] in [
             "tr",
@@ -117,7 +117,7 @@ class DofusObject(models.Model):
         return dofus_object
 
     @property
-    def nombre_ingredients(self):
+    def nombre_ingredients(self) -> int:
         return len(self.ingredients)
 
     @property

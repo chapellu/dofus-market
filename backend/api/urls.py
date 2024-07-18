@@ -1,11 +1,11 @@
 from django.urls import path
 
-from .views.metiers import get_metiers
-from .views.equipements import get_equipements, get_equipements_details
-from .views.caracteristiques import get_caracteristique
-from .views.runes import get_runes, update_rune
-from .views.ingredients import get_ingredients, update_ingredient
-from .views.generate_database import generate_data_base, generate_data_base_post
+from api.views.caracteristiques import get_caracteristique
+from api.views.equipements import get_equipements, get_equipements_details
+from api.views.generate_database import generate_data_base, generate_data_base_post
+from api.views.ingredients import get_ingredients, update_ingredient
+from api.views.metiers import get_metiers
+from api.views.runes import get_runes, update_rune
 
 urlpatterns = [
     path("importDofusbookEquipement", generate_data_base_post),

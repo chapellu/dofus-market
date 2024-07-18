@@ -1,14 +1,15 @@
-from api.serializers.equipements import (
-    EquipementDetailsSerializer,
-    EquipementsSerializer,
-)
 from django.core.paginator import Paginator
-from market.database.equipement import DofusObject
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.utils.serializer_helpers import ReturnDict
+
+from api.serializers.equipements import (
+    EquipementDetailsSerializer,
+    EquipementsSerializer,
+)
+from market.database.equipement import DofusObject
 
 
 class Equipements:
@@ -21,7 +22,7 @@ class Equipements:
 
 
 @api_view(["GET"])
-def get_equipements(request: Request):
+def get_equipements(request: Request) -> Response:
     page_size: int = request.query_params.get("page_size", 10)
     page: int = request.query_params.get("page", 1)
     query = """
@@ -56,7 +57,7 @@ def get_equipements(request: Request):
 
 
 @api_view(["GET"])
-def get_equipements_details(request: Request, name: str):
+def get_equipements_details(request: Request, name: str) -> Response:
     query = """
       SELECT
         e.name,

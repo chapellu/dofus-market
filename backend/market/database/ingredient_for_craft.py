@@ -1,6 +1,6 @@
 from django.db import models
 
-from .ingredient import Ingredient
+from market.database.ingredient import Ingredient
 
 
 class IngredientForCraft(models.Model):
@@ -17,7 +17,7 @@ class IngredientForCraft(models.Model):
         return f'{{name: "{self.ingredient}", quantity: {self.quantity}}}'
 
     @classmethod
-    def create_from_dofusbook(cls, dofusbook_ingredient):
+    def create_from_dofusbook(cls, dofusbook_ingredient) -> int:
         ig, _ = Ingredient.objects.get_or_create(name=dofusbook_ingredient["name"])
         ingredient, _ = cls.objects.get_or_create(
             ingredient=ig, quantity=dofusbook_ingredient["count"]

@@ -1,22 +1,23 @@
 import asyncio
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+import datetime
 
-from django.contrib import admin
+from django.db import connection
+from rest_framework.decorators import api_view
+from rest_framework.request import Request
+from rest_framework.response import Response
+
 from api.scrapers.dofus_book_scraper import DofusBookScraper
 from api.scrapers.official_website_scraper import OfficialWebsiteScraper
-from django.db import connection
-import datetime
 
 
 @api_view(["POST"])
-def generate_data_base_post(request):
+def generate_data_base_post(request: Request) -> Response:
     DofusBookScraper.populateDB()
     return Response("ok")
 
 
 @api_view(["POST"])
-def generate_data_base(request):
+def generate_data_base(request: Request) -> Response:
     DofusBookScraper.populateDB()
     data = OfficialWebsiteScraper()
     now = datetime.datetime.now()  # datetime(2024, 6, 14, 22, 15, 31, 0)

@@ -13,5 +13,5 @@ class FabricationCosts(models.Model):
         managed = False  # Important: Django will not attempt to create/update/delete the table
         db_table = "FabricationCosts"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.equipement} - {self.fabrication_cost}"

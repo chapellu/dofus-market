@@ -1,8 +1,8 @@
 from django.db import models
 
-from .ingredient import Ingredient
-from .ingredient_for_craft import IngredientForCraft
-from .metier import Metier
+from market.database.ingredient import Ingredient
+from market.database.ingredient_for_craft import IngredientForCraft
+from market.database.metier import Metier
 
 
 class Recette(models.Model):

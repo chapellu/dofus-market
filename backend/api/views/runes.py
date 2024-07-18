@@ -1,22 +1,24 @@
+from django.db import connection
 from django.http import JsonResponse
-from api.serializers.runes import RuneSerializer
-from market.database.rune import Rune
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
+from rest_framework.request import Request
 from rest_framework.response import Response
-from django.db import connection
+
+from api.serializers.runes import RuneSerializer
+from market.database.rune import Rune
 
 
 @api_view(["GET"])
-def get_runes(request):
+def get_runes(request: Request) -> Response:
     runes = Rune.objects.all().order_by("name")
     serializer = RuneSerializer(runes, many=True)
     return Response(serializer.data)
 
 
 @api_view(["PUT"])
-def update_rune(request, name):
+def update_rune(request: Request, name: str) -> Response:
     try:
         rune = Rune.objects.get(name=name)
     except Rune.DoesNotExist:

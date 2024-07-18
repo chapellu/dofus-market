@@ -25,5 +25,5 @@ class OrderedByRentability(models.Model):
         managed = False  # This model will not be managed by Django
         db_table = "orderedbyrentability"  # Ensure this matches the actual materialized view name in the database
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} (Metier: {self.metier}) - Rentability: {self.rentability}%"

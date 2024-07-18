@@ -84,7 +84,9 @@ class CaracteristiqueProtoSerializer(proto_serializers.ProtoSerializer):
     max = serializers.IntegerField()
     rune = serializers.SerializerMethodField("serialize_rune")
 
-    def serialize_rune(self, caracteristique: Caracteristique):
+    def serialize_rune(
+        self, caracteristique: Caracteristique
+    ) -> ReturnList | Any | ReturnDict:
         return RuneProtoSerializer(caracteristique.rune).data
 
 

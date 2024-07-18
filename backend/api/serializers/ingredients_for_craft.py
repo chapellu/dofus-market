@@ -1,4 +1,7 @@
+from typing import Any
+
 from rest_framework import serializers
+from rest_framework.serializers import ReturnDict, ReturnList
 
 from market.database.ingredient_for_craft import IngredientForCraft
 from market.database.recette import Recette
@@ -14,29 +17,35 @@ class IngredientForCraftSerializer(serializers.Serializer):
 
     rentabilite = serializers.SerializerMethodField("serialize_rentabilite")
 
-    def serialize_ingredient_for_craft(self, ingredient_for_craft: IngredientForCraft):
+    def serialize_ingredient_for_craft(
+        self, ingredient_for_craft: IngredientForCraft
+    ) -> str:
         return ingredient_for_craft.ingredient.name
 
     def serialize_ingredient_price_for_craft(
         self, ingredient_for_craft: IngredientForCraft
-    ):
+    ) -> int:
         return ingredient_for_craft.ingredient.price
 
-    def serialize_ingredients(self, ingredient_for_craft: IngredientForCraft):
+    def serialize_ingredients(
+        self, ingredient_for_craft: IngredientForCraft
+    ) -> ReturnList | Any | ReturnDict:
         try:
             recette = Recette.objects.get(pk=ingredient_for_craft.ingredient.pk)
         except Recette.DoesNotExist:
             return []
         return IngredientForCraftSerializer(recette.ingredients, many=True).data
 
-    def serialize_nb_objet(self, ingredient_for_craft: IngredientForCraft):
+    def serialize_nb_objet(self, ingredient_for_craft: IngredientForCraft) -> int:
         try:
             recette = Recette.objects.get(pk=ingredient_for_craft.ingredient.pk)
         except Recette.DoesNotExist:
             return 0
         return len(recette.ingredients.all())
 
-    def serialize_cout_fabrication(self, ingredient_for_craft: IngredientForCraft):
+    def serialize_cout_fabrication(
+        self, ingredient_for_craft: IngredientForCraft
+    ) -> int:
         try:
             recette = Recette.objects.get(pk=ingredient_for_craft.ingredient.pk)
         except Recette.DoesNotExist:
@@ -50,8 +59,7 @@ class IngredientForCraftSerializer(serializers.Serializer):
             )
         )
 
-    def serialize_rentabilite(self, ingredient_for_craft: IngredientForCraft):
-        # rentabilite = recette / cout * 100
+    def serialize_rentabilite(self, ingredient_for_craft: IngredientForCraft) -> int:
         cout_fabrication = self.serialize_cout_fabrication(ingredient_for_craft)
         if cout_fabrication == 0:
             return 0

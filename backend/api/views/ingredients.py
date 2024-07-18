@@ -1,13 +1,14 @@
+from django.core.paginator import Paginator
+from django.db import connection
 from django.http import JsonResponse
-from api.serializers.ingredients import IngredientsSerializer, IngredientSerializer
-from market.database.ingredient import Ingredient
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
-from django.core.paginator import Paginator
 from rest_framework.request import Request
-from django.db import connection
+from rest_framework.response import Response
+
+from api.serializers.ingredients import IngredientSerializer, IngredientsSerializer
+from market.database.ingredient import Ingredient
 
 
 class Ingredients:
@@ -20,7 +21,7 @@ class Ingredients:
 
 
 @api_view(["GET", "POST"])
-def get_ingredients(request: Request):
+def get_ingredients(request: Request) -> Response:
     if request.method == "POST":
         serializer = IngredientSerializer(data=request.data)
         if serializer.is_valid():
@@ -40,7 +41,7 @@ def get_ingredients(request: Request):
 
 
 @api_view(["PUT"])
-def update_ingredient(request, name):
+def update_ingredient(request: Request, name: str) -> Response:
     try:
         ingredient = Ingredient.objects.get(name=name)
     except Ingredient.DoesNotExist:
