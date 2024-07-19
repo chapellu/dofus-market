@@ -32,8 +32,6 @@ def grpc_client():
     fake_grpc.close()
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_equipement__empty_list__ok(grpc_client):
     # Given
 
@@ -53,13 +51,11 @@ def refresh_materialized_view():
         cursor.execute("REFRESH MATERIALIZED VIEW OrderedByRentability;")
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_equipement__list_with_1_item__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     await sync_to_async(refresh_materialized_view)()
 
     expected_values = {
@@ -85,11 +81,9 @@ async def test__list_equipement__list_with_1_item__ok(
     assert equipement.model_dump() == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_equipement__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
+
     await sync_to_async(refresh_materialized_view)()
 
     expected_values = {
@@ -113,13 +107,11 @@ async def test__retrieve_equipement__ok(grpc_client, populate_database_with_test
     assert response.model_dump() == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_equipement_details__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     await sync_to_async(refresh_materialized_view)()
 
     expected_values = {

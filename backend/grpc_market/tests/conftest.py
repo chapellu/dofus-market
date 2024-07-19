@@ -1,6 +1,5 @@
-import asyncio
-
 import pytest
+from asgiref.sync import async_to_sync
 
 from market.database.caracteristique import Caracteristique
 from market.database.equipement import DofusObject as Equipement
@@ -39,6 +38,11 @@ caracteristique1 = Caracteristique(
 )
 
 
+@pytest.fixture(autouse=True)
+def enable_transactional_db_access_for_all_tests(transactional_db):
+    pass
+
+
 @pytest.fixture
 async def populate_database_with_test_data(request):
     await ingredient.asave()
@@ -68,6 +72,7 @@ async def populate_database_with_test_data(request):
     async def _cleanup_test_data():
         await ingredient.adelete()
         await ingredient2.adelete()
+        await ingredient3.adelete()
         await ressource1.adelete()
         await ressource2.adelete()
         await craft_ressource1.adelete()
@@ -80,4 +85,4 @@ async def populate_database_with_test_data(request):
         await caracteristique1.adelete()
         await equipement1.adelete()
 
-    request.addfinalizer(lambda: asyncio.ensure_future(_cleanup_test_data()))
+    request.addfinalizer(lambda: async_to_sync(_cleanup_test_data))

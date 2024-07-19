@@ -35,11 +35,8 @@ def grpc_client():
     fake_grpc.close()
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__ingredient_for_craft_to_string(populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     # When
     string = str(craft_ressource1)
@@ -48,8 +45,6 @@ async def test__ingredient_for_craft_to_string(populate_database_with_test_data)
     assert string == '{name: "Fleur de lin", quantity: 5}'
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_ingredient_for_craft__empty_list__ok(grpc_client):
     # Given
 
@@ -61,13 +56,11 @@ async def test__list_ingredient_for_craft__empty_list__ok(grpc_client):
     assert response.results == []
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_ingredient_for_craft__list_with_2_items__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     ingredient_for_crafts = [craft_ressource1, craft_ressource2]
 
     # When
@@ -86,8 +79,6 @@ async def test__list_ingredient_for_craft__list_with_2_items__ok(
         assert response.results[i].quantity == ingredient_for_crafts[i].quantity
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_ingredient_for_craft__not_found(grpc_client):
     # Given
     ingredient_for_craft_id = 0
@@ -106,13 +97,10 @@ async def test__retrieve_ingredient_for_craft__not_found(grpc_client):
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_ingredient_for_craft__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     expected_values = {
         "id": craft_ressource1.pk,
@@ -131,13 +119,11 @@ async def test__retrieve_ingredient_for_craft__ok(
     assert response.model_dump() == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_ingredient_for_craft__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     ingredient_name = ingredient.name
     quantity = 5
     expected_id = 3
@@ -171,13 +157,11 @@ async def test__create_ingredient_for_craft__ok(
     assert actual_values == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_ingredient_for_craft__already_exist(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     ingredient_name = craft_ressource1.ingredient.name
     quantity = craft_ressource1.quantity
     _id = craft_ressource1.pk
@@ -204,13 +188,10 @@ async def test__create_ingredient_for_craft__already_exist(
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_ingredient_for_craft__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     # When
     request = IngredientForCraftDestroyRequest(id=craft_ressource1.pk)
@@ -222,8 +203,6 @@ async def test__destroy_ingredient_for_craft__ok(
         await IngredientForCraft.objects.aget(id=craft_ressource1.pk)
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_ingredient_for_craft__does_not_exist(grpc_client):
     # Given
     ingredient_for_craft_id = 1
@@ -242,13 +221,11 @@ async def test__destroy_ingredient_for_craft__does_not_exist(grpc_client):
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__update_ingredient_for_craft__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     new_ingredient = ingredient2.name
     new_quantity = 1
 
@@ -271,13 +248,11 @@ async def test__update_ingredient_for_craft__ok(
     assert ingredient_for_craft.quantity == new_quantity
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__partial_update_ingredient_for_craft__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
+
     new_quantity = 1
 
     # When

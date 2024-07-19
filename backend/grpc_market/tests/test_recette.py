@@ -45,11 +45,8 @@ def grpc_client():
     fake_grpc.close()
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__recette_to_string(populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     # When
     string = str(recette1)
@@ -58,8 +55,6 @@ async def test__recette_to_string(populate_database_with_test_data):
     assert string == "Potion d'oubli"
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_recette__empty_list__ok(grpc_client):
     # Given
 
@@ -71,13 +66,10 @@ async def test__list_recette__empty_list__ok(grpc_client):
     assert response.results == []
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_recette__list_with_2_items__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     # When
     request = RecetteListRequest()
@@ -95,8 +87,6 @@ async def test__list_recette__list_with_2_items__ok(
         assert response.results[i].ingredients == craft_ingredients
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_recette__not_found(grpc_client):
     # Given
 
@@ -114,11 +104,8 @@ async def test__retrieve_recette__not_found(grpc_client):
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     expected_values = {
         "ingredient": recette1.ingredient.name,
@@ -143,11 +130,9 @@ async def async_model_to_dict(instance):
     return await sync_model_to_dict(instance)
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
+
     ingredient_name = "Potion de soin majeur"
     level = 53
     metier = "Cordonnier"
@@ -185,13 +170,10 @@ async def test__create_recette__ok(grpc_client, populate_database_with_test_data
     assert actual_values == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_recette__already_exist(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     # When
     with pytest.raises(grpc.RpcError) as expected_error:
@@ -218,11 +200,8 @@ async def test__create_recette__already_exist(
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     # When
     request = RecetteDestroyRequest(ingredient=recette1.ingredient.name)
@@ -234,8 +213,6 @@ async def test__destroy_recette__ok(grpc_client, populate_database_with_test_dat
         await Recette.objects.aget(ingredient=recette1.ingredient.name)
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_recette__does_not_exist(grpc_client):
     # Given
     recette_name = ingredient.name
@@ -254,11 +231,8 @@ async def test__destroy_recette__does_not_exist(grpc_client):
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__update_recette__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     new_level = recette1.level + 10
     new_metier = await Metier.objects.acreate(name="Tailleur")

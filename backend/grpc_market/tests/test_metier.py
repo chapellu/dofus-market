@@ -35,11 +35,8 @@ def grpc_client():
     fake_grpc.close()
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__metier_to_string(populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     # When
     string = str(metier)
@@ -48,8 +45,6 @@ async def test__metier_to_string(populate_database_with_test_data):
     assert string == "Cordonnier"
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_metier__empty_list__ok(grpc_client):
     # Given
 
@@ -61,13 +56,10 @@ async def test__list_metier__empty_list__ok(grpc_client):
     assert response.results == []
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__list_metier__list_with_2_items__ok(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     # When
     request = MetierListRequest()
@@ -82,8 +74,6 @@ async def test__list_metier__list_with_2_items__ok(
         assert response.results[i].name == metiers[i].name
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_metier__not_found(grpc_client):
     # Given
 
@@ -101,11 +91,8 @@ async def test__retrieve_metier__not_found(grpc_client):
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__retrieve_metier__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     expected_values = {"name": metier.name}
 
@@ -120,11 +107,9 @@ async def test__retrieve_metier__ok(grpc_client, populate_database_with_test_dat
     assert response.model_dump() == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_metier__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
+
     metier_name = "Tailleur"
 
     expected_values = {
@@ -150,13 +135,10 @@ async def test__create_metier__ok(grpc_client, populate_database_with_test_data)
     assert actual_values == expected_values
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__create_metier__already_exist(
     grpc_client, populate_database_with_test_data
 ):
     # Given
-    await populate_database_with_test_data
 
     # When
     with pytest.raises(grpc.RpcError) as expected_error:
@@ -173,11 +155,8 @@ async def test__create_metier__already_exist(
     }
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_metier__ok(grpc_client, populate_database_with_test_data):
     # Given
-    await populate_database_with_test_data
 
     # When
     request = MetierDestroyRequest(name=metier.name)
@@ -189,8 +168,6 @@ async def test__destroy_metier__ok(grpc_client, populate_database_with_test_data
         await Metier.objects.aget(name=metier.name)
 
 
-@pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test__destroy_metier__does_not_exist(grpc_client):
     # Given
     metier_name = metier.name
