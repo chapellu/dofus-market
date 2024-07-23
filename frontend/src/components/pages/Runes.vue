@@ -4,40 +4,45 @@
             single-line></v-text-field>
         <v-data-table-virtual mobile :items="items" :search="search" density="compact">
             <template v-slot:item="{ item }">
-                <rune :item="item"></rune>
+                <rune :rune="item"></rune>
             </template>
         </v-data-table-virtual>
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import Rune from "../Rune.vue";
 import { RuneType } from '../types/RuneType'
 import { backendUrl } from '../../config'
+import { ref, onMounted, defineComponent } from 'vue'
+import { createPromiseClient } from "@connectrpc/connect";
+import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import { RuneController } from "@/grpc/grpc_market_connect";
+import { RuneListRequest } from "@/grpc/grpc_market_pb";
 
-export default {
-    components: {
-        Rune
-    },
-    data: () => ({
-        backendUrl: backendUrl,
-        search: '',
-        items: []
-    }),
-    async mounted() {
-        await this.getDataFromAPI()
-    },
-    methods: {
-        async getDataFromAPI() {
-            const response = await this.axios.get(`${this.backendUrl}/api/runes`)
-            console.log(response.data)
-            this.items = response.data
-        },
+const transport = createGrpcWebTransport({
+    baseUrl: "http://localhost:9001",
+});
 
-        async updatePrice(item: RuneType) {
-            console.log(item)
-        }
-    },
+// Here we make the client itself, combining the service
+// definition with the transport.
+// See https://connectrpc.com/docs/web/using-clients
+const client = createPromiseClient(RuneController, transport);
 
-}
+
+const search = ref('');
+const items = ref([]);
+
+const getDataFromAPI = async () => {
+    const response = await client.list(new RuneListRequest())
+    const data = await response;
+    console.log(data);
+    items.value = data.results as unknown as any[];
+};
+
+
+onMounted(async () => {
+    await getDataFromAPI();
+});
+
 </script>

@@ -1,9 +1,9 @@
 <template>
-    <v-text-field v-model="name" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details single-line
-        @change="updateSearch()"></v-text-field>
+    <v-text-field v-model="name" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+        single-line @change="updateSearch()"></v-text-field>
     <v-select label="Metier" :items="metiers" v-model:model-value="metier" @update:modelValue="updateSearch()"
         clearable></v-select>
-    <v-data-table-server mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
+    <v-data-table-virtual mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
         :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
         v-model:items-per-page="itemsPerPage" :search="search">
         <template v-slot:loading>
@@ -65,7 +65,8 @@
                                     {{ Number((item as any).prix_ba * (item as any).quantity_ba).toFixed(0) }}
                                 </template>
                                 <template v-slot:item.total="{ item }">
-                                    {{ Number((item as any).prix_ra * (item as any).quantity_ra + (item as any).prix_pa *
+                                    {{ Number((item as any).prix_ra * (item as any).quantity_ra + (item as any).prix_pa
+                                        *
                                         (item as any).quantity_pa +
                                         (item as any).prix_ba * (item as any).quantity_ba).toFixed(0) }}
                                 </template>
@@ -80,14 +81,24 @@
                 </v-tabs-window>
             </v-card>
         </template>
-    </v-data-table-server>
+    </v-data-table-virtual>
 </template>
 
 <script lang="ts">
-import Equipement from "../Equipement.vue";
-import Ingredient from "../Ingredient.vue";
-import Ingredients from "../Ingredients.vue";
-import { backendUrl } from '../../config';
+import Equipement from "@/components/Equipement.vue";
+import Ingredient from "@/components/Ingredient.vue";
+import Ingredients from "@/components/Ingredients.vue";
+import { backendUrl } from '@/config';
+import { createPromiseClient } from "@connectrpc/connect";
+import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import { EquipementController, RuneController } from "@/grpc/grpc_market_connect";
+import { EquipementDetailsRequest, EquipementListRequest, RuneRequest } from "@/grpc/grpc_market_pb";
+
+const transport = createGrpcWebTransport({
+    baseUrl: "http://localhost:9001",
+});
+const client = createPromiseClient(EquipementController, transport);
+const runeClient = createPromiseClient(RuneController, transport);
 
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
@@ -106,10 +117,10 @@ export default {
         headers: [
             { title: 'Nom', key: 'name', sortable: false },
             { title: 'Rentabilité (%)', key: 'rentabilite' },
-            { title: 'Gain estimé (K)', key: 'gain_estime' },
-            { title: 'Cout de fabrication (K)', key: 'cout_fabrication' },
+            { title: 'Gain estimé (K)', key: 'gainEstime' },
+            { title: 'Cout de fabrication (K)', key: 'coutFabrication' },
             { title: "Metier", key: "metier" },
-            { title: "Nombre d'ingrédients", key: "nb_objet" }
+            { title: "Nombre d'ingrédients", key: "nbObjet" }
         ],
 
         rune_headers: [
@@ -157,16 +168,22 @@ export default {
             if (this.$route.query.metier) {
                 params.metier = this.$route.query.metier
             }
-            const response = await this.axios.get(`${this.backendUrl}/api/equipements`, {
-                params: params,
-            })
-            this.items = response.data.results
-            this.totalItems = response.data.count
+            const pagination_as_dict = { "page": 2, "page_size": 10 }
+            const metadata = {
+                pagination: JSON.stringify(pagination_as_dict),
+            };
+
+            const response = await client.list(new EquipementListRequest(), { headers: metadata })
+            console.log(response)
+            this.items = response.results
+            this.totalItems = response.results.length
             this.loading = false
         },
         async getEquipmentDetailsFromAPI(item: any) {
-            const response = await this.axios.get(`${this.backendUrl}/api/equipements/${item.name}`)
-            return response.data
+            console.log(`Get ${item.name} details`)
+            const response = await client.details(new EquipementDetailsRequest({ name: item.name }))
+            console.log(response)
+            return response
         },
         async expandRow(item: any) {
             if (this.expanded.includes(item.name)) {
@@ -204,7 +221,7 @@ export default {
             this.search = String(Date.now())
         },
         async updatePrice(rune: any) {
-            await this.axios.put(`${this.backendUrl}/api/runes/${rune.rune}`, { "prix_ra": rune.prix_ra, "prix_pa": rune.prix_pa, "prix_ba": rune.prix_ba })
+            await runeClient.update(new RuneRequest({ name: rune.rune, prixRa: rune.prix_ra, prixPa: rune.prix_pa, prixBa: rune.prix_ba }))
         }
     },
     async mounted() {

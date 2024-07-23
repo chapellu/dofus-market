@@ -1,7 +1,7 @@
 <template>
     <div>
-        <v-card class="d-flex flex-row" variant="elevated" style="margin: 2px; padding: 2px">
-            <v-col cols="6" class="d-flex align-center justify-center " style="width: 100%; padding: 1px;">
+        <v-row class="d-flex flex-row" variant="elevated" style="margin: 2px; padding: 2px">
+            <v-col cols="4" class="d-flex align-center justify-center " style="width: 100%; padding: 1px;">
                 <div style="font-size: 12px;">{{ item.name }}</div>
             </v-col>
             <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
@@ -14,7 +14,7 @@
                 <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="coins" />
                     <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
-                        v-model="item.gain_estime" placeholder="-"></v-text-field>
+                        v-model="item.gainEstime" placeholder="-"></v-text-field>
                 </v-col>
                 <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="hammer" />
@@ -24,10 +24,10 @@
                 <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="flask" />
                     <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
-                        v-model="item.nb_objet"></v-text-field>
+                        v-model="item.nbObjet"></v-text-field>
                 </v-col>
             </v-col>
-        </v-card>
+        </v-row>
     </div>
 </template>
 
@@ -55,18 +55,18 @@ export default {
     computed: {
         computedCraftCost: {
             get() {
-                return this.formatter.format(this.item.cout_fabrication);
+                return this.formatter.format(this.item.coutFabrication);
             },
             set(newValue: any) {
-                this.item.cout_fabrication = Number(newValue); //TODO this not working
+                this.item.coutFabrication = Number(newValue); //TODO this not working
             }
         },
         computedEstimatedGain: {
             get() {
-                return this.formatter.format(this.item.gain_estime);
+                return this.formatter.format(this.item.gainEstime);
             },
             set(newValue: any) {
-                this.item.gain_estime = Number(newValue); //TODO this not working
+                this.item.gainEstime = Number(newValue); //TODO this not working
             }
         }
     }

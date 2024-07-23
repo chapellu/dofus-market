@@ -1,49 +1,55 @@
 <template>
     <div>
         <v-row>
-            <v-list-subheader>Rune {{ item.name }}</v-list-subheader>
+            <v-list-subheader data-testid="rune-name">Rune {{ rune.name }}</v-list-subheader>
         </v-row>
         <v-row class="align-center">
             <v-col cols="4">
-                <v-text-field label="Prix Ra" v-model.number="item.prix_ra" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K" v-if="item.prix_ra != -1"></v-text-field>
+                <v-text-field data-testid="prix-ra" label="Prix Ra" v-model="rune.prixRa" @change="updatePrice"
+                    density="compact" hide-details="auto" suffix="K" v-if="rune.prixRa != -1"></v-text-field>
             </v-col>
             <v-col cols="4">
-                <v-text-field label="Prix Pa" v-model.number="item.prix_pa" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K" v-if="item.prix_pa != -1"></v-text-field>
+                <v-text-field data-testid="prix-pa" label="Prix Pa" v-model.number="rune.prixPa" @change="updatePrice"
+                    density="compact" hide-details="auto" suffix="K" v-if="rune.prixPa != -1"></v-text-field>
             </v-col>
             <v-col cols="4">
-                <v-text-field label="Prix Ba" v-model.number="item.prix_ba" @change="updatePrice" density="compact"
-                    hide-details="auto" suffix="K" v-if="item.prix_ba != -1"></v-text-field>
+                <v-text-field data-testid="prix-ba" label="Prix Ba" v-model.number="rune.prixBa" @change="updatePrice"
+                    density="compact" hide-details="auto" suffix="K" v-if="rune.prixBa != -1"></v-text-field>
             </v-col>
         </v-row>
     </div>
 </template>
 
 <script lang="ts">
+import { createPromiseClient } from "@connectrpc/connect";
+import { transport } from '@/transport'
+import { RuneType } from '@/components/types/RuneType';
+import { RuneController } from "@/grpc/grpc_market_connect";
+import { RuneRequest } from "@/grpc/grpc_market_pb";
 
-import { RuneType } from './types/RuneType'
-import { backendUrl } from '../config'
+
+const runeClient = createPromiseClient(RuneController, transport);
 
 export default {
-    data: () => ({
-        backendUrl: backendUrl,
-    }),
     props: {
-        item: {
+        rune: {
             type: RuneType,
             required: true
         }
     },
-    methods: {
-        async updatePrice() {
-            await this.axios.put(`${this.backendUrl}/api/runes/${this.item.name}`, { "prix_ra": this.item.prix_ra, "prix_pa": this.item.prix_pa, "prix_ba": this.item.prix_ba })
-        }
+    setup(props) {
+        const updatePrice = async () => {
+            await runeClient.update(new RuneRequest(props.rune))
+        };
+
+        return {
+            updatePrice
+        };
     }
-}
+};
 </script>
 
-<style>
+<style scoped>
 .v-row {
     margin: 0px
 }

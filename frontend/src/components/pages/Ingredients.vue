@@ -25,6 +25,15 @@
 <script lang="ts">
 import Ingredient from "../Ingredient.vue";
 import { backendUrl } from '../../config';
+import { createPromiseClient } from "@connectrpc/connect";
+import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import { IngredientController } from "@/grpc/grpc_market_connect";
+import { IngredientListRequest } from "@/grpc/grpc_market_pb";
+
+const transport = createGrpcWebTransport({
+    baseUrl: "http://localhost:9001",
+});
+const client = createPromiseClient(IngredientController, transport);
 
 export default {
     components: {
@@ -50,15 +59,16 @@ export default {
     },
     methods: {
         async getDataFromAPI() {
-            const response = await this.axios.get(`${this.backendUrl}/api/ingredients`, {
-                params: {
-                    page: this.$route.query.page || 1, // Default to page 1 if not present
-                    page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
-                    search: this.$route.query.search || '',
-                },
-            })
-            this.items = response.data.results
-            this.totalItems = response.data.count
+            // const response = await this.axios.get(`${this.backendUrl}/api/ingredients`, {
+            //     params: {
+            //         page: this.$route.query.page || 1, // Default to page 1 if not present
+            //         page_size: this.$route.query.itemsPerPage || 10, // Default to 10 items per page
+            //         search: this.$route.query.search || '',
+            //     },
+            // })
+            const response = await client.list(new IngredientListRequest())
+            this.items = response.results
+            this.totalItems = response.results.length
         },
 
         async updatePrice(item: any) {

@@ -1,49 +1,57 @@
 <template>
     <div>
-        <v-lazy :options="{ 'threshold': 0.5 }" transition="fade-transition">
-            <v-card class="d-flex flex-row" variant="elevated" style="width: 100%; padding: 1px;">
-                <v-col cols="6" class="d-flex align-center justify-left " style="width: 100%; padding: 1px;">
-                    <div style="font-size: 12px;">{{ item.quantity }} X {{ item.name }}</div>
+        <!-- <v-lazy :options="{ 'threshold': 0.5 }" transition="fade-transition"> -->
+        <v-card class="d-flex flex-row" variant="elevated" style="width: 100%; padding: 1px;">
+            <v-col cols="6" class="d-flex align-center justify-left " style="width: 100%; padding: 1px;">
+                <div data-testid="ingredient-quantity-name" style="font-size: 12px;">{{ item.quantity }} X {{
+                    item.name }}</div>
+            </v-col>
+            <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
+                    <div data-testid="ingredient-rentability" v-if="item.rentabilite > 0"
+                        class="d-flex flex-column align-center">
+                        <font-awesome-icon icon="percent" />
+                        <v-chip :color="getColor(item.rentabilite)">
+                            {{ Math.round(item.rentabilite) }}
+                        </v-chip>
+                    </div>
                 </v-col>
-                <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
-                    <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
-                        <div v-if="item.rentabilite > 0" class="d-flex flex-column align-center">
-                            <font-awesome-icon icon="percent" />
-                            <v-chip :color="getColor(item.rentabilite)">
-                                {{ Math.round(item.rentabilite) }}
-                            </v-chip>
-                        </div>
-                    </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
-                        <font-awesome-icon icon="landmark" />
-                        <v-text-field class="small-center-text-field" width="100%" density="compact" hide-details
-                            v-model="computedPrice" @click.stop placeholder="-" @change="updatePrice(item)"
-                            @update:model-value="updatePriceValue"></v-text-field>
-                    </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0"
-                        style="width: 100%; padding: 1px;">
-                        <font-awesome-icon icon="hammer" />
-                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
-                            @click.stop v-model="computedCraftCost"></v-text-field>
-                    </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0"
-                        style="width: 100%; padding: 1px;">
-                        <font-awesome-icon icon="flask" />
-                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
-                            @click.stop v-model="item.nb_objet"></v-text-field>
-                    </v-col>
+                <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
+                    <font-awesome-icon icon="landmark" />
+                    <v-text-field data-testid="ingredient-price" class="small-center-text-field" width="100%"
+                        density="compact" hide-details v-model="computedPrice" @click.stop placeholder="-"
+                        @change="updatePrice(item)" @update:model-value="updatePriceValue"></v-text-field>
                 </v-col>
-            </v-card>
-        </v-lazy>
+                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.cout_fabrication > 0"
+                    data-testid=ingredient-fabrication-cost style="width: 100%; padding: 1px;">
+                    <font-awesome-icon icon="hammer" />
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                        @click.stop v-model="computedCraftCost"></v-text-field>
+                </v-col>
+                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nb_objet > 0"
+                    data-testid=ingredient-nb-object style="width: 100%; padding: 1px;">
+                    <font-awesome-icon icon="flask" />
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                        @click.stop v-model="item.nb_objet"></v-text-field>
+                </v-col>
+            </v-col>
+        </v-card>
+        <!-- </v-lazy> -->
     </div>
 </template>
 
 <script lang="ts">
-import { backendUrl } from '../config'
+// import { backendUrl } from '../config'
+import { transport } from '@/transport'
+import { createPromiseClient } from "@connectrpc/connect";
+import { IngredientController } from "@/grpc/grpc_market_connect";
+import { IngredientRequest } from "@/grpc/grpc_market_pb";
+
+const ingredientClient = createPromiseClient(IngredientController, transport);
 
 export default {
     data: () => ({
-        backendUrl: backendUrl,
+        // backendUrl: backendUrl,
         formatter: Intl.NumberFormat('FR', { notation: 'compact' }),
         internalPrice: 0,
     }),
@@ -88,7 +96,8 @@ export default {
         async updatePrice(item: any) {
             this.item.price = this.internalPrice
             console.log(item)
-            await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
+            // await this.axios.put(`${this.backendUrl}/api/ingredients/${item.name}`, { "price": item.price })
+            await ingredientClient.update(new IngredientRequest({ name: item.name, price: item.price }))
         },
 
         updatePriceValue(value: any) {

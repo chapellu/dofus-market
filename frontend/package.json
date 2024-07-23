@@ -10,17 +10,28 @@
     "preview": "vite preview",
     "serve": "vite serve",
     "serve:docker": "docker run -p 3000:3000 chapellu/dofus-market-frontend:${version}",
-    "push:docker": "docker push chapellu/dofus-market-frontend:${version}"
+    "push:docker": "docker push chapellu/dofus-market-frontend:${version}",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@bufbuild/buf": "^1.34.0",
+    "@bufbuild/protobuf": "^1.10.0",
+    "@bufbuild/protoc-gen-connect-es": "^0.13.0",
+    "@bufbuild/protoc-gen-es": "^1.10.0",
+    "@connectrpc/connect": "^1.4.0",
+    "@connectrpc/connect-web": "^1.4.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@mdi/font": "^7.4.47",
+    "@vue/test-utils": "^2.4.6",
     "axios": "^1.7.2",
+    "happy-dom": "^14.12.3",
     "lodash": "^4.17.21",
+    "vitest": "^2.0.3",
     "vue": "^3.4.21",
     "vue-axios": "^3.5.2",
     "vue-router": "^4.3.2",
@@ -28,9 +39,11 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.6",
+    "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-tsconfig-paths": "^4.3.2",
     "vue-tsc": "^2.0.6"
   }
 }

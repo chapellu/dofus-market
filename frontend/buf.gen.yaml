@@ -1,0 +1,9 @@
+version: v1
+
+plugins:
+  - plugin: es
+    opt: target=ts
+    out: src/grpc
+  - name: connect-es
+    out: src/grpc
+    opt: target=ts

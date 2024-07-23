@@ -1,8 +1,8 @@
 <template>
-    <v-data-table-virtual mobile :items="ingredients" :sort-by="sortBy" style="padding-left: 20px;" :expanded="expanded"
-        hideDefaultHeader item-value="name">
+    <v-data-table-virtual mobile :items="ingredients" style="padding-left: 20px;" :expanded="expanded" hideDefaultHeader
+        item-value="name">
         <template v-slot:item="{ item }">
-            <ingredient :item="item" @click="expandRow(item)"></ingredient>
+            <ingredient data-testid="ingredient" :item="item" @click="expandRow(item)"></ingredient>
         </template>
         <template v-slot:expanded-row="{ item }">
             <ingredients :ingredients="item.ingredients" v-if="item.ingredients.length > 0"></ingredients>
@@ -11,43 +11,68 @@
 </template>
 
 <script lang="ts">
-import Ingredient from "./Ingredient.vue";
-import { backendUrl } from '../config'
+import { ref, onMounted, defineComponent } from 'vue'
+import { createPromiseClient } from "@connectrpc/connect";
+import { RuneController } from "@/grpc/grpc_market_connect";
+import { RuneListRequest } from "@/grpc/grpc_market_pb";
+import { transport } from '@/transport'
+import Ingredient from "@/components/Ingredient.vue";
 
+const client = createPromiseClient(RuneController, transport);
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
-export default {
+export default defineComponent({
     name: "Ingredients",
     props: {
         ingredients: {
-            type: Array<any>,
-            required: true,
+            type: Array,
+            required: true
         }
     },
     components: {
-        Ingredient,
+        Ingredient
     },
-    data: () => ({
-        expanded: [] as Array<any>,
-        backendUrl: backendUrl,
-        sortBy: [{ key: 'quantity', order: 'desc' }] as Array<SortItem>,
-    }),
+    setup(props) {
+        // const sortedIngredients = ref([]);
+        const expanded = ref([])
+        // const sortIngredients = (sortItem: SortItem) => {
+        //     sortedIngredients.value = [...props.ingredients].sort((a, b) => {
+        //         const key = sortItem.key;
+        //         const order = sortItem.order === 'desc' ? -1 : 1;
+        //         if (a[key] < b[key]) return -1 * order;
+        //         if (a[key] > b[key]) return 1 * order;
+        //         return 0;
+        //     });
+        // };
 
-    methods: {
-        getColor(rentabilite: number) {
-            if (rentabilite <= 0) return 'red'
-            else if (rentabilite < 20) return 'orange'
-            else return 'green'
-        },
-        expandRow(item: any) {
-            console.log(item)
-            if (this.expanded.includes(item.name)) {
-                this.expanded.splice(this.expanded.indexOf(item.name), 1)
+        const getEquipmentDetailsFromAPI = async (item) => {
+
+        }
+        const expandRow = async (item: any) => {
+            if (expanded.value.includes(item.name)) {
+                expanded.value.splice(expanded.value.indexOf(item.name), 1)
             }
             else {
-                this.expanded.push(item.name)
+                // props.ingredients[props.ingredients.indexOf(item)] = await getEquipmentDetailsFromAPI(item)
+                expanded.value.push(item.name)
             }
-        },
-    },
-}
+        };
+
+        onMounted(async () => {
+            const request = new RuneListRequest();
+            try {
+                const response = await client.list(request);
+                console.log(response);
+            } catch (error) {
+                console.error('Failed to fetch runes:', error);
+            }
+        });
+        return {
+            // sortedIngredients,
+            expanded,
+            // sortIngredients,
+            expandRow,
+        };
+    }
+});
 </script>
