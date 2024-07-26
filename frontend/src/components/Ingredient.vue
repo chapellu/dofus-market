@@ -8,7 +8,7 @@
             </v-col>
             <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
                 <v-col cols="3" class="d-flex flex-column align-center" style="width: 100%; padding: 1px;">
-                        <div data-testid="ingredient-rentability" v-if="item.rentabilite"
+                    <div data-testid="ingredient-rentability" v-if="item.rentabilite"
                         class="d-flex flex-column align-center">
                         <font-awesome-icon icon="percent" />
                         <v-chip :color="getColor(item.rentabilite)">
@@ -22,17 +22,17 @@
                         density="compact" hide-details v-model="computedPrice" @click.stop placeholder="-"
                         @change="updatePrice(item)" @update:model-value="updatePriceValue"></v-text-field>
                 </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.coutFabrication > 0"
+                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.coutFabrication > 0"
                     data-testid=ingredient-fabrication-cost style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="hammer" />
-                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact"
-                            hide-details @click.stop v-model="computedCraftCost"></v-text-field>
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                        @click.stop v-model="computedCraftCost"></v-text-field>
                 </v-col>
-                    <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nbObjet > 0"
+                <v-col cols="3" class="d-flex flex-column align-center" v-if="item.nbObjet > 0"
                     data-testid=ingredient-nb-object style="width: 100%; padding: 1px;">
                     <font-awesome-icon icon="flask" />
-                        <v-text-field class="small-center-text-field" width="100%" readonly density="compact"
-                            hide-details @click.stop v-model="item.nbObjet"></v-text-field>
+                    <v-text-field class="small-center-text-field" width="100%" readonly density="compact" hide-details
+                        @click.stop v-model="item.nbObjet"></v-text-field>
                 </v-col>
             </v-col>
         </v-card>

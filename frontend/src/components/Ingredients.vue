@@ -13,15 +13,14 @@
 <script lang="ts">
 import { ref, onMounted, defineComponent } from 'vue'
 import { createPromiseClient } from "@connectrpc/connect";
-import { RuneController } from "@/grpc/grpc_market_connect";
 import { RuneListRequest } from "@/grpc/grpc_market_pb";
 import { transport } from '@/transport'
 import Ingredient from "@/components/Ingredient.vue";
 import { EquipementController, RuneController } from "@/grpc/grpc_market_connect";
+import { EquipementDetailsRequest, EquipementListRequest, RuneRequest } from "@/grpc/grpc_market_pb";
+
 const runeClient = createPromiseClient(RuneController, transport);
 const client = createPromiseClient(EquipementController, transport);
-
-const client = createPromiseClient(RuneController, transport);
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
 export default defineComponent({
@@ -54,6 +53,7 @@ export default defineComponent({
             console.log(response)
             return response
         }
+
         const expandRow = async (item: any) => {
             if (expanded.value.includes(item.name)) {
                 expanded.value.splice(expanded.value.indexOf(item.name), 1)

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row class="d-flex flex-row" variant="elevated" style="margin: 2px; padding: 2px">
-            <v-col cols="4" class="d-flex align-center justify-center " style="width: 100%; padding: 1px;">
+            <v-col cols="6" class="d-flex align-center justify-center " style="width: 100%; padding: 1px;">
                 <div style="font-size: 12px;">{{ item.name }}</div>
             </v-col>
             <v-col cols="6" class="d-flex flex-row" style="width: 100%; padding: 1px;">
