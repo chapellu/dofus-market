@@ -23,7 +23,7 @@
 <script lang="ts">
 import { createPromiseClient } from "@connectrpc/connect";
 import { transport } from '@/transport'
-import { RuneType } from '@/components/types/RuneType';
+import { RuneType } from '@/types/RuneType';
 import { RuneController } from "@/grpc/grpc_market_connect";
 import { RuneRequest } from "@/grpc/grpc_market_pb";
 

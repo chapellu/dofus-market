@@ -3,8 +3,8 @@ import { mount, VueWrapper } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-import Rune from "../../src/components/Rune.vue";
-import { RuneType } from "../../src/components/types/RuneType";
+import Rune from "@/components/Rune.vue";
+import { RuneType } from "@/types/RuneType";
 import { createPromiseClient } from "@connectrpc/connect";
 
 describe("Rune", () => {

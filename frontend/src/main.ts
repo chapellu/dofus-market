@@ -13,9 +13,9 @@ import VueAxios from "vue-axios";
 
 // Components
 import App from "./App.vue";
-import Equipements from "./components/pages/Equipements.vue";
-import Ingredients from "./components/pages/Ingredients.vue";
-import Runes from "./components/pages/Runes.vue";
+import Equipements from "@/pages/Equipements.vue";
+import Ingredients from "@/pages/Ingredients.vue";
+import Runes from "@/pages/Runes.vue";
 
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";

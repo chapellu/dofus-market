@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { backendUrl } from '../config'
+import { backendUrl } from '@/config'
 
 export default {
     data: () => ({

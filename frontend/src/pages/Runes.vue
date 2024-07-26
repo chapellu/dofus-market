@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" setup>
-import Rune from "../Rune.vue";
-import { RuneType } from '../types/RuneType'
-import { backendUrl } from '../../config'
+import Rune from "@/components/Rune.vue";
+import { RuneType } from '@/types/RuneType'
+import { backendUrl } from '@/config'
 import { ref, onMounted, defineComponent } from 'vue'
 import { createPromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";

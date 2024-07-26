@@ -3,9 +3,9 @@
         single-line @change="updateSearch()"></v-text-field>
     <v-select label="Metier" :items="metiers" v-model:model-value="metier" @update:modelValue="updateSearch()"
         clearable></v-select>
-    <v-data-table-virtual mobile :items="items" :items-length="totalItems" disable-sort hide-default-header
-        :loading="loading" item-value="name" :expanded="expanded" @update:options="loadItems"
-        v-model:items-per-page="itemsPerPage" :search="search">
+    <v-data-table mobile :items="items" :items-length="totalItems" disable-sort hide-default-header :loading="loading"
+        item-value="name" :expanded="expanded" @update:options="loadItems" v-model:items-per-page="itemsPerPage"
+        :search="search">
         <template v-slot:loading>
             <div class="text-center py-5">
                 <v-progress-circular indeterminate color="primary" />
@@ -81,7 +81,7 @@
                 </v-tabs-window>
             </v-card>
         </template>
-    </v-data-table-virtual>
+    </v-data-table>
 </template>
 
 <script lang="ts">

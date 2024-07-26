@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts">
-import Ingredient from "../Ingredient.vue";
-import { backendUrl } from '../../config';
+import Ingredient from "@/components/Ingredient.vue";
+import { backendUrl } from '@/config';
 import { createPromiseClient } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { IngredientController } from "@/grpc/grpc_market_connect";

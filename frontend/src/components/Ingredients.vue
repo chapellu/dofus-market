@@ -17,6 +17,9 @@ import { RuneController } from "@/grpc/grpc_market_connect";
 import { RuneListRequest } from "@/grpc/grpc_market_pb";
 import { transport } from '@/transport'
 import Ingredient from "@/components/Ingredient.vue";
+import { EquipementController, RuneController } from "@/grpc/grpc_market_connect";
+const runeClient = createPromiseClient(RuneController, transport);
+const client = createPromiseClient(EquipementController, transport);
 
 const client = createPromiseClient(RuneController, transport);
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
@@ -46,26 +49,32 @@ export default defineComponent({
         // };
 
         const getEquipmentDetailsFromAPI = async (item) => {
-
+            console.log(`Get ${item.name} details`)
+            const response = await client.details(new EquipementDetailsRequest({ name: item.name }))
+            console.log(response)
+            return response
         }
         const expandRow = async (item: any) => {
             if (expanded.value.includes(item.name)) {
                 expanded.value.splice(expanded.value.indexOf(item.name), 1)
             }
             else {
+                console.log(item)
+                console.log(props.ingredients.indexOf(item))
                 // props.ingredients[props.ingredients.indexOf(item)] = await getEquipmentDetailsFromAPI(item)
                 expanded.value.push(item.name)
             }
         };
 
         onMounted(async () => {
-            const request = new RuneListRequest();
-            try {
-                const response = await client.list(request);
-                console.log(response);
-            } catch (error) {
-                console.error('Failed to fetch runes:', error);
-            }
+            // const request = new RuneListRequest();
+            // try {
+            //     const response = await runeClient.list(request);
+            //     console.log(response);
+            // } catch (error) {
+            //     console.error('Failed to fetch runes:', error);
+            // }
+            console.log(props)
         });
         return {
             // sortedIngredients,
